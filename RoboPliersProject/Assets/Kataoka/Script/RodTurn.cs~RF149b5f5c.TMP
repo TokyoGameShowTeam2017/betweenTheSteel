@@ -1,0 +1,69 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RodTurn : MonoBehaviour
+{
+    private Vector3 mTurnPsiton;
+    private List<GameObject> mBones;
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
+    public void Awake()
+    {
+        mBones = new List<GameObject>();
+        //ボーン情報を取得
+        Transform[] mTransforms;
+        mTransforms = transform.GetComponentsInChildren<Transform>();
+        mBones.Clear();
+        foreach (Transform trans in mTransforms)
+        {
+            //ボーン以外をはじく
+            if (trans.gameObject.name != gameObject.name &&
+                trans.gameObject.name != "RodObj" &&
+                trans.gameObject.name != "Collision")
+                mBones.Add(trans.gameObject);
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+
+    }
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name == "Test")
+        {
+            GetNearBone(collision.gameObject, true).GetComponent<RodTurnBone>().SetRotateTurn(new Vector3(120, 0, 0));
+        }
+    }
+    //棒のボーンをすべて取得
+    public List<GameObject> GetRodBones()
+    {
+        return mBones;
+    }
+    //当たった位置から一番近いところのボーンを取得
+    public GameObject GetNearBone(GameObject obj, bool venNumber)
+    {
+        GameObject result = new GameObject();
+        result.transform.position = new Vector3(99999, 99999, 99999);
+        foreach (GameObject i in mBones)
+        {
+            if (Vector3.Distance(result.transform.position, i.transform.position) >=
+                Vector3.Distance(obj.transform.position, i.transform.position))
+            {
+                if (venNumber && i.GetComponent<RodTurnBone>().GetBoneNumber() % 2 == 0)
+                    result = i;
+                if (!venNumber && i.GetComponent<RodTurnBone>().GetBoneNumber() % 2 != 0)
+                    result = i;
+            }
+        }
+        return result;
+    }
+
+}

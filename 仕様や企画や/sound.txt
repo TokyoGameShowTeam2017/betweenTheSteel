@@ -1,0 +1,33 @@
+title.mp3 (Muzzle)
+menu.mp3 (Disrespect, Your Doors)
+stage.mp3 (Morning Lemontea, Move The Car, Monkey Likes Daddy, In My Heart)
+clear.mp3 ()
+failed.mp3 ()
+credit.mp3 (On Satelloid)
+
+select.wav
+enter.wav
+back.wav
+
+
+xg-2walk.wav (quand le joueur se deplace/移動中)
+xg-2jump.wav (quand le joueur saute/ジャンプ時)
+xg-2landing.wav (quand le joueur atteri/ジャンプ時)
+xg-2armmove.wav (quand le joueur bouge ses bras/ジャンプ時)
+xg-2bip.wav (quand un robot comunique/プレイヤーのコミュニケーション法のピー音)
+xg-2sand.wav (quand le joueur pince/プレイヤーがはさんだ時)
+
+uavflight.wav (quand le drone vole/ドローンのプロペラ音)
+
+button.wav (quand le joueur appuie sur un boutton)
+alert.wav (syrene)
+blockmove.wav (quand un gros bloc se deplace)
+break1.wav
+break2.wav
+break3.wav
+break4.wav
+door.wav
+fallbeton.wav
+fallmetal.wav
+itemroll.wav
+sqeezmetal.wav

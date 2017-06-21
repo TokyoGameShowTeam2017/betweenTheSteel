@@ -1,0 +1,12 @@
+push start を押すと、press start の文字は拡大と同時にフェードアウトしそれ以外の物は逆の手順で消える
+
+カメラはgoalpointに移動してmenucanvasに移行
+
+menubackleftとmenubackrightが左右から登場
+四つの項目が下から順番に登場、最後にback
+初期に選択されているstartgameは少し拡大し、色をターコイズに
+項目を選択するとpress startの時と同じ感じに
+
+select stageを選択すると、menubackleftとmenubackrightが左右に広がって、selectstageを表示、stage01 stage02の文字をフェードイン
+
+ゲームがスタートすると、上下左右の画像が上下左右から登場
