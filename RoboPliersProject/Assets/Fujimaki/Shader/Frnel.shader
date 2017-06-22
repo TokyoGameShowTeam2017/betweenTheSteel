@@ -5,6 +5,7 @@
 		_RimPower ( "Rim Power", Float ) = 0
 		_RimSize ( "Rim Size", Float ) = 0
 		_RimUnderLimit ( "Rim UnderLimit",Float ) = 0
+		_EmissionPower ( "EmissionPower",Float ) = 1
 	}
 
 	SubShader
@@ -23,6 +24,7 @@
 		float _RimPower;
 		float _RimSize;
 		float _RimUnderLimit;
+		float _EmissionPower;
 
 		struct Input
 		{
@@ -33,7 +35,7 @@
 
 		void surf ( Input IN, inout SurfaceOutput o )
 		{
-			o.Emission = _Color.rgb;
+			o.Emission = _Color.rgb*_EmissionPower;
 
 			float alpha = 1 - (abs ( dot ( IN.viewDir, IN.worldNormal ) ));
 			o.Alpha = clamp ( pow ( alpha, _RimSize )*_RimPower + _RimUnderLimit, 0, 1 );
