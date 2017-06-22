@@ -15,8 +15,6 @@ public class RodUi : MonoBehaviour
     private bool mNowDrawUiFlag;
     //アウトラインのシェーダーたち
     private List<cakeslice.Outline> mOutLines;
-    //生成するUIプレハブ
-    public GameObject m_RoduiPrefab;
     
     ////材質情報
     //[SerializeField, Tooltip("材質名"),Space(15)]
