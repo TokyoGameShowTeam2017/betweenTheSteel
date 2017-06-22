@@ -45,8 +45,8 @@ public class TutorealIventCamera : MonoBehaviour
     [SerializeField, Tooltip("ブロックをを先にDrawさせるか")]
     public bool m_BeforeDrawBlock;
 
-    [SerializeField, Tooltip("2回目以降ズームするかどうか"), Space(15)]
-    public bool m_IsSecondCameraZoom;
+    //[SerializeField, Tooltip("2回目以降ズームするかどうか"), Space(15)]
+    //public bool m_IsSecondCameraZoom;
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("カメラ補間が終わった時のプレイヤー状態")]
     public bool m_PlayerMove;
     [SerializeField, Tooltip("プレイヤーカメラ移動させるか")]
@@ -156,6 +156,7 @@ public class TutorealIventCamera : MonoBehaviour
         if (mLertTime >= 1.0f && mIsEnd)
         {
             //次のイベントテキスト有効化
+            if(m_IventCollision!=null)
             m_IventCollision.GetComponent<PlayerTextIvent>().IsCollisionFlag();
             mTutorealPlayer.SetIsArmMove(!m_PlayerArmMove);
             mTutorealPlayer.SetIsPlayerMove(!m_PlayerMove);

@@ -39,12 +39,14 @@ public class TutorealIventSetObject : MonoBehaviour {
     //[SerializeField, Tooltip("プレイヤーアーム離せるか")]
     //public bool m_PlayerArmNoCath;
 
+    private bool mIsCollision;
     // Use this for initialization
     void Start()
     {
         mPlayerTutorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mArmManager = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
+        mIsCollision = false;
     }
 
     void Update()
@@ -60,7 +62,9 @@ public class TutorealIventSetObject : MonoBehaviour {
         mPlayerTutorial.SetIsCamerMove(!m_PlayerCameraMove);
         mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
         //絶対離せないため
+        if(!mIsCollision)
         mPlayerTutorial.SetIsArmRelease(false);
+        mIsCollision = false;
     }
 
     public void OnTriggerStay(Collider other)
@@ -69,6 +73,7 @@ public class TutorealIventSetObject : MonoBehaviour {
             mTutorealText.GetDrawTextFlag()||other.tag=="Player") return;
 
         mPlayerTutorial.SetIsArmRelease(true);
+        mIsCollision = true;
         if (mArmManager.GetEnablArmCatchingObject() == null)
         {
             //次のイベントテキスト有効化
