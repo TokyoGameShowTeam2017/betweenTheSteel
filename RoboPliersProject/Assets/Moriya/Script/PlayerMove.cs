@@ -26,8 +26,10 @@ public class PlayerMove : MonoBehaviour
     private float m_Gravity = 10.0f;
     [SerializeField, Tooltip("動かないオブジェクト掴んだ時の軸移動速度")]
     private float m_AxisMoveSpeed = 30.0f;
-    [SerializeField, Tooltip("動かないオブジェクト掴んだ時の高さ制限値")]
-    private float m_AxisMoveHeightLimit = 2.0f;
+    [SerializeField, Tooltip("動かないオブジェクト掴んだ時の移動角度制限値")]
+    private float m_AxisMoveAngleLimit = 65.0f;
+    //[SerializeField, Tooltip("動かないオブジェクト掴んだ時の高さ制限値")]
+    //private float m_AxisMoveHeightLimit = 2.0f;
 
     [SerializeField, Tooltip("動かないオブジェクト掴んだ時のペンチ座標ずらし値")]
     private float m_PliersOffset = 1.0f;
@@ -107,6 +109,8 @@ public class PlayerMove : MonoBehaviour
 
     void LateUpdate()
     {
+        if (!m_Manager.IsMove) return;
+
         //print(m_ArmManager.GetEnablePliersRollValue());
         switch (m_Manager.GetMoveState())
         {
@@ -161,13 +165,13 @@ public class PlayerMove : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit col)
     {
-        //上昇中に衝突したら落下させる
-        if (m_GravityMoveValue > 0)
-        {
-            m_JumpVector = Vector3.up;
-            m_JumpPowerXZ = 0.0f;
-            m_GravityMoveValue = 0.0f;
-        }
+        ////上昇中に衝突したら落下させる
+        //if (m_GravityMoveValue > 0)
+        //{
+        //    m_JumpVector = Vector3.up;
+        //    m_JumpPowerXZ = 0.0f;
+        //    m_GravityMoveValue = 0.0f;
+        //}
 
     }
 
@@ -224,7 +228,7 @@ public class PlayerMove : MonoBehaviour
         bool ishit = Physics.Raycast(ray, out hit, 2.0f, mask);
         IsGround = ishit;
 
-
+        //print(m_GravityMoveValue);
         //着地中の処理
         if (m_GravityMoveValue < 0 && ishit)
         {
@@ -237,7 +241,7 @@ public class PlayerMove : MonoBehaviour
             m_JumpPowerXZ = 0.0f;
 
             //入力取得
-            if (InputManager.GetJump())
+            if (InputManager.GetJump() && m_Manager.IsMove)
             {
                 SoundManager.Instance.PlaySe("xg-2jump");
                 m_IsJumpPossible = false;
@@ -293,8 +297,6 @@ public class PlayerMove : MonoBehaviour
             Transform roty = m_Manager.GetAxisMoveObject().transform;
             Transform rotx = roty.FindChild("RotX");
             Transform pliersrotx = roty.FindChild("PliersRotX");
-
-            //print("rotx     : " + rotx.localEulerAngles);
 
             //入力取得
             Vector2 leftInput, rightInput;
@@ -420,16 +422,19 @@ public class PlayerMove : MonoBehaviour
                     pliersrotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
                 }
             }
-            //上に行き過ぎないように制限
-            if (v < 0.0f)
+
+            //上または下に行き過ぎないように制限
+            float angle = 180.0f - (rotx.eulerAngles.x - 180.0f);
+            if (angle > 180.0f)
+                angle -= 360.0f;
+            //print(angle);
+
+            if (angle > m_AxisMoveAngleLimit || angle < -m_AxisMoveAngleLimit)
             {
-                if (tr.position.y - roty.position.y > m_AxisMoveHeightLimit)
-                {
-                    //上に行き過ぎているなら押し返す
-                    rotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
-                    pliersrotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
-                }
+                rotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
+                pliersrotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
             }
+
 
             //カメラを回転
             if (inputX != 0.0f)
@@ -500,5 +505,13 @@ public class PlayerMove : MonoBehaviour
         m_JumpVector = v;
         m_JumpPowerXZ = powerXZ;
         m_GravityMoveValue = powerY;
+    }
+
+    public void TutorialMove()
+    {
+        JumpMove();
+        Vector3 v = m_LastVelocity;
+        v.x = v.z = 0.0f;
+        cc.Move(v * Time.deltaTime);
     }
 }

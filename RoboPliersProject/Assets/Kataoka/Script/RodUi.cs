@@ -59,18 +59,22 @@ public class RodUi : MonoBehaviour
 
     }
     //パラメーター設定
-    public void ParameterSet()
+    public void ParameterSet(float boneHp)
     {
         ObjectParameter parameter = GetComponent<ObjectParameter>();
         //表示パラメーター設定
-        ParameterSet(parameter.m_Strength, parameter.m_Density, parameter.GetObjectMass().ToString());
+        ParameterSet(parameter.m_Strength,0, parameter.GetObjectMass().ToString(),boneHp);
     }
     //パラメーター設定
-    private void ParameterSet(int strength, int density, string mass)
+    private void ParameterSet(int strength, int density, string mass,float boneHp)
     {
         GameObject ui = GameObject.FindGameObjectWithTag("ParameterUi").transform.FindChild("RodUi").gameObject;
         ui.transform.FindChild("Strength").GetComponent<RodParameterUi>().ParameterSet(strength.ToString());
         ui.transform.FindChild("Density").GetComponent<RodParameterUi>().ParameterSet(density.ToString());
+        RectTransform trans=ui.transform.FindChild("MaskGauge").GetComponent<RectTransform>();
+        float hp = boneHp;
+        trans.sizeDelta = new Vector2(boneHp*10.0f, 100.0f);
+
         //ui.transform.FindChild("Omosa").GetComponent<RodParameterUi>().ParameterSet(mass);
     }
     public void DrawUiFlag(bool flag)
