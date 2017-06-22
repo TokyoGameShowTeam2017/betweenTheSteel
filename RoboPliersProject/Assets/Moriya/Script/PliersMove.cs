@@ -99,6 +99,8 @@ public class PliersMove : MonoBehaviour
     //入力取得用
     private bool m_LateInput = false;
     private bool m_Input = false;
+    private bool m_LateEasyMoveInput = false;
+    private bool m_EasyMoveInput = false;
 
     //2つで挟んで親子関係が変わった際の変数
     private bool m_ParentNotCathFlag;
@@ -107,7 +109,7 @@ public class PliersMove : MonoBehaviour
     private float m_StartPositionZ;
 
     //簡単モード用　掴み中か？
-    private bool m_IsCatching = false;
+    private bool m_IsEasyModeCatching = false;
 
     //左右のアームのBoxCollider
     private BoxCollider m_LeftColl;
@@ -153,10 +155,15 @@ public class PliersMove : MonoBehaviour
         m_Player = GameObject.FindGameObjectWithTag("Player");
         m_PlayerManager = m_Player.GetComponent<PlayerManager>();
         m_StartPositionZ = tr.localPosition.z;
+
+
+        SetPliersCollider(false);
     }
 
     void FixedUpdate()
     {
+        if (!m_ArmManager.IsMove) return;
+
         //移動量
         m_MoveVelocity = tr.position - m_PrevPosition;
         m_PrevPosition = tr.position;
@@ -340,7 +347,8 @@ public class PliersMove : MonoBehaviour
         m_PlayerAxisMoveY.transform.eulerAngles = a;
         //RotX
         m_PlayerAxisMoveX.transform.position = m_PlayerAxisMoveY.transform.position + m_RotXCreatePos;
-        
+        m_PlayerAxisMoveX.transform.forward = -tr.forward;
+
         ////Pos
         //Transform armtr = m_ArmManager.GetEnablArm().transform;
         //Vector3 armforward = armtr.forward;
@@ -491,13 +499,22 @@ public class PliersMove : MonoBehaviour
         Rotation();
 
         //入力取得
-        if (m_ArmManager.GetEnablArmMove().GetIsStreched())
+        if (m_ArmManager.GetEnablArmMove().GetIsCatching() && m_ArmManager.IsCatchAble)
         {
-            m_Input = m_ArmManager.GetEnablArm().GetComponent<ArmMove>().GetIsStreched();
+            m_Input = m_ArmManager.GetEnablArmMove().GetIsStreched();
         }
         else
         {
-            m_Input = InputManager.GetPliersCatch() > 0;
+            if (m_ArmManager.IsRelease)
+            {
+                m_LateEasyMoveInput = m_EasyMoveInput;
+                m_EasyMoveInput = InputManager.GetPliersCatch() > 0;
+                //入力があったとき　かつ押した瞬間
+                if (m_EasyMoveInput && !m_LateEasyMoveInput)
+                {
+                    m_Input = !m_Input;
+                }
+            }
         }
 
         //ペンチの挟むパワーを入力から計算
@@ -525,6 +542,8 @@ public class PliersMove : MonoBehaviour
 
         if (m_HitObject != null && m_CatchObject == null && m_Input)
         {
+            if (!m_ArmManager.IsCatchAble) return;
+
             //キャッチする
             m_CatchObject = m_HitObject;
             m_IsCatch = true;
@@ -544,10 +563,11 @@ public class PliersMove : MonoBehaviour
                     break;
             }
         }
-
-        //掴んでいる(オブジェクトがnullではない）状態でボタンを離したとき
+        //掴んでいる(オブジェクトがnullではない）かつ離す入力
         else if (m_CatchObject != null && !m_Input)
         {
+            if (!m_ArmManager.IsRelease) return;
+
             m_HitObject = null;
             //オブジェクトを手放す
             CatchObjectRelease();
@@ -628,6 +648,13 @@ public class PliersMove : MonoBehaviour
 
     void LateUpdate()
     {
+        if (!m_ArmManager.IsMove)
+        {
+            m_LeftRB.velocity = Vector3.zero;
+            m_RightRB.velocity = Vector3.zero;
+            return;
+        }
+
         //左
         m_LeftRB.velocity = m_PliersLeft.right * m_Power;
         Vector3 clampPosition = m_LeftStartPosition;
@@ -651,6 +678,10 @@ public class PliersMove : MonoBehaviour
         {
             //当たり判定をつける
             SetPliersCollider(true);
+
+            //カットできるオブジェクト以外を掴んでいる場合はＵＩの矢印を移動させる
+            if (m_HitCutObject == null)
+                m_GaugeArrowTargetValue = 1.0f;
         }
         else
         {
@@ -732,6 +763,27 @@ public class PliersMove : MonoBehaviour
     {
         tr.localEulerAngles = Vector3.zero;
     }
+    /// <summary>
+    /// 回転量をリセットするコルーチン
+    /// </summary>
+    private IEnumerator RollResetMove()
+    {
+        float timer = 0.0f;
+        float maxtime = m_ArmManager.GetResetEndTime();
+
+        Quaternion start = tr.localRotation;
+        Quaternion target = Quaternion.Euler(Vector3.zero);
+
+        while (timer <= maxtime)
+        {
+            timer += Time.deltaTime;
+
+            tr.localRotation = Quaternion.Slerp(start, target, timer / maxtime);
+            yield return null;
+        }
+
+        yield break;
+    }
 
     /// <summary>
     /// リセットする(掴み状態解除、向きを戻す)
@@ -742,7 +794,8 @@ public class PliersMove : MonoBehaviour
         {
             CatchObjectRelease();
         }
-        RollReset();
+        StartCoroutine(RollResetMove());
+        m_Input = false;
     }
 
 
@@ -778,5 +831,16 @@ public class PliersMove : MonoBehaviour
     public CutRodCollision GetHitCutObject()
     {
         return m_HitCutObject;
+    }
+
+    /// <summary>
+    /// 強制的にオブジェクトを手放す
+    /// </summary>
+    public void ForceCatchRelease()
+    {
+        if (m_CatchObject != null)
+        {
+            CatchObjectRelease();
+        }
     }
 }
