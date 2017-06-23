@@ -89,4 +89,9 @@ public class CutRodCollision : MonoBehaviour
     {
         return m_StartLife;
     }
+
+    public float GetLife()
+    {
+        return m_Life;
+    }
 }
