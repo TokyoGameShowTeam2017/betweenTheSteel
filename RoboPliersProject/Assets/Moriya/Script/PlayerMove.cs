@@ -511,7 +511,8 @@ public class PlayerMove : MonoBehaviour
     {
         JumpMove();
         Vector3 v = m_LastVelocity;
-        v.x = v.z = 0.0f;
+        v.x = 0.0f;
+        v.z = 0.0f;
         cc.Move(v * Time.deltaTime);
     }
 }

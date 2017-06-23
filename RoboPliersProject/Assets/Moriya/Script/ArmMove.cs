@@ -54,7 +54,7 @@ public class ArmMove : MonoBehaviour
     private Vector3 m_ArmVelocityTotal;
 
     //簡単モード　掴み動作中か？
-    private bool m_IsCatching;
+    private bool m_IsCatching = false;
     private bool m_IsCatchingInput = false;
     private bool m_IsPrevCatchingInput = false;
     private const float MAX_LENGTH = 999999.0f;
@@ -71,7 +71,7 @@ public class ArmMove : MonoBehaviour
     private bool m_IsPrevStretchInput = false;
 
 
-    private Transform m_AimAssistRockon;
+    private AimAssistRockon m_AimAssistRockon;
 
     //アームの伸びた量
     private float m_ArmStretchLength;
@@ -85,6 +85,9 @@ public class ArmMove : MonoBehaviour
     private string m_AimAssistName = "";
     //エイムアシストの検索で、何かが引っかかっているか？
     private bool m_IsSearched = false;
+
+    //ローカル回転量
+    private Vector3 m_LocalEuler = Vector3.zero;
 
     /*==外部参照変数==*/
 
@@ -103,7 +106,9 @@ public class ArmMove : MonoBehaviour
             m_StartArmPositions[i] = m_MoveObjects[i].transform.localPosition;
 
         m_AimAssistPosition = Vector3.zero;
-        m_AimAssistRockon = GameObject.Find("AimAssistRockon").transform;
+        m_AimAssistRockon = GameObject.Find("AimAssistRockon").GetComponent<AimAssistRockon>();
+
+        m_LocalEuler = tr.localEulerAngles;
     }
 
     void Update()
@@ -132,6 +137,7 @@ public class ArmMove : MonoBehaviour
             tr.LookAt(l);
             m_LookPositionPrev = l;
         }
+        //Rotation();
             
     }
 
@@ -147,6 +153,7 @@ public class ArmMove : MonoBehaviour
         else
             NormalMode();
 
+        ////元々ここで回転計算
         Rotation();
         StretceLerp();
         m_PrevArmStretchLength = m_ArmStretchLength;
@@ -305,7 +312,7 @@ public class ArmMove : MonoBehaviour
         CatchObject catchobj = m_ArmManager.GetEnablArmCatchingObject();
         if (catchobj != null)
         {
-            m_AimAssistRockon.gameObject.SetActive(false);
+            m_AimAssistRockon.SetSpriteDraw(false);
 
             //アームの伸ばし入力があったら、伸び縮みできない状態解除
             if (m_IsInputStretch)
@@ -496,8 +503,8 @@ public class ArmMove : MonoBehaviour
             m_AimAssistPosition = nearest;
             m_AimAssistLength = assistLength;
 
-            m_AimAssistRockon.gameObject.SetActive(true);
-            m_AimAssistRockon.position = nearest;
+            m_AimAssistRockon.SetSpriteDraw(true);
+            m_AimAssistRockon.SetTargetPosition(nearest);
 
             //通常の方向変化
             m_LookPosition = m_ArmLookingObject.transform.position;
@@ -519,7 +526,7 @@ public class ArmMove : MonoBehaviour
             //掴んでないときは通常の方向変化を行う
             m_LookPosition = m_ArmLookingObject.transform.position;
 
-            m_AimAssistRockon.gameObject.SetActive(false);
+            m_AimAssistRockon.SetSpriteDraw(false);
             return;
         }
 
@@ -577,8 +584,8 @@ public class ArmMove : MonoBehaviour
         ////角度限界を超えた時
         //360→-180～180に変換
         float y = tr.localEulerAngles.y - (90.0f * m_ID);
+        //float y = tr.localEulerAngles.y;
         float rotY = y > 180.0f ? y - 360.0f : y;
-
 
         //角度限界を超えた分の値をプレイヤーに渡す
         float limit = m_ArmManager.GetArmAngleMax();
@@ -588,17 +595,31 @@ public class ArmMove : MonoBehaviour
         else if (rotY < -limit)
             over = rotY + limit;
 
+
+        //print("local:" + tr.localEulerAngles.y);
+        //print("over :" + over);
+        //print("rotY :" + rotY);
+
         m_PlayerManager.SetArmAngleOver(over);
 
         //角度限界で制限
         rotY = Mathf.Clamp(rotY, -limit, limit);
         //360に戻す
         float angleY = rotY < 0 ? rotY + 360.0f : rotY;
+        //float angleY = rotY;
         angleY += 90.0f * m_ID;
+
+        //float angleY = rotY;
+        //angleY -= 90.0f * m_ID;
+        //print("angleY       :"+angleY);
+        //print("angleY+id    :"+ (angleY + 90.0f * m_ID));
+        //print("id    :" + (90.0f * m_ID));
+
 
         //計算した角度を適用
         Vector3 angles = tr.localEulerAngles;
         angles.y = angleY;
+        
         tr.localEulerAngles = angles;
     }
 

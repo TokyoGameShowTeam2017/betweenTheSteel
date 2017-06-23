@@ -39,6 +39,7 @@ public class RouteMove : MonoBehaviour
     private bool m_IsOnce = false;
     private bool m_OnryOnce = false;
     private bool m_IsGoal = false;
+    private bool m_PressStart = false;
 
     private Vector3 m_StartPos;
     private Quaternion m_StartAngle;
@@ -46,9 +47,12 @@ public class RouteMove : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        m_Ratio = 0;
+
         m_IsAngleEnd = true;
         m_IsOnce = false;
         m_OnryOnce = false;
+        m_PressStart = false;
         m_DroneState = DroneState.PatrolState;
     }
 
@@ -73,7 +77,7 @@ public class RouteMove : MonoBehaviour
                     m_BeforeAngle_Y = transform.localEulerAngles.y;
                     ArrivedProcessing();
                 }
-                if (GameObject.Find("Stage00Manager").GetComponent<StageInputManager>().GetPressButton() && !m_OnryOnce)
+                if (GameObject.Find("Canvas title(Clone)").GetComponent<TitleCollection>().GetPressStart() && !m_OnryOnce)
                 {
                     m_StartPos = transform.localPosition;
                     m_StartAngle = transform.rotation;
@@ -115,7 +119,7 @@ public class RouteMove : MonoBehaviour
                 }
 
                 //ボタンが押されたら巡回をやめる
-                if (GameObject.Find("Stage00Manager").GetComponent<StageInputManager>().GetPressButton() && !m_OnryOnce)
+                if (GameObject.Find("Canvas title(Clone)").GetComponent<TitleCollection>().GetPressStart() && !m_OnryOnce)
                 {
                     //その角度を向き終わったかどうか
                     if (Quaternion.Angle(transform.localRotation, Quaternion.Euler(0.0f, m_FirstAngle + m_BeforeAngle_Y, 0.0f)) <= 0.0f ||
@@ -131,19 +135,37 @@ public class RouteMove : MonoBehaviour
 
             //設定した位置,角度に移動(巡回をやめて白い壁のとこに移動)
             case DroneState.GoalMoveState:
-                if (m_Ratio < 1.0f)
+                if (m_Ratio <= 1.0f)
                 {
                     m_Ratio += m_GoalSpeed;
                 }
                 else
                 {
                     m_IsGoal = true;
+                    //シーンが終わったか、次のシーンを指定
+                    GameObject.Find("SceneCollection").GetComponent<SceneCollection>().SetNextScene(1);
+                    GameObject.Find("SceneCollection").GetComponent<SceneCollection>().IsEndScene(true);
+                    m_DroneState = DroneState.None;
                 }
+
                 transform.position = Vector3.Lerp(m_StartPos, m_GoalObject.transform.position, m_Ratio);
                 transform.rotation = Quaternion.Lerp(m_StartAngle, m_GoalObject.transform.rotation, m_Ratio);
                 break;
+
+            default:
+                if (GameObject.Find("SceneCollection").GetComponent<SceneCollection>().GetSceneState() == 0)
+                {
+                    m_Ratio = 0;
+                    m_IsAngleEnd = true;
+                    m_IsOnce = false;
+                    m_OnryOnce = false;
+                    m_PressStart = false;
+                    m_DroneState = DroneState.PatrolState;
+                }
+                break;
         }
     }
+
 
     /// <summary>
     /// 目標に近づいたときの処理

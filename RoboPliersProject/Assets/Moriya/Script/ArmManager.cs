@@ -112,6 +112,7 @@ public class ArmManager : MonoBehaviour
         {
             SwitchEnableArm(InputManager.GetSelectArm().id - 1);
             SoundManager.Instance.PlaySe("xg-2armmove");
+            m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
         }
 
         //選択中のアームとペンチ更新処理
@@ -136,17 +137,17 @@ public class ArmManager : MonoBehaviour
 
             //選択中のアームに合わせて自身を回転
             Quaternion r = m_Base.rotation;
-            if (m_EnableArmID == 3)
-            {
-                m_RotateY -= m_PlayerManager.GetArmAngleOver();
+            //if (m_EnableArmID == 3)
+            //{
+            //    m_RotateY -= m_PlayerManager.GetArmAngleOver();
 
-            }
-            else
+            //}
+            //else
                 m_RotateY += m_PlayerManager.GetArmAngleOver();
 
             Quaternion target = Quaternion.Euler(new Vector3(0.0f, -90.0f * m_EnableArmID + m_RotateY, 0.0f));
-            m_Base.rotation = target;
-            //m_Base.rotation = Quaternion.Slerp(r, target, m_RotationLerpValue);
+            //m_Base.rotation = target;
+            m_Base.rotation = Quaternion.Slerp(r, target, m_RotationLerpValue);
         }
 
 
