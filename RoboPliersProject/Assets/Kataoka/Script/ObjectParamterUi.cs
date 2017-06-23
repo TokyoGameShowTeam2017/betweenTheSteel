@@ -101,15 +101,17 @@ public class ObjectParamterUi : MonoBehaviour
     {
         ObjectParameter parameter = GetComponent<ObjectParameter>();
         //表示パラメーター設定
-        ParameterSet(parameter.m_Strength, parameter.m_Density, parameter.GetObjectMass().ToString());
+        ParameterSet(parameter.m_Strength, 0, parameter.GetObjectMass().ToString());
     }
     //パラメーター設定
     private void ParameterSet(int strength, int density, string mass)
     {
         GameObject ui = mObjectUi.transform.FindChild("RodUi").gameObject;
         ui.transform.FindChild("Strength").GetComponent<RodParameterUi>().ParameterSet(strength.ToString());
-        ui.transform.FindChild("Density").GetComponent<RodParameterUi>().ParameterSet(density.ToString());
+        //ui.transform.FindChild("Density").GetComponent<RodParameterUi>().ParameterSet(density.ToString());
         //ui.transform.FindChild("Omosa").GetComponent<RodParameterUi>().ParameterSet(mass);
+        RectTransform trans = ui.transform.FindChild("MaskGauge").GetComponent<RectTransform>();
+        trans.sizeDelta = Vector2.zero;
     }
 
     public void DrawUiFlag(bool flag)
