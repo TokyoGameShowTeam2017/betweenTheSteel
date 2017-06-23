@@ -74,7 +74,7 @@ public class TutorealText : MonoBehaviour
                 mDrawTextTime = 0.0f;
             }
             //全て終わったら表示終わる機能
-            if (Input.GetKeyDown(KeyCode.V) &&
+            if (InputManager.GetSelectArm().isDown &&
                 mDrawTextCount>=m_Text[mTextCreenCount].Length)
             {
                 mDrawTextCount = 0;
@@ -87,7 +87,7 @@ public class TutorealText : MonoBehaviour
             }
 
             //スキップ機能
-            if (Input.GetKeyDown(KeyCode.V)&&mDrawTextCount>0)
+            if (InputManager.GetSelectArm().isDown&&mDrawTextCount>0)
             {
                 mDrawTextCount = m_Text[mTextCreenCount].Length;
             }

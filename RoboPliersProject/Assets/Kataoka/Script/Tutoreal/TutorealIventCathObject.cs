@@ -7,7 +7,7 @@ public class TutorealIventCathObject : MonoBehaviour
     [SerializeField, Tooltip("掴みたいオブジェクト")]
     public GameObject m_CathObject;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
-    public GameObject m_IventCollision;
+    public GameObject[] m_IventCollisions;
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("目的を達成した時のプレイヤーの状態")]
     public bool m_PlayerClerMove;
@@ -66,8 +66,11 @@ public class TutorealIventCathObject : MonoBehaviour
             mPlayerTutoreal.SetIsArmMove(true);
             mPlayerTutoreal.SetIsPlayerAndCameraMove(true);
             //次のイベントテキスト有効化
-            m_IventCollision.GetComponent<PlayerTextIvent>().IsCollisionFlag();
-
+            if (m_IventCollisions.Length != 0)
+                for (int i = 0; m_IventCollisions.Length > i; i++)
+                {
+                    m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
+                }
             //プレイヤー状態登録
             mPlayerTutoreal.SetIsArmMove(!m_PlayerClerArmMove);
             mPlayerTutoreal.SetIsPlayerMove(!m_PlayerClerMove);

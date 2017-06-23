@@ -11,7 +11,7 @@ public class TutorealIventPlayerMove : MonoBehaviour
     [SerializeField, Tooltip("何秒間でINPUTをOKにするか")]
     private float m_InputTime = 0.5f;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
-    public GameObject m_IventCollision;
+    public GameObject[] m_IventCollisions;
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("目的を達成した時のプレイヤーの状態")]
     public bool m_PlayerClerMove;
@@ -133,8 +133,12 @@ public class TutorealIventPlayerMove : MonoBehaviour
         {
             //次のイベントテキスト有効化
 
-            m_IventCollision.GetComponent<PlayerTextIvent>().IsCollisionFlag();
-
+            //次のイベントテキスト有効化
+            if (m_IventCollisions.Length != 0)
+                for (int i = 0; m_IventCollisions.Length > i; i++)
+                {
+                    m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
+                }
             mPlayerTutoreal.SetIsArmMove(!m_PlayerClerArmMove);
             mPlayerTutoreal.SetIsPlayerMove(!m_PlayerClerMove);
             mPlayerTutoreal.SetIsCamerMove(!m_PlayerClerCameraMove);
