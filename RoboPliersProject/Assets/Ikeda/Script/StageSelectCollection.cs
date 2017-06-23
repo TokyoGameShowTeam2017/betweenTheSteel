@@ -187,7 +187,7 @@ public class StageSelectCollection : MonoBehaviour
         if (m_StageNum == 20) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().StartOtherScene(m_StageNum);
+            //GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().StartOtherScene(m_StageNum);
         }
     }
 }

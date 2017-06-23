@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorealIventPlayerMove : MonoBehaviour {
+public class TutorealIventPlayerMove : MonoBehaviour
+{
     private PlayerTutorialControl mPlayerTutoreal;
     private TutorealText mText;
 
-    private bool mInputLeft;
-    private bool mInputRight;
-    private bool mInputFront;
-    private bool mInputBack;
-
+    private Dictionary<InputDir, bool> mInputFlags;
+    [SerializeField, Tooltip("何秒間でINPUTをOKにするか")]
+    private float m_InputTime = 0.5f;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject m_IventCollision;
 
@@ -35,16 +34,35 @@ public class TutorealIventPlayerMove : MonoBehaviour {
     public bool m_PlayerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
+
+
+    enum InputDir
+    {
+        INPUT_LEFT,
+        INPUT_RIGHT,
+        INPUT_FRONT,
+        INPUT_BACK,
+        INPUT_NO
+    }
+    private InputDir mInputDir;
+    private InputDir mNowInputDir;
+    private float mInputTime;
     // Use this for initialization
     void Start()
     {
         mText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
 
-        mInputBack = false;
-        mInputFront = false;
-        mInputLeft = false;
-        mInputRight = false;
+        mInputTime = 0.0f;
+        mInputDir = InputDir.INPUT_NO;
+        mNowInputDir = InputDir.INPUT_NO;
+
+        mInputFlags = new Dictionary<InputDir, bool>();
+        //フラグ初期化
+        mInputFlags[InputDir.INPUT_LEFT] = false;
+        mInputFlags[InputDir.INPUT_RIGHT] = false;
+        mInputFlags[InputDir.INPUT_BACK] = false;
+        mInputFlags[InputDir.INPUT_FRONT] = false;
     }
 
     // Update is called once per frame
@@ -58,15 +76,63 @@ public class TutorealIventPlayerMove : MonoBehaviour {
         mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
 
-        if (InputManager.GetMove().x > 0.0f) mInputLeft = true;
-        if (InputManager.GetMove().x < 0.0f) mInputRight = true;
-        if (InputManager.GetMove().y > 0.0f) mInputFront = true;
-        if (InputManager.GetMove().y < 0.0f) mInputBack = true;
+
+        Vector2 inputVec = InputManager.GetMove();
+        Vector2 absVec = new Vector2(Mathf.Abs(inputVec.x), Mathf.Abs(inputVec.y));
+        mInputDir = InputDir.INPUT_NO;
+        if (inputVec.x < 0.0f && inputVec.y < 0.0f)
+        {
+            if (absVec.x > absVec.y) mInputDir = InputDir.INPUT_LEFT;
+            else mInputDir = InputDir.INPUT_BACK;
+        }
+        if (inputVec.x > 0.0f && inputVec.y < 0.0f)
+        {
+            if (absVec.x > absVec.y) mInputDir = InputDir.INPUT_RIGHT;
+            else mInputDir = InputDir.INPUT_BACK;
+        }
+        if (inputVec.x < 0.0f && inputVec.y > 0.0f)
+        {
+            if (absVec.x > absVec.y) mInputDir = InputDir.INPUT_LEFT;
+            else mInputDir = InputDir.INPUT_FRONT;
+
+        }
+        if (inputVec.x > 0.0f && inputVec.y > 0.0f)
+        {
+            if (absVec.x > absVec.y) mInputDir = InputDir.INPUT_RIGHT;
+            else mInputDir = InputDir.INPUT_FRONT;
+        }
+
+        if (inputVec.x >= 1.0f) mInputDir = InputDir.INPUT_RIGHT;
+        if (inputVec.x <= -1.0f) mInputDir = InputDir.INPUT_LEFT;
+        if (inputVec.y >= 1.0f) mInputDir = InputDir.INPUT_FRONT;
+        if (inputVec.y <= -1.0f) mInputDir = InputDir.INPUT_BACK;
 
 
-        if (mInputLeft && mInputRight && mInputFront && mInputBack)
+        if (mInputDir != InputDir.INPUT_NO)
+        {
+            if (mInputDir == mNowInputDir)
+            {
+                mInputTime += Time.deltaTime;
+            }
+            else
+                mInputTime = 0.0f;
+        }
+        mNowInputDir = mInputDir;
+
+        if (mInputTime >= m_InputTime)
+        {
+            mInputFlags[mInputDir] = true;
+            mInputTime = 0.0f;
+        }
+
+
+        if (mInputFlags[InputDir.INPUT_BACK] &&
+            mInputFlags[InputDir.INPUT_FRONT] &&
+            mInputFlags[InputDir.INPUT_LEFT] &&
+            mInputFlags[InputDir.INPUT_RIGHT])
         {
             //次のイベントテキスト有効化
+
             m_IventCollision.GetComponent<PlayerTextIvent>().IsCollisionFlag();
 
             mPlayerTutoreal.SetIsArmMove(!m_PlayerClerArmMove);
@@ -76,6 +142,6 @@ public class TutorealIventPlayerMove : MonoBehaviour {
             mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
             Destroy(gameObject);
         }
-        
+
     }
 }
