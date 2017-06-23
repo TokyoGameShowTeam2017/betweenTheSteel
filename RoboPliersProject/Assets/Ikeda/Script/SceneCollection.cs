@@ -25,7 +25,6 @@ public class SceneCollection : MonoBehaviour
     [SerializeField]
     private GameObject m_StageSelect;
 
-    [SerializeField]
     private bool m_IsSceneEnd;
 
     //現在のシーン
