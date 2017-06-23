@@ -66,6 +66,12 @@ public class CameraMove : MonoBehaviour
     //選択中のアームに向けるための数値
     private float m_SelectArmAngle = 0.0f;
 
+    /// <summary>
+    /// 動かせるか？
+    /// trueで動かせるようになり、右スティックで操作。
+    /// falseで動かなくなり、外部から移動、回転が可能になる。
+    /// </summary>
+    public bool IsMove { get; set; }
 
     /*==外部参照変数==*/
 
@@ -89,11 +95,13 @@ public class CameraMove : MonoBehaviour
         //プレイヤーとカメラの距離計算
         m_PlayerLength = Vector3.Magnitude(m_CameraPositionTransform.position - tr.position);
         m_ArmLook = tr.FindChild("ArmLookPosition").transform;
+
+        IsMove = true;
     }
 
     void Update()
     {
-        if (!m_PlayerManager.IsMove) return;
+        if (!IsMove) return;
 
         switch (m_PlayerManager.GetMoveState())
         {
@@ -152,29 +160,29 @@ public class CameraMove : MonoBehaviour
 
     }
 
-    void LateUpdate()
-    {
-        switch (m_PlayerManager.GetMoveState())
-        {
-            case MoveState.NORMAL:
+    //void LateUpdate()
+    //{
+    //    switch (m_PlayerManager.GetMoveState())
+    //    {
+    //        case MoveState.NORMAL:
 
-                break;
+    //            break;
 
-            case MoveState.CATCH:
+    //        case MoveState.CATCH:
 
 
-                break;
+    //            break;
 
-            case MoveState.NOT:
+    //        case MoveState.NOT:
 
-                break;
-        }
-    }
+    //            break;
+    //    }
+    //}
 
-    void FixedUpdate()
-    {
+    //void FixedUpdate()
+    //{
 
-    }
+    //}
 
     //線分が地面に当たっているかを調べる　当たっている場合はその地点を、当たっていない場合は終点を返す
     private Vector3 GroundHitCheck(Vector3 start, Vector3 end, float startLength, float lineLength)
@@ -184,7 +192,7 @@ public class CameraMove : MonoBehaviour
         int mask = LayerMask.NameToLayer("ArmAndPliers");
         RaycastHit hit;
         bool ishit = Physics.Raycast(ray, out hit, lineLength, mask);
-        Debug.DrawRay(start + (dir * startLength), dir * lineLength, Color.blue, 1);
+        //Debug.DrawRay(start + (dir * startLength), dir * lineLength, Color.blue, 1);
 
         Vector3 result;
         if (ishit)
@@ -308,5 +316,10 @@ public class CameraMove : MonoBehaviour
     public float GetPositionLerpValue()
     {
         return m_PositionLerpValue;
+    }
+
+    public Transform GetPlayerCamera()
+    {
+        return m_CameraTr;
     }
 }

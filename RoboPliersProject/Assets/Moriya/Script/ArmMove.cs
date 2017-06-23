@@ -54,7 +54,7 @@ public class ArmMove : MonoBehaviour
     private Vector3 m_ArmVelocityTotal;
 
     //簡単モード　掴み動作中か？
-    private bool m_IsCatching;
+    private bool m_IsCatching = false;
     private bool m_IsCatchingInput = false;
     private bool m_IsPrevCatchingInput = false;
     private const float MAX_LENGTH = 999999.0f;
@@ -71,7 +71,7 @@ public class ArmMove : MonoBehaviour
     private bool m_IsPrevStretchInput = false;
 
 
-    private Transform m_AimAssistRockon;
+    private AimAssistRockon m_AimAssistRockon;
 
     //アームの伸びた量
     private float m_ArmStretchLength;
@@ -80,6 +80,15 @@ public class ArmMove : MonoBehaviour
     //アームを向ける座標
     private Vector3 m_LookPosition;
     private Vector3 m_LookPositionPrev;
+
+    //アシスト座標のオブジェクト名
+    private string m_AimAssistName = "";
+    //エイムアシストの検索で、何かが引っかかっているか？
+    private bool m_IsSearched = false;
+
+    //ローカル回転量
+    private Vector3 m_LocalEuler = Vector3.zero;
+
     /*==外部参照変数==*/
 
 
@@ -97,7 +106,9 @@ public class ArmMove : MonoBehaviour
             m_StartArmPositions[i] = m_MoveObjects[i].transform.localPosition;
 
         m_AimAssistPosition = Vector3.zero;
-        m_AimAssistRockon = GameObject.Find("AimAssistRockon").transform;
+        m_AimAssistRockon = GameObject.Find("AimAssistRockon").GetComponent<AimAssistRockon>();
+
+        m_LocalEuler = tr.localEulerAngles;
     }
 
     void Update()
@@ -118,12 +129,15 @@ public class ArmMove : MonoBehaviour
 
     void LateUpdate()
     {
+        if (!m_ArmManager.IsMove) return;
+
         if(m_ArmManager.GetEnablArmID() == m_ID)
         {
             Vector3 l = Vector3.Lerp(m_LookPositionPrev, m_LookPosition, 0.3f);
             tr.LookAt(l);
             m_LookPositionPrev = l;
         }
+        //Rotation();
             
     }
 
@@ -139,6 +153,7 @@ public class ArmMove : MonoBehaviour
         else
             NormalMode();
 
+        ////元々ここで回転計算
         Rotation();
         StretceLerp();
         m_PrevArmStretchLength = m_ArmStretchLength;
@@ -182,14 +197,17 @@ public class ArmMove : MonoBehaviour
         }
         m_IsPrevCatchingInput = input;
 
-        input = InputManager.GetArmStretchEasyMode();
-        if (input && !m_IsPrevStretchInput)//トリガー判定
+        if (m_ArmManager.IsStretch)
         {
-            m_IsInputStretch = input;
-            m_IsNonTargetStretch = !m_IsNonTargetStretch;
-            SoundManager.Instance.PlaySe("xg-2armmove");
+            input = InputManager.GetArmStretchEasyMode();
+            if (input && !m_IsPrevStretchInput)//トリガー判定
+            {
+                m_IsInputStretch = input;
+                m_IsNonTargetStretch = !m_IsNonTargetStretch;
+                SoundManager.Instance.PlaySe("xg-2armmove");
+            }
+            m_IsPrevStretchInput = input;
         }
-        m_IsPrevStretchInput = input;
     }
 
     //伸ばし入力値の補完を行う
@@ -287,22 +305,30 @@ public class ArmMove : MonoBehaviour
     //簡単モード時のアーム計算処理
     private void EasyMode()
     {
+
         EasyInput();
 
         //選択中のペンチがオブジェクトを掴んでいるとき
         CatchObject catchobj = m_ArmManager.GetEnablArmCatchingObject();
         if (catchobj != null)
         {
-            m_AimAssistRockon.gameObject.SetActive(false);
+            m_AimAssistRockon.SetSpriteDraw(false);
 
-            //アームの伸ばし入力があったら伸び縮みできない状態解除
+            //アームの伸ばし入力があったら、伸び縮みできない状態解除
             if (m_IsInputStretch)
+            {
                 m_IsStretchKeep = false;
+            }
             if (!m_IsStretchKeep)
             {
-                //入力量に応じて伸びる量を変化
-                m_ArmLengthTargetValue = InputManager.GetArmStretch();
+                //伸びる量を変化
+                if (m_IsNonTargetStretch)
+                    m_ArmLengthTargetValue = 1.0f;
+                else
+                    m_ArmLengthTargetValue = 0.0f;
             }
+
+
 
             //動かないオブジェクトを掴んでいるとき
             if (catchobj.catchType == CatchObject.CatchType.Static)
@@ -316,7 +342,7 @@ public class ArmMove : MonoBehaviour
                     Stretch();
 
                 //入力があったら掴み、伸び解除
-                if (!m_IsCatching)
+                if (!m_IsCatching && m_ArmManager.IsRelease)
                 {
                     m_IsStretched = false;
                     m_IsStretchKeep = true;
@@ -352,7 +378,7 @@ public class ArmMove : MonoBehaviour
                 m_LookPosition =m_ArmLookingObject.transform.position;
 
                 //入力があったら掴み、伸び解除
-                if (!m_IsCatching)
+                if (!m_IsCatching && m_ArmManager.IsRelease)
                 {
                     m_IsStretched = false;
                     m_IsStretchKeep = true;
@@ -392,11 +418,49 @@ public class ArmMove : MonoBehaviour
 
 
 
-        //===================================新しい=========================================
+        ////===================================新しい=========================================
+        ////AimAssistPointを取得
+        //GameObject[] all = GameObject.FindGameObjectsWithTag("AimAssistPoint");
+        ////ペンチからある程度近く、かつアーム根元より正面のものだけに絞る
+        //List<Vector3> points = new List<Vector3>();
+        //Vector3 plierspos = m_ArmManager.GetEnablPliers().transform.position;
+        //Vector3 f = Vector3.Normalize(m_ArmLookingObject.transform.position - tr.position);
+        //foreach (GameObject obj in all)
+        //{
+        //    float l = Vector3.Magnitude(obj.transform.position - tr.position);
+        //    if (l < m_PlayerManager.GetAimAssistSearchLength())
+        //    {
+        //        float d = Vector3.Dot(f, Vector3.Normalize(obj.transform.position - tr.position));
+        //        float rad = Mathf.Cos(m_PlayerManager.GetAimAssistCameraAngle() * Mathf.Deg2Rad);
+        //        if (d > rad)
+        //            points.Add(obj.transform.position);
+        //    }
+        //}
+
+        ////Vector3 f = Vector3.Normalize(m_ArmLookingObject.transform.position - tr.position);
+        ////アームの根元から注視点へ向かう線分から、最も近い座標を探す
+        //float length = MAX_LENGTH;
+        //Vector3 nearest = Vector3.zero;
+        //float assistLength = 0.0f;
+        //foreach (Vector3 p in points)
+        //{
+        //    float l = LineAndPointLength(tr.position, m_ArmLookingObject.transform.position, p);
+        //    if (l < length)
+        //    {
+        //        length = l;
+        //        nearest = p;
+        //        assistLength = Vector3.Magnitude(p - tr.position);
+        //    }
+        //}
+        ////===================================新しい=========================================
+
+
+
+        //===================================チュートリアル対応版=========================================
         //AimAssistPointを取得
         GameObject[] all = GameObject.FindGameObjectsWithTag("AimAssistPoint");
         //ペンチからある程度近く、かつアーム根元より正面のものだけに絞る
-        List<Vector3> points = new List<Vector3>();
+        List<GameObject> points = new List<GameObject>();
         Vector3 plierspos = m_ArmManager.GetEnablPliers().transform.position;
         Vector3 f = Vector3.Normalize(m_ArmLookingObject.transform.position - tr.position);
         foreach (GameObject obj in all)
@@ -407,7 +471,7 @@ public class ArmMove : MonoBehaviour
                 float d = Vector3.Dot(f, Vector3.Normalize(obj.transform.position - tr.position));
                 float rad = Mathf.Cos(m_PlayerManager.GetAimAssistCameraAngle() * Mathf.Deg2Rad);
                 if (d > rad)
-                    points.Add(obj.transform.position);
+                    points.Add(obj);
             }
         }
 
@@ -416,28 +480,31 @@ public class ArmMove : MonoBehaviour
         float length = MAX_LENGTH;
         Vector3 nearest = Vector3.zero;
         float assistLength = 0.0f;
-        foreach (Vector3 p in points)
+        foreach (GameObject p in points)
         {
-            float l = LineAndPointLength(tr.position, m_ArmLookingObject.transform.position, p);
+            float l = LineAndPointLength(tr.position, m_ArmLookingObject.transform.position, p.transform.position);
             if (l < length)
             {
                 length = l;
-                nearest = p;
-                assistLength = Vector3.Magnitude(p - tr.position);
+                nearest = p.transform.position;
+                assistLength = Vector3.Magnitude(p.transform.position - tr.position);
+                m_AimAssistName = p.name;
             }
         }
-        //===================================新しい=========================================
+        //==================================================================================
 
-
+        //アシスト座標が無い場合はfalse
+        m_IsSearched = false; 
         //最も近い地点が求まったら
         if (length < MAX_LENGTH)
         {
+            m_IsSearched = true;
             m_IsAimAssisting = true;
             m_AimAssistPosition = nearest;
             m_AimAssistLength = assistLength;
 
-            m_AimAssistRockon.gameObject.SetActive(true);
-            m_AimAssistRockon.position = nearest;
+            m_AimAssistRockon.SetSpriteDraw(true);
+            m_AimAssistRockon.SetTargetPosition(nearest);
 
             //通常の方向変化
             m_LookPosition = m_ArmLookingObject.transform.position;
@@ -459,13 +526,13 @@ public class ArmMove : MonoBehaviour
             //掴んでないときは通常の方向変化を行う
             m_LookPosition = m_ArmLookingObject.transform.position;
 
-            m_AimAssistRockon.gameObject.SetActive(false);
+            m_AimAssistRockon.SetSpriteDraw(false);
             return;
         }
 
 
         //掴み動作を行う
-        if (m_IsCatching)
+        if (m_IsCatching && m_ArmManager.IsCatchAble)
         {
             //アームを目標地点に向ける
             m_LookPosition =m_AimAssistPosition;
@@ -489,11 +556,15 @@ public class ArmMove : MonoBehaviour
         //それ以外
         else
         {
-            if (m_IsNonTargetStretch)
-                m_ArmLengthTargetValue = 1.0f;
-            else
-                m_ArmLengthTargetValue = 0.0f;
-            Stretch();
+            if(m_ArmManager.IsStretch)
+            {
+                if (m_IsNonTargetStretch)
+                    m_ArmLengthTargetValue = 1.0f;
+                else
+                    m_ArmLengthTargetValue = 0.0f;
+                Stretch();
+            }
+
         }
 
 
@@ -513,8 +584,8 @@ public class ArmMove : MonoBehaviour
         ////角度限界を超えた時
         //360→-180～180に変換
         float y = tr.localEulerAngles.y - (90.0f * m_ID);
+        //float y = tr.localEulerAngles.y;
         float rotY = y > 180.0f ? y - 360.0f : y;
-
 
         //角度限界を超えた分の値をプレイヤーに渡す
         float limit = m_ArmManager.GetArmAngleMax();
@@ -524,17 +595,31 @@ public class ArmMove : MonoBehaviour
         else if (rotY < -limit)
             over = rotY + limit;
 
+
+        //print("local:" + tr.localEulerAngles.y);
+        //print("over :" + over);
+        //print("rotY :" + rotY);
+
         m_PlayerManager.SetArmAngleOver(over);
 
         //角度限界で制限
         rotY = Mathf.Clamp(rotY, -limit, limit);
         //360に戻す
         float angleY = rotY < 0 ? rotY + 360.0f : rotY;
+        //float angleY = rotY;
         angleY += 90.0f * m_ID;
+
+        //float angleY = rotY;
+        //angleY -= 90.0f * m_ID;
+        //print("angleY       :"+angleY);
+        //print("angleY+id    :"+ (angleY + 90.0f * m_ID));
+        //print("id    :" + (90.0f * m_ID));
+
 
         //計算した角度を適用
         Vector3 angles = tr.localEulerAngles;
         angles.y = angleY;
+        
         tr.localEulerAngles = angles;
     }
 
@@ -620,6 +705,16 @@ public class ArmMove : MonoBehaviour
         return m_ArmVelocityTotal;
     }
 
+
+    /// <summary>
+    /// 掴むために腕を伸ばし中か？
+    /// </summary>
+    /// <returns></returns>
+    public bool GetIsCatching()
+    {
+        return m_IsCatching;
+    }
+
     public bool GetIsStreched()
     {
         return m_IsStretched;
@@ -660,5 +755,16 @@ public class ArmMove : MonoBehaviour
         m_IsInputStretch = false;
         m_IsStretchKeep = true;
         m_IsStretched = false;
+    }
+
+    public string GetAimAssistName()
+    {
+        return m_AimAssistName;
+    }
+
+
+    public bool GetIsSearched()
+    {
+        return m_IsSearched;
     }
 }
