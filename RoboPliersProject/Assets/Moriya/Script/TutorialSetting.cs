@@ -61,10 +61,18 @@ public class TutorialSetting : MonoBehaviour
             pos = j.FindChild("PlierLeft").localPosition;
             pos.x = 0;
             j.FindChild("PlierLeft").localPosition = pos;
+
+
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            if(GetIsActiveArm(i))
+                StartArmActivateCor(i);
         }
 
+         
         //最初のアームだけ展開 
-        StartFirstArmActivateCor();
+        //StartFirstArmActivateCor();
     }
 
     public bool GetIsTutorial()
@@ -86,6 +94,9 @@ public class TutorialSetting : MonoBehaviour
     /// </summary>
     public void SetIsActiveArm(int armID, bool value)
     {
+        if (!m_IsActiveArms[armID] && value)
+            StartArmActivateCor(armID);
+
         m_IsActiveArms[armID] = value;
     }
 
@@ -100,12 +111,11 @@ public class TutorialSetting : MonoBehaviour
 
 
     /// <summary>
-    /// アームの使用制限を解除し、アームとペンチを展開するコルーチンを開始
+    /// アームとペンチを展開するコルーチンを開始
     /// </summary>
     public void StartArmActivateCor(int armID)
     {
-        if (!m_IsActiveArms[armID])
-            StartCoroutine(ArmActivate(armID));
+        StartCoroutine(ArmActivate(armID));
     }
 
     //アームとペンチを展開する

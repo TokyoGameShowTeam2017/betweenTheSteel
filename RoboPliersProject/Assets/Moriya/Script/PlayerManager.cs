@@ -11,7 +11,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour 
 {
     /*==所持コンポーネント==*/
-    private PlayerMove m_PlayerMove;
+
 
     /*==外部設定変数==*/
     [SerializeField, Tooltip("移動状態")]
@@ -29,6 +29,7 @@ public class PlayerManager : MonoBehaviour
     private float m_AimAssistCameraAngle = 30.0f;
 
     /*==内部設定変数==*/
+    private PlayerMove m_PlayerMove;
     //   [SerializeField, Tooltip("アームマネージャー")]
     private ArmManager m_ArmManager;
     //プレイヤー軸移動用のオブジェクトはここに入れる
@@ -45,15 +46,19 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     public bool IsMove { get; set; }
 
+    /// <summary>
+    /// ハードモードに移行できるか？
+    /// </summary>
+    public bool IsHardModeAble { get; set; }
+
     void Awake()
     {
         m_PlayerMove = this.gameObject.GetComponent<PlayerMove>();
-
         IsMove = true;
+        IsHardModeAble = false;
 
         //シーン遷移の時にPlayerを消さない処理
         DontDestroyOnLoad(this);
-
     }
 
     void Start()
@@ -63,10 +68,14 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
-        if (!IsMove) return;
-
+        if (!IsMove)
+        {
+            //ジャンプ動作だけは行う
+            m_PlayerMove.TutorialMove();
+            return;
+        }
         //操作変更
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && IsHardModeAble)
         {
             m_IsEasyMode = !m_IsEasyMode;
             if (m_IsEasyMode)
@@ -253,21 +262,13 @@ public class PlayerManager : MonoBehaviour
     }
 
     /// <summary>
-    /// プレイヤーの動ける／動けない状態を変更する
-    /// </summary>
-    /// <param name="value"></param>
-    public void SetIsMove(bool value)
-    {
-        IsMove = value;
-    }
-
-    /// <summary>
-    /// プレイヤーの移動可能状態と、ペンチＵＩの表示状態を一斉に変更する
+    /// プレイヤー、カメラの移動可能状態と、ペンチＵＩの表示状態を一斉に変更する
     /// ステージ開始時のプレイヤー動ける／動けない状態の切り替え等に使用
     /// </summary>
     public void SetIsMoveAndUI(bool value)
     {
-        SetIsMove(value);
+        IsMove = value;
+        GameObject.Find("CameraMove").GetComponent<CameraMove>().IsMove = value;
         m_ArmManager.SetUIVisible(value);
     }
 }

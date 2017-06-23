@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjectParameter : MonoBehaviour {
     [SerializeField, Tooltip("密度")]
-    public int m_Density;
+    private int m_Density;
     [SerializeField, Tooltip("強度")]
     public int m_Strength;
     [SerializeField, Tooltip("太さ")]
