@@ -28,43 +28,6 @@ public class StageSelect : MonoBehaviour {
         ////ステージ選択中
         StageSelectInput();
 
-        switch (m_StageNum)
-        {
-
-            case 1:
-                m_StageSelect = GameObject.Find("Stages").GetComponent<RectTransform>();
-                m_StageSelect.localPosition = new Vector3(180, 0, 0);
-                GameObject.Find("stage01").transform.localScale = new Vector3(0.5f, 0.5f, 0f);
-                GameObject.Find("stage01").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-
-                GameObject.Find("stage02").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
-                GameObject.Find("stage02").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-                GameObject.Find("stage03").transform.localScale = new Vector3(0f, 0f, 0f);
-                break;
-
-            case 2:
-                m_StageSelect = GameObject.Find("Stages").GetComponent<RectTransform>();
-                m_StageSelect.localPosition = new Vector3(0, 0, 0);
-                GameObject.Find("stage02").transform.localScale = new Vector3(0.5f, 0.5f, 0f);
-                GameObject.Find("stage02").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-
-                GameObject.Find("stage01").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
-                GameObject.Find("stage01").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-                GameObject.Find("stage03").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
-                GameObject.Find("stage03").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-                break;
-
-            case 3:
-                m_StageSelect = GameObject.Find("Stages").GetComponent<RectTransform>();
-                m_StageSelect.localPosition = new Vector3(-190, 0, 0);
-                GameObject.Find("stage03").transform.localScale = new Vector3(0.5f, 0.5f, 0f);
-                GameObject.Find("stage03").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-
-                GameObject.Find("stage02").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
-                GameObject.Find("stage02").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-                GameObject.Find("stage01").transform.localScale = new Vector3(0f, 0f, 0f);
-                break;
-        }
 
     }
 

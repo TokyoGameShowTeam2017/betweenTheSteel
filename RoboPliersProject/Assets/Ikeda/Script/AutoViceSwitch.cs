@@ -9,6 +9,7 @@ public class AutoViceSwitch : MonoBehaviour
 
     [SerializeField, Tooltip("何秒間止めるか")]
     private float m_StopTime;
+
     // Use this for initialization
     void Start()
     {
