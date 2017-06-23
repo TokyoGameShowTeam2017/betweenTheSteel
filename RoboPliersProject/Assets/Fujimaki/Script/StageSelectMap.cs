@@ -131,7 +131,7 @@ public class StageSelectMap : MonoBehaviour
     //テスト用
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        /*if (Input.GetKeyDown(KeyCode.T))
         {
             selectNum++;
             if (selectNum > 3)
@@ -151,7 +151,7 @@ public class StageSelectMap : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.G))
         {
             StartFirstScene();
-        }
+        }*/
 
     }
 
@@ -173,8 +173,13 @@ public class StageSelectMap : MonoBehaviour
         yield return null;
     }
 
+    public void StartOtherScene(int num)
+    {
+        StartCoroutine(StartOtherSceneAnim(num));
+    }
+
     //ステージ１以外のステージを開始
-    private IEnumerator StartOtherScene(int num)
+    private IEnumerator StartOtherSceneAnim(int num)
     {
 
         if (stated)
