@@ -25,6 +25,14 @@ public class PlayerTextIvent : MonoBehaviour
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
 
+    [SerializeField, Tooltip("プレイヤーアーム1"), HeaderAttribute("プレイヤーが当たった時どのアームを展開するか")]
+    public bool m_PlayerArmEnable1;
+    [SerializeField, Tooltip("プレイヤーアーム2")]
+    public bool m_PlayerArmEnable2;
+    [SerializeField, Tooltip("プレイヤーアーム3")]
+    public bool m_PlayerArmEnable3;
+    [SerializeField, Tooltip("プレイヤーアーム3")]
+    public bool m_PlayerArmEnable4;
     private GameObject mPointObject;
     //プレイヤーテキスト
     private TutorealText mTutorealText;
@@ -56,7 +64,10 @@ public class PlayerTextIvent : MonoBehaviour
             if (m_Voice != null)
                 SoundManager.Instance.PlaySe(m_Voice.name);
 
-
+            if (m_PlayerArmEnable1) mPlayerTurorial.SetIsActiveArm(0, true);
+            if (m_PlayerArmEnable2) mPlayerTurorial.SetIsActiveArm(1, true);
+            if (m_PlayerArmEnable3) mPlayerTurorial.SetIsActiveArm(2, true);
+            if (m_PlayerArmEnable4) mPlayerTurorial.SetIsActiveArm(3, true);
             mPlayerTurorial.SetIsArmMove(!m_PlayerArmMove);
             mPlayerTurorial.SetIsPlayerMove(!m_PlayerMove);
             mPlayerTurorial.SetIsCamerMove(!m_PlayerCameraMove);

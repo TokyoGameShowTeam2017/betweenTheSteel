@@ -36,8 +36,12 @@ public class TutorealIventSetObject : MonoBehaviour {
     public bool m_PlayerArmMove;
     [SerializeField, Tooltip("プレイヤーアーム掴めるか")]
     public bool m_PlayerArmCath;
-    //[SerializeField, Tooltip("プレイヤーアーム離せるか")]
-    //public bool m_PlayerArmNoCath;
+    [SerializeField, Tooltip("プレイヤーアーム離せるか"), HeaderAttribute("いつでも離せるのならFalse")]
+    public bool m_PlayerArmNoCath;
+    //子のトランスフォーム
+    List<Transform> mTransorms;
+
+
 
     private bool mIsCollision;
     // Use this for initialization
@@ -47,6 +51,18 @@ public class TutorealIventSetObject : MonoBehaviour {
         mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mArmManager = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
         mIsCollision = false;
+
+        Transform[] transs;
+        transs = transform.GetComponentsInChildren<Transform>();
+        mTransorms = new List<Transform>();
+
+        foreach (var i in transs)
+        {
+            if (i.name != name)
+            {
+                mTransorms.Add(i);
+            }
+        }
     }
 
     void Update()
@@ -56,25 +72,32 @@ public class TutorealIventSetObject : MonoBehaviour {
         {
             return;
         }
-
+        mPlayerTutorial.SetIsArmRelease(false);
         mPlayerTutorial.SetIsArmMove(!m_PlayerArmMove);
         mPlayerTutorial.SetIsPlayerMove(!m_PlayerMove);
         mPlayerTutorial.SetIsCamerMove(!m_PlayerCameraMove);
         mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
-        //絶対離せないため
-        if(!mIsCollision)
-        mPlayerTutorial.SetIsArmRelease(false);
-        mIsCollision = false;
-    }
-
-    public void OnTriggerStay(Collider other)
-    {
-        if (!GetComponent<TutorealIventFlag>().GetIventFlag()||
-            mTutorealText.GetDrawTextFlag()||other.tag=="Player") return;
-
+        if(!m_PlayerArmNoCath)
         mPlayerTutorial.SetIsArmRelease(true);
-        mIsCollision = true;
-        if (mArmManager.GetEnablArmCatchingObject() == null)
+
+        int flagCount = 0;
+        int childCount = transform.childCount;
+        foreach (var i in mTransorms)
+        {
+            i.gameObject.SetActive(true);
+            if (i.GetComponent<TutorealIventCollision>().GetIsCollision())
+            {
+                flagCount++;
+            }
+        }
+
+        if (flagCount >= childCount)
+        {
+            mPlayerTutorial.SetIsArmRelease(true);
+        }
+
+        //クリアー処理
+        if (flagCount >= childCount&&mArmManager.GetEnablArmCatchingObject()==null)
         {
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
