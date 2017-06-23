@@ -192,7 +192,7 @@ public class CameraMove : MonoBehaviour
         int mask = LayerMask.NameToLayer("ArmAndPliers");
         RaycastHit hit;
         bool ishit = Physics.Raycast(ray, out hit, lineLength, mask);
-        Debug.DrawRay(start + (dir * startLength), dir * lineLength, Color.blue, 1);
+        //Debug.DrawRay(start + (dir * startLength), dir * lineLength, Color.blue, 1);
 
         Vector3 result;
         if (ishit)

@@ -6,13 +6,15 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
 
     private PlayerTutorialControl mPlayerTutoreal;
     private TutorealText mText;
-
-
+    //プレイヤーカメラ
+    private GameObject mPlayerCamera;
+    //オブジェクト消した数
+    private int mDeadObject;
+    //子の数
+    private int mChildCount;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject m_IventCollision;
-    [SerializeField, Tooltip("見たいオブジェクト")]
-    public GameObject[] m_LookAtObjects;
-    
+
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("目的を達成した時のプレイヤーの状態")]
     public bool m_PlayerClerMove;
     [SerializeField, Tooltip("プレイヤーカメラ移動させるか")]
@@ -38,7 +40,10 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
 	void Start () {
         mText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
-	}
+        mPlayerCamera = GameObject.FindGameObjectWithTag("RawCamera");
+        mDeadObject = 0;
+        mChildCount = transform.childCount;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -52,20 +57,35 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
         mPlayerTutoreal.SetIsCamerMove(!m_PlayerCameraMove);
         mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
-        //全部みたらOK
-        for (int i = 0; i <= m_LookAtObjects.Length - 1; i++)
+
+        Ray ray = new Ray(mPlayerCamera.transform.position, mPlayerCamera.transform.forward*50.0f);
+        RaycastHit hit;
+        int layer = ~(1 << 15);
+        if (Physics.SphereCast(ray,6.5f,out hit,200.0f,layer))
         {
-            if (!m_LookAtObjects[i].GetComponent<TutorealIventLookAtFlag>().GetFlag()) return;
+            if (hit.collider.name == "LookAtObject")
+            {
+                mDeadObject++;
+                Destroy(hit.collider.gameObject);
+            }
+        }
+        //子を全部消したら
+        if (mChildCount <= mDeadObject)
+        {
+            //次のイベントテキスト有効化
+            m_IventCollision.GetComponent<PlayerTextIvent>().IsCollisionFlag();
+
+            mPlayerTutoreal.SetIsArmMove(!m_PlayerClerArmMove);
+            mPlayerTutoreal.SetIsPlayerMove(!m_PlayerClerMove);
+            mPlayerTutoreal.SetIsCamerMove(!m_PlayerClerCameraMove);
+            mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerClerArmCath);
+            mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
+            Destroy(gameObject);
         }
 
-        //次のイベントテキスト有効化
-        m_IventCollision.GetComponent<PlayerTextIvent>().IsCollisionFlag();
 
-        mPlayerTutoreal.SetIsArmMove(!m_PlayerClerArmMove);
-        mPlayerTutoreal.SetIsPlayerMove(!m_PlayerClerMove);
-        mPlayerTutoreal.SetIsCamerMove(!m_PlayerClerCameraMove);
-        mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerClerArmCath);
-        mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
-        Destroy(gameObject);
 	}
+
+
+
 }

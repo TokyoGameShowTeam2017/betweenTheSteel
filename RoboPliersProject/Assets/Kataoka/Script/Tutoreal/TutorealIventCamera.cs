@@ -44,6 +44,9 @@ public class TutorealIventCamera : MonoBehaviour
     public bool m_BeforeDrawPoint;
     [SerializeField, Tooltip("ブロックをを先にDrawさせるか")]
     public bool m_BeforeDrawBlock;
+    [SerializeField, Tooltip("ズームするかどうか"),Space(15)]
+    public bool m_IsNoZoom;
+
 
     //[SerializeField, Tooltip("2回目以降ズームするかどうか"), Space(15)]
     //public bool m_IsSecondCameraZoom;
@@ -139,7 +142,7 @@ public class TutorealIventCamera : MonoBehaviour
 
         //頭が働かない
         //ズーム機能
-        if (mLertTime >= 1.0f && !mIsEnd)
+        if (mLertTime >= 1.0f && !mIsEnd&&!m_IsNoZoom)
         {
             mZoomTime += Time.deltaTime;
             if (mZoomTime <= 3.0f)
