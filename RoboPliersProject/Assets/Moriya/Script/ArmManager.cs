@@ -54,7 +54,21 @@ public class ArmManager : MonoBehaviour
     //ＵＩ(表示／非表示を行う)
     private Transform m_UI;
 
-    bool aaa = true;
+
+    private TutorialSetting m_TutorialSetting;
+
+    /// <summary>
+    /// 動かせるか？
+    /// trueで動かせるようになり、エイムアシスト等が働く。カメラも動かせる状態ならば、カメラの向いたほうを向く。
+    /// falseで動かなくなる。
+    /// </summary>
+    public bool IsMove { get; set; }
+    //掴めるか？
+    public bool IsCatchAble { get; set; }
+    //物を離せるか？
+    public bool IsRelease { get; set; }
+    //伸び縮みできるか？
+    public bool IsStretch { get; set; }
 
     /*==外部参照変数==*/
 
@@ -63,6 +77,7 @@ public class ArmManager : MonoBehaviour
         tr = GetComponent<Transform>();
 
         m_PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+        m_TutorialSetting = m_PlayerManager.GetComponent<TutorialSetting>();
         SwitchEnableArm(m_EnableArmID);
 
         for (int i = 0; i < m_Arms.Length; i++)
@@ -71,22 +86,33 @@ public class ArmManager : MonoBehaviour
             m_Pliers[i].SetID(i);
         }
         m_InitRot = m_Base.rotation;
+
+        //エラー回避のため設定
+        m_EnableArmID = 0;
+        m_EnableArm = m_Arms[0];
+        m_EnablePliers = m_Pliers[0];
     }
 
 	void Start()
 	{
         m_UI = GameObject.Find("Canvas ingame").transform;
+
+        IsMove = true;
+        IsCatchAble = true;
+        IsRelease = true;
+        IsStretch = true;
 	}
 	
 	void Update()
     {
-        if (!m_PlayerManager.IsMove) return;
+        if (!IsMove) return;
 
         //アーム切り替え
         if (InputManager.GetSelectArm().isDown)
         {
             SwitchEnableArm(InputManager.GetSelectArm().id - 1);
             SoundManager.Instance.PlaySe("xg-2armmove");
+            m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
         }
 
         //選択中のアームとペンチ更新処理
@@ -111,10 +137,14 @@ public class ArmManager : MonoBehaviour
 
             //選択中のアームに合わせて自身を回転
             Quaternion r = m_Base.rotation;
-            if (m_EnableArmID == 3)
-                m_RotateY -= m_PlayerManager.GetArmAngleOver();
-            else
+            //if (m_EnableArmID == 3)
+            //{
+            //    m_RotateY -= m_PlayerManager.GetArmAngleOver();
+
+            //}
+            //else
                 m_RotateY += m_PlayerManager.GetArmAngleOver();
+
             Quaternion target = Quaternion.Euler(new Vector3(0.0f, -90.0f * m_EnableArmID + m_RotateY, 0.0f));
             //m_Base.rotation = target;
             m_Base.rotation = Quaternion.Slerp(r, target, m_RotationLerpValue);
@@ -125,6 +155,7 @@ public class ArmManager : MonoBehaviour
         //選択中のアーム以外の向き、伸び、掴み状態等をリセット
         if (InputManager.GetDash())
         {
+            //アームとペンチのリセット
             for (int i = 0; i < m_Arms.Length; i++)
             {
                 if (i != m_EnableArmID)
@@ -133,6 +164,9 @@ public class ArmManager : MonoBehaviour
                     m_Pliers[i].Reset();
                 }
             }
+
+            //ベースを正面に向ける
+            m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
         }
 
 	}
@@ -148,9 +182,12 @@ public class ArmManager : MonoBehaviour
     /// </summary>
     public void SwitchEnableArm(int id)
     {
-        m_EnableArmID = id;
-        m_EnableArm = m_Arms[id];
-        m_EnablePliers = m_Pliers[id];
+        if (m_TutorialSetting.GetIsActiveArm(id))
+        {
+            m_EnableArmID = id;
+            m_EnableArm = m_Arms[id];
+            m_EnablePliers = m_Pliers[id];
+        }
     }
 
     /// <summary>
@@ -462,7 +499,7 @@ public class ArmManager : MonoBehaviour
 
     public struct HookState
     {
-        public float armMoveY;
+        public float armInputY;
         public bool playerIsGround;
     }
 
@@ -474,7 +511,7 @@ public class ArmManager : MonoBehaviour
     {
         HookState result;
         PlayerMove p = m_PlayerManager.GetPlayerMove();
-        result.armMoveY = p.ArmInputY;
+        result.armInputY = p.ArmInputY;
         result.playerIsGround = p.IsGround;
         return result;
     }
