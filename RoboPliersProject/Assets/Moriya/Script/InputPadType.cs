@@ -14,7 +14,6 @@ public class InputPadType : SingletonMonoBehaviour<InputPadType>
     {
         PS4,
         XBOX,
-        KEY_ONLY,
     }
 
 	/*==所持コンポーネント==*/
@@ -34,7 +33,6 @@ public class InputPadType : SingletonMonoBehaviour<InputPadType>
         {
             case INPUT_TYPE.PS4: TypeName = "PS4"; break;
             case INPUT_TYPE.XBOX: TypeName = "XBOX"; break;
-            case INPUT_TYPE.KEY_ONLY: TypeName = "XBOX"; break;
             default: TypeName = ""; break;
         }
 	}
