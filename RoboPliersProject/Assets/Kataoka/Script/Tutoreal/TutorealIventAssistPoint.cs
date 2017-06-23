@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TutorealIventAssistPoint : MonoBehaviour {
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
-    public GameObject m_IventCollision;
+    public GameObject[] m_IventCollisions;
     [SerializeField, Tooltip("アシストしたいオブジェクト")]
     public GameObject m_AssistObject;
 
@@ -55,8 +55,11 @@ public class TutorealIventAssistPoint : MonoBehaviour {
             if (mPlayerTutorial.GetIsAimAssistName(m_AssistObject.name.Substring(0, 4)))
             {
                 //次のイベントテキスト有効化
-                m_IventCollision.GetComponent<PlayerTextIvent>().IsCollisionFlag();
-
+                if (m_IventCollisions.Length != 0)
+                    for (int i = 0; m_IventCollisions.Length > i; i++)
+                    {
+                        m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
+                    }
                 mPlayerTutorial.SetIsArmMove(!m_PlayerClerArmMove);
                 mPlayerTutorial.SetIsPlayerMove(!m_PlayerClerMove);
                 mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
@@ -70,8 +73,11 @@ public class TutorealIventAssistPoint : MonoBehaviour {
             if (mPlayerTutorial.GetIsAimAssistAll())
             {
                 //次のイベントテキスト有効化
-                m_IventCollision.GetComponent<PlayerTextIvent>().IsCollisionFlag();
-
+                if (m_IventCollisions.Length != 0)
+                    for (int i = 0; m_IventCollisions.Length > i; i++)
+                    {
+                        m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
+                    }
                 mPlayerTutorial.SetIsArmMove(!m_PlayerClerArmMove);
                 mPlayerTutorial.SetIsPlayerMove(!m_PlayerClerMove);
                 mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);

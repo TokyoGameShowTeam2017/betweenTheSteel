@@ -7,7 +7,7 @@ public class TutorealIventTextFlag : MonoBehaviour
     private PlayerTutorialControl mTutorealPlayer;
     private TutorealText mTutorealText;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
-    public GameObject m_IventCollision;
+    public GameObject[] m_IventCollisions;
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("テキストが終わった時のプレイヤーの状態")]
     public bool m_PlayerMove;
     [SerializeField, Tooltip("プレイヤーカメラ移動させるか")]
@@ -37,8 +37,11 @@ public class TutorealIventTextFlag : MonoBehaviour
             mTutorealPlayer.SetIsPlayerAndCameraMove(true);
             mTutorealPlayer.SetIsArmMove(true);
             //次のイベントテキスト有効化
-            if(m_IventCollision!=null)
-            m_IventCollision.GetComponent<PlayerTextIvent>().IsCollisionFlag();
+            if (m_IventCollisions.Length != 0)
+                for (int i = 0; m_IventCollisions.Length > i; i++)
+                {
+                    m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
+                }
             //プレイヤー状態登録
             mTutorealPlayer.SetIsArmMove(!m_PlayerArmMove);
             mTutorealPlayer.SetIsPlayerMove(!m_PlayerMove);

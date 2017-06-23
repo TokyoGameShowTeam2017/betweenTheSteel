@@ -29,7 +29,7 @@ public class TutorealIventCamera : MonoBehaviour
     //プレイヤーチュートリアル
     private PlayerTutorialControl mTutorealPlayer;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
-    public GameObject m_IventCollision;
+    public GameObject[] m_IventCollisions;
     [SerializeField, Tooltip("ターゲットポイントたち")]
     public GameObject[] m_TargetPoints;
     [SerializeField, Tooltip("カメラポジションたち")]
@@ -97,9 +97,9 @@ public class TutorealIventCamera : MonoBehaviour
             GetComponent<PlayerTutorialControl>();
 
         if (m_BeforeDrawPoint)
-            m_IventCollision.transform.FindChild("Point").gameObject.SetActive(true);
+            m_IventCollisions[0].transform.FindChild("Point").gameObject.SetActive(true);
         if (m_BeforeDrawBlock)
-            m_IventCollision.GetComponent<PlayerTextIvent>().GetIvent().
+            m_IventCollisions[0].GetComponent<PlayerTextIvent>().GetIvent().
                 GetComponent<TutorealIventSetObject>().
                 transform.FindChild("Block").gameObject.SetActive(true);
 
@@ -159,8 +159,12 @@ public class TutorealIventCamera : MonoBehaviour
         if (mLertTime >= 1.0f && mIsEnd)
         {
             //次のイベントテキスト有効化
-            if(m_IventCollision!=null)
-            m_IventCollision.GetComponent<PlayerTextIvent>().IsCollisionFlag();
+            //次のイベントテキスト有効化
+            if (m_IventCollisions.Length != 0)
+                for (int i = 0; m_IventCollisions.Length > i; i++)
+                {
+                    m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
+                }
             mTutorealPlayer.SetIsArmMove(!m_PlayerArmMove);
             mTutorealPlayer.SetIsPlayerMove(!m_PlayerMove);
             mTutorealPlayer.SetIsCamerMove(!m_PlayerCameraMove);

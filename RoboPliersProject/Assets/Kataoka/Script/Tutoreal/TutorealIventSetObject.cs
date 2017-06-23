@@ -10,7 +10,7 @@ public class TutorealIventSetObject : MonoBehaviour {
     //アームマネージャー
     private ArmManager mArmManager;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
-    public GameObject m_IventCollision;
+    public GameObject[] m_IventCollisions;
 
     //[SerializeField, Tooltip("あたり判定のオブジェクト")]
     //public GameObject m_CollisionObject;
@@ -77,7 +77,11 @@ public class TutorealIventSetObject : MonoBehaviour {
         if (mArmManager.GetEnablArmCatchingObject() == null)
         {
             //次のイベントテキスト有効化
-            m_IventCollision.GetComponent<PlayerTextIvent>().IsCollisionFlag();
+            if (m_IventCollisions.Length != 0)
+                for (int i = 0; m_IventCollisions.Length > i; i++)
+                {
+                    m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
+                }
             mPlayerTutorial.SetIsArmMove(!m_PlayerClerArmMove);
             mPlayerTutorial.SetIsPlayerMove(!m_PlayerClerMove);
             mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
