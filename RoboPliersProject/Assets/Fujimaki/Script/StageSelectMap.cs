@@ -256,6 +256,6 @@ public class StageSelectMap : MonoBehaviour
         target.GetComponent<Camera>().enabled = true;
         camera.enabled = false;
 
-        SceneManager.UnloadSceneAsync("Title");
+        SceneManager.UnloadSceneAsync("Title 1");
     }
 }
