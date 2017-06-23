@@ -274,4 +274,6 @@ public class InputManager : MonoBehaviour
     {
         return Input.GetButton(InputPadType.Instance.TypeName + "Right1");
     }
+
+
 }

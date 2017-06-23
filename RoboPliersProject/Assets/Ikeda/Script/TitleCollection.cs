@@ -90,7 +90,7 @@ public class TitleCollection : MonoBehaviour
     /// </summary>
     private void PressStart()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (InputManager.GetSelectArm().isDown)
         {
             m_PressStart = true;
         }
@@ -102,7 +102,7 @@ public class TitleCollection : MonoBehaviour
     /// </summary>
     private void RapidTitle()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (InputManager.GetSelectArm().isDown)
         {
             m_RapidDraw = true;
         }
