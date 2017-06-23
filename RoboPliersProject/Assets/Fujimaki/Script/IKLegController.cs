@@ -50,7 +50,7 @@ public class IKLegController : MonoBehaviour {
         Debug.DrawLine(transform.position, transform.position - Vector3.up * 1f, Color.yellow);
 
         //キャラクターコントローラーが移動していなければ移動をゼロにする
-        if (_characterController.velocity.magnitude < 0.1f)
+        if (_characterController.velocity.magnitude < 0.1f || _playerManager.IsMove)
         {
             _input = Vector3.zero;
         }

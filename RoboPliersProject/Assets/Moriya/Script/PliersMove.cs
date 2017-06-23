@@ -195,6 +195,19 @@ public class PliersMove : MonoBehaviour
         }
     }
 
+    void OnTriggerStay(Collider other)
+    {
+        if ((other.tag == "CatchObject") && (m_HitObject != null))
+        {
+            if (other.gameObject.GetComponent<CatchObject>() == m_HitObject)
+                m_HitObject = null;
+
+            ////掴んでいる状態だったなら、掴み状態解除
+            //if (m_CatchObject != null)
+            //    CatchObjectRelease();
+        }
+    }
+
     void OnTriggerExit(Collider other)
     {
         if ((other.tag == "CatchObject") && (m_HitObject != null))
