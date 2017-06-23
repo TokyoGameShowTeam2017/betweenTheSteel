@@ -39,13 +39,13 @@ public class StageInputManager : MonoBehaviour {
     /// </summary>
     private void PressStart()
     {
-        if (GameObject.Find("pressstartback").GetComponent<PressStart>().GetPressState() == 1)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                m_IsPressButton = true;
-            }
-        }
+        //if (GameObject.Find("pressstartback").GetComponent<PressStart>().GetPressState() == 1)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Space))
+        //    {
+        //        m_IsPressButton = true;
+        //    }
+        //}
     }
 
 
@@ -54,13 +54,13 @@ public class StageInputManager : MonoBehaviour {
     /// </summary>
     private void RapidTitle()
     {
-        if (GameObject.Find("BlackImage").GetComponent<AlphaChanger>().GetIsEnd())
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                m_SpeedDraw = true;
-            }
-        }
+        //if (GameObject.Find("BlackImage").GetComponent<AlphaChanger>().GetIsEnd())
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Space))
+        //    {
+        //        m_SpeedDraw = true;
+        //    }
+        //}
     }
 
     /// <summary>
