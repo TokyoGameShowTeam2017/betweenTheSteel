@@ -87,7 +87,7 @@ public class ArmMove : MonoBehaviour
     private bool m_IsSearched = false;
 
     //ローカル回転量
-    private Vector3 m_LocalEuler = Vector3.zero;
+    private float m_LocalEulerY;
 
     /*==外部参照変数==*/
 
@@ -108,7 +108,7 @@ public class ArmMove : MonoBehaviour
         m_AimAssistPosition = Vector3.zero;
         m_AimAssistRockon = GameObject.Find("AimAssistRockon").GetComponent<AimAssistRockon>();
 
-        m_LocalEuler = tr.localEulerAngles;
+        m_LocalEulerY = tr.localEulerAngles.y;
     }
 
     void Update()
@@ -305,7 +305,6 @@ public class ArmMove : MonoBehaviour
     //簡単モード時のアーム計算処理
     private void EasyMode()
     {
-
         EasyInput();
 
         //選択中のペンチがオブジェクトを掴んでいるとき
@@ -570,7 +569,7 @@ public class ArmMove : MonoBehaviour
 
 
         //ロックオン掴みをキャンセル
-        if (!m_ArmManager.GetEnablPliersMove().GetIsCatch() && m_IsStretched && InputManager.GetPliersCatch() > 0)
+        if (!m_ArmManager.GetEnablPliersMove().GetIsCatch() && m_IsStretched && InputManager.GetCatchingEasyMode())
         {
             //m_IsCatching = false;
             //m_IsNonTargetStretch = false;
@@ -586,6 +585,7 @@ public class ArmMove : MonoBehaviour
         float y = tr.localEulerAngles.y - (90.0f * m_ID);
         //float y = tr.localEulerAngles.y;
         float rotY = y > 180.0f ? y - 360.0f : y;
+
 
         //角度限界を超えた分の値をプレイヤーに渡す
         float limit = m_ArmManager.GetArmAngleMax();
@@ -604,6 +604,11 @@ public class ArmMove : MonoBehaviour
 
         //角度限界で制限
         rotY = Mathf.Clamp(rotY, -limit, limit);
+
+
+
+
+
         //360に戻す
         float angleY = rotY < 0 ? rotY + 360.0f : rotY;
         //float angleY = rotY;

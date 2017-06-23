@@ -115,6 +115,8 @@ public class PliersMove : MonoBehaviour
     private BoxCollider m_LeftColl;
     private BoxCollider m_RightColl;
 
+    private TutorialSetting m_TutorialSetting;
+
     /*==外部参照変数==*/
 
 
@@ -140,6 +142,7 @@ public class PliersMove : MonoBehaviour
     {
         m_ArmManager = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
 
+
         switch(m_ID)
         {
             case 0: m_PliersGaugeArrow = GameObject.Find("Ygaugearrow").GetComponent<RectTransform>(); break;
@@ -155,9 +158,11 @@ public class PliersMove : MonoBehaviour
         m_Player = GameObject.FindGameObjectWithTag("Player");
         m_PlayerManager = m_Player.GetComponent<PlayerManager>();
         m_StartPositionZ = tr.localPosition.z;
-
+        m_TutorialSetting = m_Player.GetComponent<TutorialSetting>();
 
         SetPliersCollider(false);
+
+
     }
 
     void FixedUpdate()
@@ -508,7 +513,7 @@ public class PliersMove : MonoBehaviour
             if (m_ArmManager.IsRelease)
             {
                 m_LateEasyMoveInput = m_EasyMoveInput;
-                m_EasyMoveInput = InputManager.GetPliersCatch() > 0;
+                m_EasyMoveInput = InputManager.GetCatchingEasyMode();
                 //入力があったとき　かつ押した瞬間
                 if (m_EasyMoveInput && !m_LateEasyMoveInput)
                 {
@@ -655,6 +660,8 @@ public class PliersMove : MonoBehaviour
             return;
         }
 
+
+
         //左
         m_LeftRB.velocity = m_PliersLeft.right * m_Power;
         Vector3 clampPosition = m_LeftStartPosition;
@@ -796,6 +803,14 @@ public class PliersMove : MonoBehaviour
         }
         StartCoroutine(RollResetMove());
         m_Input = false;
+        m_LateEasyMoveInput = false;
+        m_EasyMoveInput = false;
+
+  
+        if (!m_TutorialSetting.GetIsActiveArm(m_ID))
+            m_Power = 0.0f;
+        else
+            m_Power = -1.0f;
     }
 
 

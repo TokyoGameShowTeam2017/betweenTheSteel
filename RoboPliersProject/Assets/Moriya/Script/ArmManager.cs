@@ -168,12 +168,17 @@ public class ArmManager : MonoBehaviour
             //ベースを正面に向ける
             m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
         }
-
 	}
 
 
     void LateUpdate()
     {
+        if (InputManager.GetSelectArm().isDown)
+        {
+            print("ok");
+
+        }
+
         //print(GetCountCatchingDynamicObjects());
     }
 
