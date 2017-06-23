@@ -134,12 +134,17 @@ public class ArmManager : MonoBehaviour
                 }
             }
         }
-
 	}
 
 
     void LateUpdate()
     {
+        if (InputManager.GetSelectArm().isDown)
+        {
+            print("ok");
+
+        }
+
         //print(GetCountCatchingDynamicObjects());
     }
 

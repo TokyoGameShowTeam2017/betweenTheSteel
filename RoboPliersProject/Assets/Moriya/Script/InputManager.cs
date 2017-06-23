@@ -98,9 +98,18 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public static Vector2 GetMove()
     {
-        float h = Input.GetAxis("LeftStickH");
-        float v = Input.GetAxis("LeftStickV");
-        return new Vector2(h, v);
+        float h = Input.GetAxis(InputPadType.Instance.TypeName + "LeftStickH");
+        float v = Input.GetAxis(InputPadType.Instance.TypeName + "LeftStickV");
+
+        Vector2 vec = new Vector2(h, v);
+        if(vec.magnitude <= 0.0f)
+        {
+            h = Input.GetAxis("LeftStickH");
+            v = Input.GetAxis("LeftStickV");
+            vec = new Vector2(h, v);
+        }
+
+        return vec;
     }
 
 
@@ -109,9 +118,18 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public static Vector2 GetCameraMove()
     {
-        float h = Input.GetAxis("RightStickH");
-        float v = Input.GetAxis("RightStickV");
-        return new Vector2(h, v);
+        float h = Input.GetAxis(InputPadType.Instance.TypeName + "RightStickH");
+        float v = Input.GetAxis(InputPadType.Instance.TypeName + "RightStickV");
+        
+        Vector2 vec = new Vector2(h, v);
+        if (vec.magnitude <= 0.0f)
+        {
+            h = Input.GetAxis("RightStickH");
+            v = Input.GetAxis("RightStickV");
+            vec = new Vector2(h, v);
+        }
+
+        return vec;
     }
 
     /// <summary>
@@ -123,13 +141,13 @@ public class InputManager : MonoBehaviour
         result.isDown = false;
         result.id = 0;
 
-        if (Input.GetButtonDown("Arm1"))
+        if (Input.GetButtonDown(InputPadType.Instance.TypeName + "Arm1"))
             result.id = 1;
-        if (Input.GetButtonDown("Arm2"))
+        if (Input.GetButtonDown(InputPadType.Instance.TypeName + "Arm2"))
             result.id = 2;
-        if (Input.GetButtonDown("Arm3"))
+        if (Input.GetButtonDown(InputPadType.Instance.TypeName + "Arm3"))
             result.id = 3;
-        if (Input.GetButtonDown("Arm4"))
+        if (Input.GetButtonDown(InputPadType.Instance.TypeName + "Arm4"))
             result.id = 4;
 
         if (result.id != 0)
@@ -143,9 +161,11 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public static float GetArmStretch()
     {
-        float result = (Input.GetAxis("Left2") + 1.0f) / 2.0f;
+        float result = (Input.GetAxis(InputPadType.Instance.TypeName + "Left2") + 1.0f) / 2.0f;
         if(result <= 0.0f)
             result = (Input.GetKey(KeyCode.U) ? 1.0f : 0.0f);
+
+        print(result);
 
         return result;
     }
@@ -156,11 +176,28 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public static bool GetArmStretchEasyMode()
     {
-        float result = Input.GetAxisRaw("Left2");
-        if (result <= -1)
-            result = (Input.GetKey(KeyCode.U) ? 1.0f : -1.0f);
+        if(InputPadType.Instance.TypeName == "PS4")
+        {
+            float result = Input.GetAxisRaw(InputPadType.Instance.TypeName + "Left2");
+            print(result);
+            if (result > -1)
+                return true;
+            else
+                return (Input.GetKey(KeyCode.U) ? true : false);
 
-        return result > -1.0f;
+        }
+        else if (InputPadType.Instance.TypeName == "XBOX")
+        {
+            float result = Input.GetAxis(InputPadType.Instance.TypeName + "Left2");
+            if (result > 0.0f)
+                return true;
+            else
+                return Input.GetKey(KeyCode.U) ? true : false;
+        }
+        else
+        {
+            return Input.GetKey(KeyCode.U) ? true : false;
+        }
     }
 
 
@@ -170,7 +207,7 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public static float GetPliersCatch()
     {
-        float result = (Input.GetAxis("Right2") + 1.0f) / 2.0f;
+        float result = (Input.GetAxis(InputPadType.Instance.TypeName + "Right2") + 1.0f) / 2.0f;
 
         if (result <= 0.0f)
             result = (Input.GetKey(KeyCode.O) ? 1.0f : 0.0f);
@@ -183,11 +220,26 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public static bool GetCatchingEasyMode()
     {
-        float result = Input.GetAxisRaw("Right2");
-        if (result <= -1)
-            result = (Input.GetKey(KeyCode.O) ? 1.0f : -1.0f);
-
-        return result > -1.0f;
+        if (InputPadType.Instance.TypeName == "PS4")
+        {
+            float result = Input.GetAxisRaw(InputPadType.Instance.TypeName + "Right2");
+            if (result > -1)
+                return true;
+            else
+                return (Input.GetKey(KeyCode.O) ? true : false);
+        }
+        else if (InputPadType.Instance.TypeName == "XBOX")
+        {
+            float result = Input.GetAxis(InputPadType.Instance.TypeName + "Right2");
+            if (result < 0.0f)
+                return true;
+            else
+                return Input.GetKey(KeyCode.O) ? true : false;
+        }
+        else
+        {
+            return Input.GetKey(KeyCode.O) ? true : false;
+        }
     }
 
     /// <summary>
@@ -195,7 +247,7 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public static bool GetJump()
     {
-        return Input.GetButtonDown("LeftStickPush");
+        return Input.GetButtonDown(InputPadType.Instance.TypeName + "LeftStickPush");
     }
 
     /// <summary>
@@ -203,7 +255,7 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public static bool GetDash()
     {
-        return Input.GetButton("RightStickPush");
+        return Input.GetButton(InputPadType.Instance.TypeName + "RightStickPush");
     }
 
     
@@ -212,7 +264,7 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public static bool GetArmNegativeTurn()
     {
-        return Input.GetButton("Left1");
+        return Input.GetButton(InputPadType.Instance.TypeName + "Left1");
     }
 
     /// <summary>
@@ -220,6 +272,6 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public static bool GetArmPositiveTurn()
     {
-        return Input.GetButton("Right1");
+        return Input.GetButton(InputPadType.Instance.TypeName + "Right1");
     }
 }
