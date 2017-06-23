@@ -63,7 +63,7 @@ public class StageSelectCollection : MonoBehaviour
             //m_BeforPosition = transform.position;
             if (m_StageNum - 1 < 0)
             {
-                m_StageNum = 12;
+                m_StageNum = 13;
             }
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -72,7 +72,7 @@ public class StageSelectCollection : MonoBehaviour
             m_StageNum += 1;
             m_IsLoad = false;
             //m_BeforPosition = transform.position;
-            if (m_StageNum + 1 > 13)
+            if (m_StageNum + 1 > 14)
             {
                 m_StageNum = 1;
             }
@@ -187,7 +187,7 @@ public class StageSelectCollection : MonoBehaviour
         if (m_StageNum == 20) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().StartOtherScene(m_StageNum);
+            GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().StartOtherScene(m_StageNum);
         }
     }
 }
