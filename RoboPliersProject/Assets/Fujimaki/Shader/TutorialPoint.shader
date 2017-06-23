@@ -20,7 +20,7 @@
 		CGPROGRAM
 #pragma surface surf Lambert alpha
 
-		fixed4 _Color;
+	fixed4 _Color;
 	float4 _RimColor;
 	float _RimPower;
 	float _RimSize;
