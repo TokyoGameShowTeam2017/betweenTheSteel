@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuCanvas : MonoBehaviour {
+public class MenuCanvas : MonoBehaviour
+{
 
     private float m_Timer = 0.0f;
 
@@ -10,15 +11,19 @@ public class MenuCanvas : MonoBehaviour {
     private float m_HigherSpeed = 0.05f;
 
     private float m_Alpha = 0.0f;
+    private float m_StartAlpha = 1.0f;
 
     // Use this for initialization
-    void Start () {
-		
-	}
+    void Start()
+    {
+        m_Alpha = 0.0f;
+        m_StartAlpha = 1.0f;
+    }
 
     // Update is called once per frame
     void Update()
     {
+        if (m_Alpha >= 1.0f) return;
         if (GameObject.Find("RouteMoveObject").GetComponent<RouteMove>().GetIsGoal())
         {
             if (m_Timer <= 30.0f)
@@ -28,7 +33,7 @@ public class MenuCanvas : MonoBehaviour {
             else
             {
                 m_Alpha += m_HigherSpeed;
-                GameObject.Find("Canvas menu").GetComponent<CanvasGroup>().alpha = m_Alpha;
+                GameObject.Find("CommonCanvas").GetComponent<CanvasGroup>().alpha = m_Alpha;
             }
         }
     }

@@ -4,16 +4,6 @@ using UnityEngine;
 
 public class Title : MonoBehaviour
 {
-
-    enum TitleState
-    {
-        TitleFadeIn,
-        TitleFadeOut,
-
-        None
-    }
-
-
     private RectTransform m_Rect1;
     private RectTransform m_Rect2;
 
@@ -22,7 +12,6 @@ public class Title : MonoBehaviour
 
     private float m_Rate = 0.0f;
     private float m_Alpha = 0.0f;
-    private float m_LowerAlpha = 1.0f;
 
     [SerializeField, Tooltip("何秒後にタイトルを表示させるか")]
     private int m_Second = 3;
@@ -40,8 +29,9 @@ public class Title : MonoBehaviour
 
     private bool m_TitleEnd = false;
 
-    private TitleState m_State = TitleState.TitleFadeIn;
+    private bool m_RapidDraw = false;
 
+    private float m_FedeOutRate;
     // Use this for initialization
     void Start()
     {
@@ -50,70 +40,77 @@ public class Title : MonoBehaviour
         m_StartPosition1 = transform.FindChild("title1").GetComponent<RectTransform>().localPosition;
         m_StartPosition2 = transform.FindChild("title1 (1)").GetComponent<RectTransform>().localPosition;
 
-        m_LowerAlpha = 1.0f;
+        m_RapidDraw = false;
+        m_TitleEnd = false;
+        m_Rate = 0.0f;
+        m_Alpha = 0.0f;
+        m_FedeOutRate = 1.0f;
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public void TitleRapidFeadIn(bool rapidDraw)
     {
-
-        switch (m_State)
+        if (rapidDraw)
         {
-            case TitleState.TitleFadeIn:
-                if (GameObject.Find("BlackImage").GetComponent<AlphaChanger>().GetIsEnd())
-                {
-                    if (m_Timer >= (m_Second * 60) || GameObject.Find("Stage00Manager").GetComponent<StageInputManager>().GetSpeedDraw())
-                    {
-                        if (m_Rate <= 1)
-                        {
-                            m_Rate += m_FrameSpeed;
-                        }
-                        if (m_Rate >= 1)
-                        {
-                            transform.FindChild("title2").GetComponent<CanvasGroup>().alpha = 1.0f;
-                        }
-
-                        m_Rect1.localPosition = Vector3.Lerp(m_StartPosition1, Vector3.zero, m_Rate);
-                        m_Rect2.localPosition = Vector3.Lerp(m_StartPosition2, Vector3.zero, m_Rate);
-
-                        if (m_Rate >= 1)
-                        {
-                            if (m_Alpha < 1.0f) m_Alpha += m_HigherSpeed;
-                            else
-                            {
-                                m_TitleEnd = true;
-                                m_Alpha = 1.0f;
-                                m_State = TitleState.TitleFadeOut;
-                            }
-                            transform.FindChild("title3").GetComponent<CanvasGroup>().alpha = m_Alpha;
-                        }
-                    }
-                    m_Timer++;
-                }
-                break;
-
-
-            case TitleState.TitleFadeOut:
-                //PRESS STARTを押されたとき
-                if (GameObject.Find("pressstartback").GetComponent<PressStart>().GetPressState() == 2)
-                {
-                    if (m_Alpha > 0.01f) m_Alpha -= m_LowerSpeed;
-                    else
-                    {
-                        m_State = TitleState.None;
-                    }
-                    transform.FindChild("title1").GetComponent<CanvasGroup>().alpha = m_Alpha;
-                    transform.FindChild("title1 (1)").GetComponent<CanvasGroup>().alpha = m_Alpha;
-                    transform.FindChild("title2").GetComponent<CanvasGroup>().alpha = m_Alpha;
-                    transform.FindChild("title3").GetComponent<CanvasGroup>().alpha = m_Alpha;
-                }
-                break;
-
-
-            default:
-                GameObject.Find("Canvas title").GetComponent<CanvasGroup>().alpha = 0.0f;
-                break;
+            m_Rate = 1.0f;
+            m_Rect1.localPosition = Vector3.Lerp(m_StartPosition1, Vector3.zero, m_Rate);
+            m_Rect2.localPosition = Vector3.Lerp(m_StartPosition2, Vector3.zero, m_Rate);
+            transform.FindChild("title2").GetComponent<CanvasGroup>().alpha = 1.0f;
+            transform.FindChild("title3").GetComponent<CanvasGroup>().alpha = 1.0f;
+            m_RapidDraw = true;
         }
+    }
+
+    /// <summary>
+    /// タイトルフェードインの処理
+    /// </summary>
+    public void TitleFadeIn()
+    {
+        if (m_Timer >= (m_Second * 60))
+        {
+            if (m_Rate <= 1)
+            {
+                m_Rate += m_FrameSpeed;
+            }
+            if (m_Rate >= 1)
+            {
+                transform.FindChild("title2").GetComponent<CanvasGroup>().alpha = 1.0f;
+            }
+
+            m_Rect1.localPosition = Vector3.Lerp(m_StartPosition1, Vector3.zero, m_Rate);
+            m_Rect2.localPosition = Vector3.Lerp(m_StartPosition2, Vector3.zero, m_Rate);
+
+            if (m_Rate >= 1)
+            {
+                if (m_Alpha < 1.0f) m_Alpha += m_HigherSpeed;
+                else
+                {
+                    m_TitleEnd = true;
+                    m_Alpha = 1.0f;
+                }
+                transform.FindChild("title3").GetComponent<CanvasGroup>().alpha = m_Alpha;
+            }
+            if (m_RapidDraw)
+            {
+                transform.FindChild("title3").GetComponent<CanvasGroup>().alpha = 1.0f;
+            }
+        }
+        m_Timer++;
+    }
+
+    /// <summary>
+    /// PRESS STARTを押されたとき(フェードアウト)の処理
+    /// </summary>
+    public void TitleFadeOut()
+    {
+        if (m_Alpha > 0.01f) m_Alpha -= m_LowerSpeed;
+
+
+        m_FedeOutRate -= 0.1f;
+        m_Rect1.localPosition = Vector3.Lerp(m_StartPosition1, Vector3.zero, m_FedeOutRate);
+        m_Rect2.localPosition = Vector3.Lerp(m_StartPosition2, Vector3.zero, m_FedeOutRate);
+        transform.FindChild("title2").GetComponent<CanvasGroup>().alpha = m_Alpha;
+        transform.FindChild("title3").GetComponent<CanvasGroup>().alpha = m_Alpha;
     }
 
 
@@ -121,4 +118,5 @@ public class Title : MonoBehaviour
     {
         return m_TitleEnd;
     }
+
 }
