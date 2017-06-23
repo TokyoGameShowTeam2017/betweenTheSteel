@@ -195,18 +195,10 @@ public class PliersMove : MonoBehaviour
         }
     }
 
-    void OnTriggerStay(Collider other)
-    {
-        if ((other.tag == "CatchObject") && (m_HitObject != null))
-        {
-            if (other.gameObject.GetComponent<CatchObject>() == m_HitObject)
-                m_HitObject = null;
-
-            ////掴んでいる状態だったなら、掴み状態解除
-            //if (m_CatchObject != null)
-            //    CatchObjectRelease();
-        }
-    }
+    //void OnTriggerStay(Collider other)
+    //{
+    //    print("stay hit");
+    //}
 
     void OnTriggerExit(Collider other)
     {
@@ -621,6 +613,7 @@ public class PliersMove : MonoBehaviour
         ////掴める範囲内のオブジェクトが動いていないかつ、入力があるとき
         //if ((m_HitObject.rigidBody.velocity.magnitude < m_ArmManager.GetCatchingThreshold()) && m_Input)
 
+
         if (m_HitObject != null && m_CatchObject == null && m_Input)
         {
             //キャッチする
@@ -871,4 +864,37 @@ public class PliersMove : MonoBehaviour
             CatchObjectRelease();
         }
     }
+
+
+
+    ///// <summary>
+    ///// 強制的にオブジェクトを掴ませる
+    ///// </summary>
+    //public void ForceCatching(CatchObject catchobj)
+    //{
+    //    if (m_HitObject != null && m_CatchObject == null && m_Input)
+    //    {
+    //        if (!m_ArmManager.IsCatchAble) return;
+
+    //        //キャッチする
+    //        m_CatchObject = m_HitObject;
+    //        m_IsCatch = true;
+    //        SoundManager.Instance.PlaySe("xg-2sand01");
+
+    //        //掴む物のタイプで分岐
+    //        switch (m_CatchObject.GetCatchType())
+    //        {
+    //            //動かないオブジェクト
+    //            case CatchObject.CatchType.Static:
+    //                CatchedStatic();
+    //                break;
+
+    //            //動かせるオブジェクト
+    //            case CatchObject.CatchType.Dynamic:
+    //                CatchedDynamic();
+    //                break;
+    //        }
+    //    }
+    //}
+
 }
