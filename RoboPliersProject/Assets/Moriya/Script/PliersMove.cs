@@ -87,7 +87,7 @@ public class PliersMove : MonoBehaviour
     private GameObject m_AxisMovePliersPosition;
 
     //オブジェクトを掴んでいるか？
-    private bool m_IsCatch;
+    private bool m_IsCatch = false;
 
     //ペンチのZ軸回転量
     private float m_Roll;
