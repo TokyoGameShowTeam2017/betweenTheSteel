@@ -10,7 +10,7 @@ public class PlayerTextIvent : MonoBehaviour
     public string[] m_Text;
     [SerializeField, Tooltip("イベントプレハブ")]
     public GameObject m_IventPrefab;
-    [SerializeField, Tooltip("ポイントをを表示するかどうか"),Space(15)]
+    [SerializeField, Tooltip("ポイントをを表示するかどうか"), Space(15)]
     public bool m_IsDrawPoint;
     [SerializeField, Tooltip("最初からポイントを表示させるか")]
     public bool m_IsDrawFirstPoint;
@@ -30,9 +30,9 @@ public class PlayerTextIvent : MonoBehaviour
     private TutorealText mTutorealText;
     //プレイヤーのチュートリアル
     private PlayerTutorialControl mPlayerTurorial;
-    [SerializeField, Tooltip("当たるかどうか"),Space(15)]
+    [SerializeField, Tooltip("当たるかどうか"), Space(15)]
     public bool m_IsCollision;
-    
+
 
 
     // Use this for initialization
@@ -40,17 +40,19 @@ public class PlayerTextIvent : MonoBehaviour
     {
         mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mPlayerTurorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
-        mPointObject = transform.FindChild("Point").gameObject;
+        if (transform.FindChild("Point") != null)
+            mPointObject = transform.FindChild("Point").gameObject;
 
     }
     public void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player"&&m_IsCollision)
+        if (other.tag == "Player" && m_IsCollision)
         {
-            mPointObject.SetActive(m_IsCollision && m_IsDrawPoint);
+            if (mPointObject != null)
+                mPointObject.SetActive(m_IsCollision && m_IsDrawPoint);
 
-            if(m_Text.Length>0)
-            mTutorealText.SetText(m_Text);
+            if (m_Text.Length > 0)
+                mTutorealText.SetText(m_Text);
             if (m_Voice != null)
                 SoundManager.Instance.PlaySe(m_Voice.name);
 
@@ -61,8 +63,8 @@ public class PlayerTextIvent : MonoBehaviour
             mPlayerTurorial.SetIsArmCatchAble(!m_PlayerArmCath);
             mPlayerTurorial.SetIsArmRelease(!m_PlayerArmNoCath);
 
-            if(m_IventPrefab!=null)
-            m_IventPrefab.GetComponent<TutorealIventFlag>().PlayIvent();
+            if (m_IventPrefab != null)
+                m_IventPrefab.GetComponent<TutorealIventFlag>().PlayIvent();
             Destroy(gameObject);
         }
     }
