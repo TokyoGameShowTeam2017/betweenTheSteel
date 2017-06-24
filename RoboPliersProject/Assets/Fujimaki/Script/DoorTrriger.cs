@@ -19,15 +19,20 @@ public class DoorTrriger : MonoBehaviour {
             return;
         }
 
+        Execute(other.gameObject);
+    }
+
+    public void Execute(GameObject g)
+    {
         excutedEvent_ = true;
 
         if (open_)
         {
-            sceneLoadDoor_.OpenBackDoor(other.gameObject);
+            sceneLoadDoor_.OpenBackDoor(g);
         }
         else
         {
-            sceneLoadDoor_.CloseBackDoor(other.gameObject);
+            sceneLoadDoor_.CloseBackDoor(g);
         }
     }
 }

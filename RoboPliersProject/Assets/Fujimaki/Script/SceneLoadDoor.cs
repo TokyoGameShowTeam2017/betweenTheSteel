@@ -53,6 +53,9 @@ public class SceneLoadDoor : MonoBehaviour {
     [SerializeField, Tooltip("スキャン板")]
     private GameObject scanPlane_;
 
+    [SerializeField, Tooltip("最終シーン用フラグ")]
+    private bool endFrag_;
+
     public delegate void AnimEndCallback();
     private GameObject playerObject_;
 
@@ -163,8 +166,20 @@ public class SceneLoadDoor : MonoBehaviour {
         light2_.color = blueLightColor_;
         reflection_.RenderProbe();
 
-        StartCoroutine(DoorAnim(true, true));
+        if(endFrag_)
+        {
+            StartCoroutine(DoorAnim(true, true, End));
+        }
+        else
+        {
+            StartCoroutine(DoorAnim(true, true));
+        }
         SceneLoadInitializer.Instance.usedArea = gameObject;
+    }
+
+    private void End()
+    {
+        Destroy(gameObject);
     }
 
     private void Move()
