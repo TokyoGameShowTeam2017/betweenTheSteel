@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorealIventPlayerMove : MonoBehaviour
-{
+public class TutorealIventCameraMoveCheck : MonoBehaviour {
     private PlayerTutorialControl mPlayerTutoreal;
     private TutorealText mText;
     private GameObject mPlayerCamera;
@@ -11,9 +10,10 @@ public class TutorealIventPlayerMove : MonoBehaviour
     private Dictionary<InputDir, bool> mInputFlags;
     private Dictionary<InputDir, GameObject> mInputPlates;
 
-    private Transform mMoveCheckTrans;
     [SerializeField, Tooltip("何秒間でINPUTをOKにするか")]
     private float m_InputTime = 0.5f;
+    [SerializeField, Tooltip("カメラ移動のUIプレハブ")]
+    private GameObject m_UiPrefab;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
 
@@ -75,11 +75,10 @@ public class TutorealIventPlayerMove : MonoBehaviour
         mInputFlags[InputDir.INPUT_BACK] = false;
         mInputFlags[InputDir.INPUT_FRONT] = false;
 
-        mMoveCheckTrans = transform.FindChild("PlayerMoveCheck");
-        mInputPlates[InputDir.INPUT_LEFT] = mMoveCheckTrans.FindChild("Left").gameObject;
-        mInputPlates[InputDir.INPUT_RIGHT] = mMoveCheckTrans.FindChild("Right").gameObject;
-        mInputPlates[InputDir.INPUT_FRONT] = mMoveCheckTrans.FindChild("Front").gameObject;
-        mInputPlates[InputDir.INPUT_BACK] = mMoveCheckTrans.FindChild("Back").gameObject;
+        mInputPlates[InputDir.INPUT_LEFT] = m_UiPrefab.transform.FindChild("Left").gameObject;
+        mInputPlates[InputDir.INPUT_RIGHT] = m_UiPrefab.transform.FindChild("Right").gameObject;
+        mInputPlates[InputDir.INPUT_FRONT] = m_UiPrefab.transform.FindChild("Down").gameObject;
+        mInputPlates[InputDir.INPUT_BACK] = m_UiPrefab.transform.FindChild("Up").gameObject;
 
     }
 
@@ -89,12 +88,7 @@ public class TutorealIventPlayerMove : MonoBehaviour
         if (!GetComponent<TutorealIventFlag>().GetIventFlag() ||
         mText.GetDrawTextFlag()) return;
 
-        mMoveCheckTrans.gameObject.SetActive(true);
-        mMoveCheckTrans.transform.position = mPlayerTutoreal.gameObject.transform.position;
-        mMoveCheckTrans.rotation =
-            Quaternion.Euler(mMoveCheckTrans.rotation.eulerAngles.x,
-            mPlayerCamera.transform.rotation.eulerAngles.y,
-            mMoveCheckTrans.rotation.eulerAngles.z);
+        m_UiPrefab.SetActive(true);
 
         mPlayerTutoreal.SetIsArmMove(!m_PlayerArmMove);
         mPlayerTutoreal.SetIsPlayerMove(!m_PlayerMove);
@@ -103,7 +97,7 @@ public class TutorealIventPlayerMove : MonoBehaviour
         mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
 
 
-        Vector2 inputVec = InputManager.GetMove();
+        Vector2 inputVec = InputManager.GetCameraMove();
         Vector2 absVec = new Vector2(Mathf.Abs(inputVec.x), Mathf.Abs(inputVec.y));
         mInputDir = InputDir.INPUT_NO;
         if (inputVec.x < 0.0f && inputVec.y < 0.0f)
@@ -135,10 +129,10 @@ public class TutorealIventPlayerMove : MonoBehaviour
 
         if (mInputDir == InputDir.INPUT_NO)
         {
-            mInputPlates[InputDir.INPUT_BACK].GetComponent<PlayerMoveCheckPlate>().SetColor(0.0f);
-            mInputPlates[InputDir.INPUT_FRONT].GetComponent<PlayerMoveCheckPlate>().SetColor(0.0f);
-            mInputPlates[InputDir.INPUT_LEFT].GetComponent<PlayerMoveCheckPlate>().SetColor(0.0f);
-            mInputPlates[InputDir.INPUT_RIGHT].GetComponent<PlayerMoveCheckPlate>().SetColor(0.0f);
+            mInputPlates[InputDir.INPUT_BACK].GetComponent<PlayerCameraMoveCheckUi>().SetColor(0.0f);
+            mInputPlates[InputDir.INPUT_FRONT].GetComponent<PlayerCameraMoveCheckUi>().SetColor(0.0f);
+            mInputPlates[InputDir.INPUT_LEFT].GetComponent<PlayerCameraMoveCheckUi>().SetColor(0.0f);
+            mInputPlates[InputDir.INPUT_RIGHT].GetComponent<PlayerCameraMoveCheckUi>().SetColor(0.0f);
             mInputTime = 0.0f;
             return;
         }
@@ -149,19 +143,19 @@ public class TutorealIventPlayerMove : MonoBehaviour
             {
                 mInputTime = 0.0f;
                 if (mNowInputDir != InputDir.INPUT_NO)
-                    mInputPlates[mNowInputDir].GetComponent<PlayerMoveCheckPlate>().SetColor(0.0f);
+                    mInputPlates[mNowInputDir].GetComponent<PlayerCameraMoveCheckUi>().SetColor(0.0f);
 
             }
             else
             {
                 mInputTime += Time.deltaTime;
-                mInputPlates[mInputDir].GetComponent<PlayerMoveCheckPlate>().SetColor(mInputTime);
+                mInputPlates[mInputDir].GetComponent<PlayerCameraMoveCheckUi>().SetColor(mInputTime);
             }
 
             if (mInputTime >= m_InputTime)
             {
                 mInputFlags[mInputDir] = true;
-                mInputPlates[mInputDir].GetComponent<PlayerMoveCheckPlate>().IsDead();
+                mInputPlates[mInputDir].GetComponent<PlayerCameraMoveCheckUi>().IsDead();
             }
 
             mNowInputDir = mInputDir;

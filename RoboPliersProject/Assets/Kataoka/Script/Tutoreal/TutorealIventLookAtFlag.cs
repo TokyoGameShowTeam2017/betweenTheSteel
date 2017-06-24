@@ -10,7 +10,6 @@ public class TutorealIventLookAtFlag : MonoBehaviour {
 	}
     void Update()
     {
-        mIsCameraView = true;
     }
     void OnBecameInvisible()
     {

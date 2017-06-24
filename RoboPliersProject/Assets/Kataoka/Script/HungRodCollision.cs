@@ -14,10 +14,12 @@ public class HungRodCollision : MonoBehaviour {
 	void Start () {
         mChangeCount = 0.0f;
         mArmManager=GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
+        mIsCollision = false;
 	}
 	// Update is called once per frame
     void Update()
     {
+        mIsCollision = false;
     }
     public void OnTriggerStay(Collider other)
     {
@@ -26,6 +28,7 @@ public class HungRodCollision : MonoBehaviour {
             mChangeCount += Time.deltaTime;
             if (mChangeCount >= 1.0f)
             {
+                mIsCollision = true;
                 other.GetComponent<RodTurnBone>().GetRod().GetComponent<Rod>().SetCatchType(CatchObject.CatchType.Static);
             }
         }
@@ -34,7 +37,6 @@ public class HungRodCollision : MonoBehaviour {
             other.GetComponent<RodTurnBone>().HungFlagTrue();
         }
     }
-
     public void OnTriggerExit(Collider other)
     {
         //if ("Bone" == other.name.Substring(0, 4))
@@ -44,7 +46,10 @@ public class HungRodCollision : MonoBehaviour {
         //    mIsCollision = false;
         //}
     }
-
+    public bool GetHungFlag()
+    {
+        return mIsCollision;
+    }
 
 
 
