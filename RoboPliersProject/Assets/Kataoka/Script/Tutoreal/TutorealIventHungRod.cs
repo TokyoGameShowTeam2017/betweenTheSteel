@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorealIventCameraLookAt : MonoBehaviour {
-
-    private PlayerTutorialControl mPlayerTutoreal;
-    private TutorealText mText;
-    //プレイヤーカメラ
-    private GameObject mPlayerCamera;
+public class TutorealIventHungRod : MonoBehaviour {
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
+    [SerializeField, Tooltip("HungCollison")]
+    public GameObject m_HungCollision;
+
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("目的を達成した時のプレイヤーの状態")]
     public bool m_PlayerClerMove;
@@ -32,56 +30,45 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
     public bool m_PlayerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
+    //プレイヤーチュートリアル
+    private PlayerTutorialControl mPlayerTutorial;
+    //プレイヤーテキスト
+    private TutorealText mPlayerText;
+
 	// Use this for initialization
 	void Start () {
-        mText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
-        mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
-        mPlayerCamera = GameObject.FindGameObjectWithTag("RawCamera");
-    }
+        mPlayerTutorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
+        mPlayerText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
+
+	}
 	
 	// Update is called once per frame
 	void Update () {
-
-        bool flag = mText.GetDrawTextFlag();
-        bool flag2 = GetComponent<TutorealIventFlag>().GetIventFlag();
         if (!GetComponent<TutorealIventFlag>().GetIventFlag() ||
-        mText.GetDrawTextFlag()) return;
-        mPlayerTutoreal.SetIsArmMove(!m_PlayerArmMove);
-        mPlayerTutoreal.SetIsPlayerMove(!m_PlayerMove);
-        mPlayerTutoreal.SetIsCamerMove(!m_PlayerCameraMove);
-        mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
-        mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
+        mPlayerText.GetDrawTextFlag()) return;
+        mPlayerTutorial.SetIsArmMove(!m_PlayerArmMove);
+        mPlayerTutorial.SetIsPlayerMove(!m_PlayerMove);
+        mPlayerTutorial.SetIsCamerMove(!m_PlayerCameraMove);
+        mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
+        mPlayerTutorial.SetIsArmRelease(!m_PlayerArmNoCath);
 
-        Ray ray = new Ray(mPlayerCamera.transform.position, mPlayerCamera.transform.forward*50.0f);
-        RaycastHit hit;
-        int layer = ~(1 << 15);
-        if (Physics.SphereCast(ray,1.5f,out hit,200.0f,layer))
+
+        if (m_HungCollision.GetComponent<HungRodCollision>().GetHungFlag())
         {
-            if (hit.collider.name == "LookAtObject")
-            {
-                Destroy(hit.collider.gameObject);
-            }
-        }
-        //子を全部消したら
-        if (transform.childCount<=0)
-        {
+            mPlayerTutorial.SetIsArmMove(!m_PlayerClerArmMove);
+            mPlayerTutorial.SetIsPlayerMove(!m_PlayerClerMove);
+            mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
+            mPlayerTutorial.SetIsArmCatchAble(!m_PlayerClerArmCath);
+            mPlayerTutorial.SetIsArmRelease(!m_PlayerClerArmNoCath);
+
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
                 for (int i = 0; m_IventCollisions.Length > i; i++)
                 {
                     m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                 }
-            mPlayerTutoreal.SetIsArmMove(!m_PlayerClerArmMove);
-            mPlayerTutoreal.SetIsPlayerMove(!m_PlayerClerMove);
-            mPlayerTutoreal.SetIsCamerMove(!m_PlayerClerCameraMove);
-            mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerClerArmCath);
-            mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
             Destroy(gameObject);
         }
 
-
 	}
-
-
-
 }
