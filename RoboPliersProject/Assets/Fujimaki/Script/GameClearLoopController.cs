@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopController>
 {
+
+    [SerializeField]
+    private bool safeMode;
 
     [SerializeField]
     private Transform goalPoint;
@@ -18,7 +22,20 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
         drone = GameObject.FindGameObjectWithTag("RawCamera");
 
-        StartCoroutine(MoveDroneGoalPoint());
+        if (safeMode)
+        {
+            StartCoroutine(SafeMode());
+        }
+        else
+        {
+            StartCoroutine(MoveDroneGoalPoint());
+        }
+    }
+
+    private IEnumerator SafeMode()
+    {
+        Destroy(GameObject.FindGameObjectWithTag("Player"));
+        yield return SceneManager.LoadSceneAsync("Title 1");
     }
 
     private IEnumerator MoveDroneGoalPoint()
@@ -34,7 +51,7 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
             yield return null;
         }
 
-        doortrriger.Execute(drone);
+        doortrriger.Execute(GameObject.FindGameObjectWithTag("Player"));
     }
 	
 	void Update ()

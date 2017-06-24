@@ -179,7 +179,7 @@ public class SceneLoadDoor : MonoBehaviour {
 
     private void End()
     {
-        Destroy(gameObject);
+        Destroy(playerObject_);
     }
 
     private void Move()
