@@ -55,7 +55,6 @@ public class ArmMove : MonoBehaviour
 
     //簡単モード　掴み動作中か？
     private bool m_IsCatching = false;
-    private bool m_IsCatchingInput = false;
     private bool m_IsPrevCatchingInput = false;
     private const float MAX_LENGTH = 999999.0f;
 
@@ -169,7 +168,6 @@ public class ArmMove : MonoBehaviour
         bool input = InputManager.GetPliersCatch() > 0.0f;
         if (input && !m_IsPrevCatchingInput)//トリガー判定
         {
-            m_IsCatchingInput = input;
             m_IsCatching = !m_IsCatching;
             SoundManager.Instance.PlaySe("xg-2armmove");
         }
@@ -191,11 +189,11 @@ public class ArmMove : MonoBehaviour
         bool input = InputManager.GetCatchingEasyMode();
         if (input && !m_IsPrevCatchingInput)//トリガー判定
         {
-            m_IsCatchingInput = input;
             m_IsCatching = !m_IsCatching;
             SoundManager.Instance.PlaySe("xg-2armmove");
         }
         m_IsPrevCatchingInput = input;
+
 
         if (m_ArmManager.IsStretch)
         {
@@ -313,6 +311,7 @@ public class ArmMove : MonoBehaviour
         {
             m_AimAssistRockon.SetSpriteDraw(false);
 
+
             //アームの伸ばし入力があったら、伸び縮みできない状態解除
             if (m_IsInputStretch)
             {
@@ -327,8 +326,6 @@ public class ArmMove : MonoBehaviour
                     m_ArmLengthTargetValue = 0.0f;
             }
 
-
-
             //動かないオブジェクトを掴んでいるとき
             if (catchobj.catchType == CatchObject.CatchType.Static)
             {
@@ -336,9 +333,14 @@ public class ArmMove : MonoBehaviour
                 m_LookPosition = m_StaticCatchPoint;
                 //m_LookPosition = m_PlayerManager.GetAxisMoveObject().transform.position;
 
+
+
+
                 //伸び縮みできない状態解除中かつ、他のアームが掴んでいなければ伸ばす
                 if (!m_IsStretchKeep && m_ArmManager.GetCountCatchingObjects() <= 1)
+                {
                     Stretch();
+                }
 
                 //入力があったら掴み、伸び解除
                 if (!m_IsCatching && m_ArmManager.IsRelease)
@@ -386,7 +388,6 @@ public class ArmMove : MonoBehaviour
                 return;
             }
         }
-
 
         //以下　通常時
 
@@ -583,13 +584,20 @@ public class ArmMove : MonoBehaviour
         ////角度限界を超えた時
         //360→-180～180に変換
         float y = tr.localEulerAngles.y - (90.0f * m_ID);
+        if (m_ID == 3)
+        {
+            y += 360.0f;
+        }
         //float y = tr.localEulerAngles.y;
         float rotY = y > 180.0f ? y - 360.0f : y;
+
 
 
         //角度限界を超えた分の値をプレイヤーに渡す
         float limit = m_ArmManager.GetArmAngleMax();
         float over = 0.0f;
+
+
         if (rotY > limit)
             over = rotY - limit;
         else if (rotY < -limit)
@@ -606,12 +614,9 @@ public class ArmMove : MonoBehaviour
         rotY = Mathf.Clamp(rotY, -limit, limit);
 
 
-
-
-
         //360に戻す
-        float angleY = rotY < 0 ? rotY + 360.0f : rotY;
         //float angleY = rotY;
+        float angleY = rotY < 0 ? rotY + 360.0f : rotY;
         angleY += 90.0f * m_ID;
 
         //float angleY = rotY;
@@ -626,6 +631,8 @@ public class ArmMove : MonoBehaviour
         angles.y = angleY;
         
         tr.localEulerAngles = angles;
+
+
     }
 
 
@@ -771,5 +778,16 @@ public class ArmMove : MonoBehaviour
     public bool GetIsSearched()
     {
         return m_IsSearched;
+    }
+
+    /// <summary>
+    /// 強制的にオブジェクトを掴む
+    /// </summary>
+    public void ForceCatching()
+    {
+        m_IsCatching = true;
+
+        //m_IsInputStretch = true;
+        //m_IsStretchKeep = false;
     }
 }

@@ -324,7 +324,7 @@ public class PliersMove : MonoBehaviour
             catchPosition = hit.point + f * 0.3f;
         }            
         else
-            catchPosition = tr.position + tr.forward;
+            catchPosition = tr.position + tr.forward * 0.3f;
 
 
         //プレイヤー軸回転用オブジェクトを生成
@@ -433,14 +433,14 @@ public class PliersMove : MonoBehaviour
                 //削除
                 GameObject.Destroy(m_PlayerAxisMoveY);
                 m_PlayerAxisMoveY = null;
-                m_Player.GetComponent<PlayerManager>().ReleaseAxisMoveObject();
+                m_PlayerManager.ReleaseAxisMoveObject();
 
                 //他に動かないオブジェクトを掴んでいるアームがある場合
                 if (m_ArmManager.GetCountCatchingObjects() >= 2)
                 {
                     //その掴んでいるアーム（ペンチ）から軸回転用のオブジェクトを取得し、適用
                     PliersMove pli = m_ArmManager.GetCatchingArm(m_ID);
-                    m_Player.GetComponent<PlayerManager>().SetAxisMoveObject(pli.GetPlayerAxisMoveObject());
+                    m_PlayerManager.SetAxisMoveObject(pli.GetPlayerAxisMoveObject());
                 }
                 break;
 
@@ -491,6 +491,7 @@ public class PliersMove : MonoBehaviour
         m_IsCatch = false;
         m_ReleasedObject = m_CatchObject.gameObject;
         m_CatchObject = null;
+
         m_ArmManager.GetArmMoveByID(m_ID).CatchingCancel();
     }
 
@@ -856,6 +857,108 @@ public class PliersMove : MonoBehaviour
         if (m_CatchObject != null)
         {
             CatchObjectRelease();
+        }
+    }
+
+    /// <summary>
+    /// HundRod処理時専用、強制的にオブジェクトを手放す
+    /// </summary>
+    public void ForceCatchReleaseHungRod()
+    {
+        if (m_CatchObject != null)
+        {
+            switch (m_CatchObject.GetCatchType())
+            {
+                //動かないオブジェクト
+                case CatchObject.CatchType.Static:
+                    //削除
+                    GameObject.Destroy(m_PlayerAxisMoveY);
+                    m_PlayerAxisMoveY = null;
+                    m_PlayerManager.ReleaseAxisMoveObject();
+
+                    //他に動かないオブジェクトを掴んでいるアームがある場合
+                    if (m_ArmManager.GetCountCatchingObjects() >= 2)
+                    {
+                        //その掴んでいるアーム（ペンチ）から軸回転用のオブジェクトを取得し、適用
+                        PliersMove pli = m_ArmManager.GetCatchingArm(m_ID);
+                        m_PlayerManager.SetAxisMoveObject(pli.GetPlayerAxisMoveObject());
+                    }
+                    break;
+
+                //動かせるオブジェクト
+                case CatchObject.CatchType.Dynamic:
+                    bool flag = true;
+                    if (m_CatchParent != null)
+                    {
+                        if (m_CatchParent.name == "MainRod" || m_CatchParent.name == "MainRod(Clone)")
+                        {
+                            for (int i = 0; i <= 3; i++)
+                            {
+                                GameObject catchObject = m_ArmManager.GetPliersCatchRod(i);
+                                GameObject enableCatchObject = m_ArmManager.GetEnablePliersReleasedRod();
+                                m_SeveObject = m_ArmManager.GetPliers(i);
+                                if (catchObject == null) continue;
+                                if (catchObject == enableCatchObject)
+                                {
+                                    if (m_ArmManager.GetEnablPliers() == m_ArmManager.GetPliers(i))
+                                    {
+                                        continue;
+                                    }
+                                    m_ParentNotCathFlag = true;
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                            if (flag)
+                            {
+                                //親子関係を解除
+                                m_CatchParent.parent = null;
+                                //自由落下させる
+                                m_CatchParent.GetComponent<Rigidbody>().isKinematic = false;
+                            }
+                            else
+                                return;
+                        }
+                        else
+                        {
+                            //親子関係を解除
+                            m_CatchParent.parent = null;
+                            //自由落下させる
+                            m_CatchParent.GetComponent<Rigidbody>().isKinematic = false;
+                        }
+                    }
+                    break;
+            }
+            m_IsCatch = false;
+            m_ReleasedObject = m_CatchObject.gameObject;
+            m_CatchObject = null;
+        }
+    }
+
+    /// <summary>
+    /// 強制的にオブジェクトを掴む
+    /// </summary>
+    public void ForceCatching(CatchObject catchobj)
+    {
+        m_Input = true;
+        //キャッチする
+        m_HitObject = catchobj;
+        m_CatchObject = m_HitObject;
+        m_IsCatch = true;
+        //SoundManager.Instance.PlaySe("xg-2sand01");
+
+        //掴む物のタイプで分岐
+        switch (m_CatchObject.GetCatchType())
+        {
+            //動かないオブジェクト
+            case CatchObject.CatchType.Static:
+                CatchedStatic();
+                break;
+
+            //動かせるオブジェクト
+            case CatchObject.CatchType.Dynamic:
+                CatchedDynamic();
+                break;
         }
     }
 }
