@@ -88,7 +88,7 @@ public class TutorealIventSetObject : MonoBehaviour {
         mPlayerTutorial.SetIsArmRelease(true);
 
         int flagCount = 0;
-        int childCount = transform.childCount;
+        int childCount = 2;
         foreach (var i in mTransorms)
         {
             i.gameObject.SetActive(true);
