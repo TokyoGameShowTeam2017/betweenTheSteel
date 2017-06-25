@@ -179,7 +179,6 @@ public class InputManager : MonoBehaviour
         if(InputPadType.Instance.TypeName == "PS4")
         {
             float result = Input.GetAxisRaw(InputPadType.Instance.TypeName + "Left2");
-            print(result);
             if (result > -1)
                 return true;
             else
