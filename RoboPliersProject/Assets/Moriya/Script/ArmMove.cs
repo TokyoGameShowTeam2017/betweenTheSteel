@@ -19,7 +19,7 @@ public class ArmMove : MonoBehaviour
     [SerializeField, Tooltip("アームの伸び最大値")]
     private float m_MaxArmLength = 0.7f;
 
-    [SerializeField, Tooltip("アームの向く地点　エイムアシスト中はこれは無視される")]
+    [SerializeField, Tooltip("アームの向く地点")]
     private GameObject m_ArmLookingObject;
 
     [SerializeField, Tooltip("プレイヤーマネージャー")]
@@ -79,6 +79,7 @@ public class ArmMove : MonoBehaviour
     //アームを向ける座標
     private Vector3 m_LookPosition;
     private Vector3 m_LookPositionPrev;
+    private Vector3 m_LookOffset = Vector3.zero;
 
     //アシスト座標のオブジェクト名
     private string m_AimAssistName = "";
@@ -87,6 +88,8 @@ public class ArmMove : MonoBehaviour
 
     //ローカル回転量
     private float m_LocalEulerY;
+
+    private bool m_NonAssistCatch = false;
 
     /*==外部参照変数==*/
 
@@ -189,11 +192,22 @@ public class ArmMove : MonoBehaviour
         bool input = InputManager.GetCatchingEasyMode();
         if (input && !m_IsPrevCatchingInput)//トリガー判定
         {
-            m_IsCatching = !m_IsCatching;
+            if(m_ArmManager.GetPliersMoveByID(m_ID).GetIsCatch())
+            {
+                CatchingCancel();
+            }
+            else if (m_IsCatching)
+            {
+                CatchingCancel();
+            }
+            else if (!m_IsCatching)
+            {
+                m_IsCatching = true;
+            }
+
             SoundManager.Instance.PlaySe("xg-2armmove");
         }
         m_IsPrevCatchingInput = input;
-
 
         if (m_ArmManager.IsStretch)
         {
@@ -206,6 +220,16 @@ public class ArmMove : MonoBehaviour
             }
             m_IsPrevStretchInput = input;
         }
+
+        ////ロックオン掴みをキャンセル
+        //if (m_ArmManager.GetEnablPliersMove().GetIsCatch() && m_IsStretched && InputManager.GetCatchingEasyMode())
+        //{
+        //    //m_IsCatching = false;
+        //    //m_IsNonTargetStretch = false;
+        //    //m_ArmLengthTargetValue = 0.0f;
+        //    CatchingCancel();
+        //}
+
     }
 
     //伸ばし入力値の補完を行う
@@ -330,10 +354,9 @@ public class ArmMove : MonoBehaviour
             if (catchobj.catchType == CatchObject.CatchType.Static)
             {
                 //掴んだ地点を向く
-                m_LookPosition = m_StaticCatchPoint;
+                //m_LookPosition = m_StaticCatchPoint;
+                m_LookPosition = m_ArmManager.GetPliersMoveByID(m_ID).GetPlayerAxisMoveObject().transform.position;
                 //m_LookPosition = m_PlayerManager.GetAxisMoveObject().transform.position;
-
-
 
 
                 //伸び縮みできない状態解除中かつ、他のアームが掴んでいなければ伸ばす
@@ -343,7 +366,7 @@ public class ArmMove : MonoBehaviour
                 }
 
                 //入力があったら掴み、伸び解除
-                if (!m_IsCatching && m_ArmManager.IsRelease)
+                if (!m_IsCatching && !m_NonAssistCatch && m_ArmManager.IsRelease)
                 {
                     m_IsStretched = false;
                     m_IsStretchKeep = true;
@@ -375,8 +398,18 @@ public class ArmMove : MonoBehaviour
             {
                 //伸ばす
                 Stretch();
+
+
+                if (m_ArmManager.GetCountCatchingDynamicObjects() >= 2 &&
+                    (InputManager.GetArmPositiveTurn() || InputManager.GetArmNegativeTurn()))
+                {
+                    m_LookOffset += m_ArmManager.GetPliersMoveByID(m_ID).GetCatchObjVelocity();
+                    //print(m_ArmManager.GetPliersMoveByID(m_ID).GetCatchObjVelocity().ToString("f4"));
+                }
+                
                 //方向変化
-                m_LookPosition =m_ArmLookingObject.transform.position;
+                m_LookPosition = m_ArmLookingObject.transform.position + m_LookOffset;
+
 
                 //入力があったら掴み、伸び解除
                 if (!m_IsCatching && m_ArmManager.IsRelease)
@@ -514,6 +547,7 @@ public class ArmMove : MonoBehaviour
         {
             m_IsAimAssisting = false;
             m_IsCatching = false;
+            m_IsStretched = false;
 
             //伸ばし入力取得
             if (m_IsNonTargetStretch)
@@ -565,17 +599,6 @@ public class ArmMove : MonoBehaviour
                 Stretch();
             }
 
-        }
-
-
-
-        //ロックオン掴みをキャンセル
-        if (!m_ArmManager.GetEnablPliersMove().GetIsCatch() && m_IsStretched && InputManager.GetCatchingEasyMode())
-        {
-            //m_IsCatching = false;
-            //m_IsNonTargetStretch = false;
-            //m_ArmLengthTargetValue = 0.0f;
-            CatchingCancel();
         }
     }
 
@@ -631,8 +654,6 @@ public class ArmMove : MonoBehaviour
         angles.y = angleY;
         
         tr.localEulerAngles = angles;
-
-
     }
 
 
@@ -767,6 +788,9 @@ public class ArmMove : MonoBehaviour
         m_IsInputStretch = false;
         m_IsStretchKeep = true;
         m_IsStretched = false;
+
+        m_NonAssistCatch = false;
+        m_LookOffset = Vector3.zero;
     }
 
     public string GetAimAssistName()
@@ -789,5 +813,25 @@ public class ArmMove : MonoBehaviour
 
         //m_IsInputStretch = true;
         //m_IsStretchKeep = false;
+    }
+
+    public void ForceInput()
+    {
+        //if (m_IsCatching)
+        //{
+        //    CatchingCancel();
+        //}
+        //else if (!m_IsCatching)
+        //{
+        //    m_IsCatching = true;
+        //    m_IsStretchKeep = true;
+        //    m_IsInputStretch = false;
+        //}
+
+
+        //m_IsCatching = true;
+        m_IsStretchKeep = true;
+        m_IsInputStretch = false;
+        m_NonAssistCatch = true;
     }
 }

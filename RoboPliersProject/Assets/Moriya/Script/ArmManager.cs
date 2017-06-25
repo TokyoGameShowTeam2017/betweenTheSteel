@@ -112,7 +112,10 @@ public class ArmManager : MonoBehaviour
         {
             SwitchEnableArm(InputManager.GetSelectArm().id - 1);
             SoundManager.Instance.PlaySe("xg-2armmove");
-            m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
+
+            //何も掴んでなければ正面を向く
+            if (GetCountCatchingDynamicObjects() <= 0 && GetCountCatchingObjects() <= 0)
+                m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
         }
 
         //選択中のアームとペンチ更新処理

@@ -117,6 +117,10 @@ public class PliersMove : MonoBehaviour
 
     private TutorialSetting m_TutorialSetting;
 
+    private Vector3 m_CatchObjPrevPos;
+    //掴んだオブジェクトの1フレ移動量
+    private Vector3 m_CatchObjVelocity;
+
     /*==外部参照変数==*/
 
 
@@ -255,6 +259,42 @@ public class PliersMove : MonoBehaviour
         m_Power = Mathf.Clamp(m_Power, -1, 1);//* m_CatchPower;
     }
 
+
+    private float a = 0.0f;
+
+    private void EasyInput()
+    {
+        //入力取得
+        if (m_ArmManager.GetEnablArmMove().GetIsCatching() && m_ArmManager.IsCatchAble)
+        {
+            a = 0;
+            m_Input = m_ArmManager.GetEnablArmMove().GetIsStreched();
+            //print(m_Input);
+        }
+        else
+        {
+            //a += Time.deltaTime;
+            //print(a);
+            //print(m_ArmManager.GetEnablArmMove().GetIsStreched());
+
+            if (!m_ArmManager.GetEnablArmMove().GetIsStreched() && m_ArmManager.IsRelease)
+            {
+                m_LateEasyMoveInput = m_EasyMoveInput;
+                m_EasyMoveInput = InputManager.GetCatchingEasyMode();
+                //入力があったとき　かつ押した瞬間
+                if (m_EasyMoveInput && !m_LateEasyMoveInput)
+                {
+                    m_Input = !m_Input;
+                    m_ArmManager.GetEnablArmMove().ForceInput();
+                }
+            }
+        }
+        //ペンチの挟むパワーを入力から計算
+        m_Power += (m_Input ? 1 : -1);
+        m_Power = Mathf.Clamp(m_Power, -1, 1);
+
+    }
+
     //オブジェクト切断処理
     private void Cut()
     {
@@ -275,6 +315,19 @@ public class PliersMove : MonoBehaviour
                 m_IsCatch = false;
                 //エイムアシストによるキャッチをやめる
                 m_ArmManager.GetArmMoveByID(m_ID).CatchingCancel();
+
+                GameObject.Destroy(m_PlayerAxisMoveY);
+                m_PlayerAxisMoveY = null;
+                m_PlayerManager.ReleaseAxisMoveObject();
+
+                //子供にMainRod(Clone)が残っている場合親子関係解除
+                Transform chi;
+                do
+                {
+                    chi = tr.FindChild("MainRod(Clone)");
+                    if (chi != null)
+                        chi.parent = null;
+                } while (chi != null);
             }
 
 
@@ -385,6 +438,7 @@ public class PliersMove : MonoBehaviour
         //掴んだポイントをセット
         m_ArmManager.GetEnablArmMove().SetStaticCatchPoint(m_PlayerAxisMoveY.transform.position);
         m_CatchObject.SetCatchPoint(m_PlayerAxisMoveY.transform.position);
+        m_CatchObjPrevPos = m_CatchObject.transform.position;
     }
 
     //動かせるオブジェクトを掴んだ時の処理
@@ -493,6 +547,9 @@ public class PliersMove : MonoBehaviour
         m_CatchObject = null;
 
         m_ArmManager.GetArmMoveByID(m_ID).CatchingCancel();
+
+
+        
     }
 
     //簡単モード時の処理
@@ -504,33 +561,12 @@ public class PliersMove : MonoBehaviour
         //回転
         Rotation();
 
-        //入力取得
-        if (m_ArmManager.GetEnablArmMove().GetIsCatching() && m_ArmManager.IsCatchAble)
-        {
-            m_Input = m_ArmManager.GetEnablArmMove().GetIsStreched();
-        }
-        else
-        {
-            if (m_ArmManager.IsRelease)
-            {
-                m_LateEasyMoveInput = m_EasyMoveInput;
-                m_EasyMoveInput = InputManager.GetCatchingEasyMode();
-                //入力があったとき　かつ押した瞬間
-                if (m_EasyMoveInput && !m_LateEasyMoveInput)
-                {
-                    m_Input = !m_Input;
-                }
-            }
-        }
+        EasyInput();
 
-        //ペンチの挟むパワーを入力から計算
-        m_Power += (m_Input ? 1 : -1);
-        m_Power = Mathf.Clamp(m_Power, -1, 1);
+
 
         //オブジェクトを切断する
         Cut();
-        KusariCut();
-
 
 
         //前フレームと同じ入力ならここで終了　これ以降の行はボタンを入力した瞬間or離した瞬間のみ呼ばれる
@@ -549,6 +585,7 @@ public class PliersMove : MonoBehaviour
         if (m_HitObject != null && m_CatchObject == null && m_Input)
         {
             if (!m_ArmManager.IsCatchAble) return;
+            if (m_ArmManager.GetEnablArmMove().GetIsAimAssisting() && !m_ArmManager.GetEnablArmMove().GetIsCatching()) return;
 
             //キャッチする
             m_CatchObject = m_HitObject;
@@ -690,6 +727,21 @@ public class PliersMove : MonoBehaviour
             //カットできるオブジェクト以外を掴んでいる場合はＵＩの矢印を移動させる
             if (m_HitCutObject == null)
                 m_GaugeArrowTargetValue = 1.0f;
+
+
+            //掴んでいるオブジェクトが移動した分、プレイヤー回転用座標も移動する
+            if(m_PlayerAxisMoveY != null)
+            {
+                m_CatchObjVelocity = m_CatchObject.transform.position - m_CatchObjPrevPos;
+                m_PlayerAxisMoveY.transform.position += m_CatchObjVelocity;
+                m_CatchObjPrevPos = m_CatchObject.transform.position;
+            }
+            else
+            {
+                m_CatchObjVelocity = m_CatchObject.transform.position - m_CatchObjPrevPos;
+                m_CatchObjPrevPos = m_CatchObject.transform.position;
+            }
+
         }
         else
         {
@@ -717,6 +769,9 @@ public class PliersMove : MonoBehaviour
             //フラグ初期化
             m_ParentNotCathFlag = false;
         }
+
+
+
 
     }
 
@@ -861,7 +916,7 @@ public class PliersMove : MonoBehaviour
     }
 
     /// <summary>
-    /// HundRod処理時専用、強制的にオブジェクトを手放す
+    /// HungRod処理時専用、強制的にオブジェクトを手放す
     /// </summary>
     public void ForceCatchReleaseHungRod()
     {
@@ -960,5 +1015,10 @@ public class PliersMove : MonoBehaviour
                 CatchedDynamic();
                 break;
         }
+    }
+
+    public Vector3 GetCatchObjVelocity()
+    {
+        return m_CatchObjVelocity;
     }
 }
