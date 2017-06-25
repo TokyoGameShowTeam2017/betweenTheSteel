@@ -15,7 +15,7 @@ public class SceneLoadDoor : MonoBehaviour {
     private string unloadSceneName_;
 
     [SerializeField,Tooltip("シーンロード後のStartCrriderの設置位置")]
-    private float startZ = -44.5f;
+    private Vector3 startPosition;
 
     [SerializeField, Tooltip("前の上のドア")]
     private GameObject frontUpDoor_;
@@ -170,7 +170,7 @@ public class SceneLoadDoor : MonoBehaviour {
     private void Move()
     {
         playerObject_.transform.parent = transform;
-        transform.position = new Vector3(transform.position.x, transform.position.y, startZ);
+        transform.position = startPosition;
         playerObject_.transform.parent = null;
     }
 }

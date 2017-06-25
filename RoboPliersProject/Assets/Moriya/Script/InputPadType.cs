@@ -13,7 +13,7 @@ public class InputPadType : SingletonMonoBehaviour<InputPadType>
     public enum INPUT_TYPE
     {
         PS4,
-        XBOX,
+        XBOX_AND_KEY,
     }
 
 	/*==所持コンポーネント==*/
@@ -32,7 +32,7 @@ public class InputPadType : SingletonMonoBehaviour<InputPadType>
 		switch(m_Type)
         {
             case INPUT_TYPE.PS4: TypeName = "PS4"; break;
-            case INPUT_TYPE.XBOX: TypeName = "XBOX"; break;
+            case INPUT_TYPE.XBOX_AND_KEY: TypeName = "XBOX"; break;
             default: TypeName = ""; break;
         }
 	}

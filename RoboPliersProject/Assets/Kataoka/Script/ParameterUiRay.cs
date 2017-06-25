@@ -21,9 +21,12 @@ public class ParameterUiRay : MonoBehaviour
     private LineRenderer mLineRenderer;
     //伸びさのRayスタート位置
     private Vector3 mArmNobiStart;
+    //アウトライン表示されているか
+    private bool mIsOutline;
     // Use this for initialization
     void Start()
     {
+        mIsOutline = false;
         //初期化
         mRoboArmManager = GetComponent<ArmManager>();
         mLineRenderer = GetComponent<LineRenderer>();
@@ -43,6 +46,7 @@ public class ParameterUiRay : MonoBehaviour
     void Update()
     {
         mLineRenderer.enabled = true;
+        mIsOutline = false;
         //アームが掴んでいる場合Rayの表示をしない
         if (mRoboArmManager.GetIsEnablArmCatching())
         {
@@ -79,7 +83,7 @@ public class ParameterUiRay : MonoBehaviour
                         //当たったオブジェクトの情報をUIに
                         float life = firstObject.GetComponent<CutRodCollision>().GetLife();
                         rodui.GetComponent<RodUi>().ParameterSet(life);
-
+                        mIsOutline = true;
                         break;
                     }
                     if (rodui.GetComponent<ObjectParamterUi>() != null)
@@ -87,6 +91,7 @@ public class ParameterUiRay : MonoBehaviour
                         rodui.GetComponent<ObjectParamterUi>().DrawUiFlag(true);
                         //当たったオブジェクトの情報をUIに
                         rodui.GetComponent<ObjectParamterUi>().ParameterSet();
+                        mIsOutline = true;
                         break;
                     }
                     if (rodui.transform.parent == null) break;
@@ -139,5 +144,9 @@ public class ParameterUiRay : MonoBehaviour
     public Vector3 GetColRayPos()
     {
         return mColPos;
+    }
+    public bool GetIsOutLine()
+    {
+        return mIsOutline;
     }
 }

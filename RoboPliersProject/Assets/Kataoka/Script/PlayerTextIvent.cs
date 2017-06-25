@@ -14,6 +14,9 @@ public class PlayerTextIvent : MonoBehaviour
     public bool m_IsDrawPoint;
     [SerializeField, Tooltip("最初からポイントを表示させるか")]
     public bool m_IsDrawFirstPoint;
+    [SerializeField, Tooltip("次のポイントのUIを表示させるか")]
+    public bool m_NextPointUi;
+
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("プレイヤーが当たった時の状態")]
     public bool m_PlayerMove;
     [SerializeField, Tooltip("プレイヤーカメラ移動させるか")]
@@ -25,6 +28,14 @@ public class PlayerTextIvent : MonoBehaviour
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
 
+    [SerializeField, Tooltip("プレイヤーアーム1"), HeaderAttribute("プレイヤーが当たった時どのアームを展開するか")]
+    public bool m_PlayerArmEnable1;
+    [SerializeField, Tooltip("プレイヤーアーム2")]
+    public bool m_PlayerArmEnable2;
+    [SerializeField, Tooltip("プレイヤーアーム3")]
+    public bool m_PlayerArmEnable3;
+    [SerializeField, Tooltip("プレイヤーアーム3")]
+    public bool m_PlayerArmEnable4;
     private GameObject mPointObject;
     //プレイヤーテキスト
     private TutorealText mTutorealText;
@@ -56,7 +67,10 @@ public class PlayerTextIvent : MonoBehaviour
             if (m_Voice != null)
                 SoundManager.Instance.PlaySe(m_Voice.name);
 
-
+            if (m_PlayerArmEnable1) mPlayerTurorial.SetIsActiveArm(0, true);
+            if (m_PlayerArmEnable2) mPlayerTurorial.SetIsActiveArm(1, true);
+            if (m_PlayerArmEnable3) mPlayerTurorial.SetIsActiveArm(2, true);
+            if (m_PlayerArmEnable4) mPlayerTurorial.SetIsActiveArm(3, true);
             mPlayerTurorial.SetIsArmMove(!m_PlayerArmMove);
             mPlayerTurorial.SetIsPlayerMove(!m_PlayerMove);
             mPlayerTurorial.SetIsCamerMove(!m_PlayerCameraMove);

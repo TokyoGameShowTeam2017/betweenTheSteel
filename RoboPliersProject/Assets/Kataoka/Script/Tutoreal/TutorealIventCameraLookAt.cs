@@ -6,12 +6,10 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
 
     private PlayerTutorialControl mPlayerTutoreal;
     private TutorealText mText;
+    private  Transform[] mTransforms;
+
     //プレイヤーカメラ
     private GameObject mPlayerCamera;
-    //オブジェクト消した数
-    private int mDeadObject;
-    //子の数
-    private int mChildCount;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
 
@@ -41,17 +39,19 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
         mText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         mPlayerCamera = GameObject.FindGameObjectWithTag("RawCamera");
-        mDeadObject = 0;
-        mChildCount = transform.childCount;
+        mTransforms = transform.GetComponentsInChildren<Transform>();
+        LookAtActiveObject(false);
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-        bool flag = mText.GetDrawTextFlag();
-        bool flag2 = GetComponent<TutorealIventFlag>().GetIventFlag();
+        if (GetComponent<TutorealIventFlag>().GetIventFlag())
+            LookAtActiveObject(true);
         if (!GetComponent<TutorealIventFlag>().GetIventFlag() ||
         mText.GetDrawTextFlag()) return;
+
+
         mPlayerTutoreal.SetIsArmMove(!m_PlayerArmMove);
         mPlayerTutoreal.SetIsPlayerMove(!m_PlayerMove);
         mPlayerTutoreal.SetIsCamerMove(!m_PlayerCameraMove);
@@ -61,16 +61,15 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
         Ray ray = new Ray(mPlayerCamera.transform.position, mPlayerCamera.transform.forward*50.0f);
         RaycastHit hit;
         int layer = ~(1 << 15);
-        if (Physics.SphereCast(ray,6.5f,out hit,200.0f,layer))
+        if (Physics.SphereCast(ray,1.5f,out hit,200.0f,layer))
         {
             if (hit.collider.name == "LookAtObject")
             {
-                mDeadObject++;
                 Destroy(hit.collider.gameObject);
             }
         }
         //子を全部消したら
-        if (true)
+        if (transform.childCount<=0)
         {
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
@@ -85,10 +84,18 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
             mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
             Destroy(gameObject);
         }
-
-
 	}
 
-
+    public void LookAtActiveObject(bool flag)
+    {
+        foreach (var i in mTransforms)
+        {
+            if (i == null) return;
+            if (i.name != name)
+            {
+                i.gameObject.SetActive(flag);
+            }
+        }
+    }
 
 }
