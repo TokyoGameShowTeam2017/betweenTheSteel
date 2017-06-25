@@ -21,9 +21,12 @@ public class ParameterUiRay : MonoBehaviour
     private LineRenderer mLineRenderer;
     //伸びさのRayスタート位置
     private Vector3 mArmNobiStart;
+    //アウトライン表示されているか
+    private bool mIsOutline;
     // Use this for initialization
     void Start()
     {
+        mIsOutline = false;
         //初期化
         mRoboArmManager = GetComponent<ArmManager>();
         mLineRenderer = GetComponent<LineRenderer>();
@@ -43,13 +46,13 @@ public class ParameterUiRay : MonoBehaviour
     void Update()
     {
         mLineRenderer.enabled = true;
-        //アームが掴んでいる場合Rayを発射しない
+        mIsOutline = false;
+        //アームが掴んでいる場合Rayの表示をしない
         if (mRoboArmManager.GetIsEnablArmCatching())
         {
             mLineRenderer.enabled = false;
             m_IsColOBject.SetActive(false);
             m_NoColObject.SetActive(false);
-            return;
         }
         //当たらないレイヤー指定
         int layer = ~(1 << 15 | 1 << 2);
@@ -63,22 +66,24 @@ public class ParameterUiRay : MonoBehaviour
         mLineRenderer.SetPosition(0, rayStart);
         mLineRenderer.SetPosition(1, rayStart + armTrans.transform.forward.normalized * 20.0f);
         //Rayあたり判定処理
-        if (Physics.Raycast(mRay, out mHit, 20.0f,layer))
+        if (Physics.Raycast(mRay, out mHit, 20.0f, layer))
         {
             if (mHit.collider.tag == "CatchObject" ||
-                mHit.collider.tag == "Tekkyu"||
+                mHit.collider.tag == "Tekkyu" ||
                 mHit.collider.tag == "UiObject")
             {
                 //RodUiがあるまで親をたどる
                 GameObject rodui = mHit.collider.gameObject;
+                GameObject firstObject = mHit.collider.gameObject;
                 while (true)
                 {
                     if (rodui.GetComponent<RodUi>() != null)
                     {
                         rodui.GetComponent<RodUi>().DrawUiFlag(true);
                         //当たったオブジェクトの情報をUIに
-                        rodui.GetComponent<RodUi>().ParameterSet();
-
+                        float life = firstObject.GetComponent<CutRodCollision>().GetLife();
+                        rodui.GetComponent<RodUi>().ParameterSet(life);
+                        mIsOutline = true;
                         break;
                     }
                     if (rodui.GetComponent<ObjectParamterUi>() != null)
@@ -86,11 +91,12 @@ public class ParameterUiRay : MonoBehaviour
                         rodui.GetComponent<ObjectParamterUi>().DrawUiFlag(true);
                         //当たったオブジェクトの情報をUIに
                         rodui.GetComponent<ObjectParamterUi>().ParameterSet();
+                        mIsOutline = true;
                         break;
                     }
                     if (rodui.transform.parent == null) break;
                     rodui = rodui.transform.parent.gameObject;
-                    
+
                 }
             }
             //オブジェクトに当たったら線は消える
@@ -113,7 +119,7 @@ public class ParameterUiRay : MonoBehaviour
             m_IsColOBject.SetActive(true);
             m_NoColObject.SetActive(false);
             //当たったポジションに移動
-            m_IsColOBject.transform.position = mExtendHit.point + (mExtendHit.normal.normalized/10.0f);
+            m_IsColOBject.transform.position = mExtendHit.point + (mExtendHit.normal.normalized / 10.0f);
             //法線ベクトルから回転を取得
             m_IsColOBject.transform.LookAt(m_IsColOBject.transform.position + mExtendHit.normal);
             m_IsColOBject.transform.rotation =
@@ -138,5 +144,9 @@ public class ParameterUiRay : MonoBehaviour
     public Vector3 GetColRayPos()
     {
         return mColPos;
+    }
+    public bool GetIsOutLine()
+    {
+        return mIsOutline;
     }
 }

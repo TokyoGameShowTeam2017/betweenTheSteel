@@ -20,7 +20,7 @@ public class MiniMap : MonoBehaviour
     void Awake()
     {
         mQu = transform.rotation;
-        mCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        mCamera = GameObject.FindGameObjectWithTag("RawCamera");
 
         if (!m_DrawMiniMap)
             m_MiniMapUI.GetComponent<CanvasGroup>().alpha = 0.0f;

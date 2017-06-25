@@ -57,6 +57,7 @@ public class MoveObject : MonoBehaviour
     void Start()
     {
         startPosition = transform.position;
+        isMotion = false;
     }
 
     // Update is called once per frame
