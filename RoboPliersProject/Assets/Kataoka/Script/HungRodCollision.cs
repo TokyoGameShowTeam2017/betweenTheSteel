@@ -21,13 +21,33 @@ public class HungRodCollision : MonoBehaviour {
     }
     public void OnTriggerStay(Collider other)
     {
-        if ("Bone" == other.name.Substring(0, 4) && mArmManager.GetEnablArmCatchingObject() == null)
+        if ("Bone" == other.name.Substring(0, 4) && mArmManager.GetEnablArmCatchingObject() != null)
         {
-            mChangeCount += Time.deltaTime;
-            if (mChangeCount >= 1.0f)
+            ArmManager.HookState state = mArmManager.GetArmInputYAndIsGround();
+
+            Rod catchingrod = other.GetComponent<RodTurnBone>().GetRod().GetComponent<Rod>();
+
+            CatchObject obj = mArmManager.GetEnablArmCatchingObject();
+            if (state.armInputY > 0.0f && catchingrod.GetCatchType() == CatchObject.CatchType.Dynamic)
             {
-                other.GetComponent<RodTurnBone>().GetRod().GetComponent<Rod>().SetCatchType(CatchObject.CatchType.Static);
+                mArmManager.GetEnablPliersMove().ForceCatchReleaseHungRod();
+                catchingrod.SetCatchType(CatchObject.CatchType.Static);
+                mArmManager.GetEnablPliersMove().ForceCatching(obj);
             }
+            //else if (InputManager.GetMove().magnitude > 0.0f && state.playerIsGround && catchingrod.GetCatchType() == CatchObject.CatchType.Static)
+            else if (state.armInputY < 0.0f && state.playerIsGround && catchingrod.GetCatchType() == CatchObject.CatchType.Static)
+            {
+                mArmManager.GetEnablPliersMove().ForceCatchReleaseHungRod();
+                catchingrod.SetCatchType(CatchObject.CatchType.Dynamic);
+                mArmManager.GetEnablPliersMove().ForceCatching(obj);
+            }
+
+
+            //mChangeCount += Time.deltaTime;
+            //if (mChangeCount >= 1.0f)
+            //{
+            //    other.GetComponent<RodTurnBone>().GetRod().GetComponent<Rod>().SetCatchType(CatchObject.CatchType.Static);
+            //}
         }
         if ("Bone" == other.name.Substring(0, 4))
         {
@@ -46,6 +66,9 @@ public class HungRodCollision : MonoBehaviour {
     }
 
 
-
+    public bool GetHungFlag()
+    {
+        return mIsCollision;
+    }
 
 }

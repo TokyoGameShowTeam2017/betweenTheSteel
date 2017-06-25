@@ -6,8 +6,12 @@ public class TutorealIventPlayerMove : MonoBehaviour
 {
     private PlayerTutorialControl mPlayerTutoreal;
     private TutorealText mText;
+    private GameObject mPlayerCamera;
 
     private Dictionary<InputDir, bool> mInputFlags;
+    private Dictionary<InputDir, GameObject> mInputPlates;
+
+    private Transform mMoveCheckTrans;
     [SerializeField, Tooltip("何秒間でINPUTをOKにするか")]
     private float m_InputTime = 0.5f;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
@@ -34,7 +38,11 @@ public class TutorealIventPlayerMove : MonoBehaviour
     public bool m_PlayerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
-
+    struct PlateState
+    {
+        GameObject plate;
+        float colorRed;
+    }
 
     enum InputDir
     {
@@ -53,16 +61,26 @@ public class TutorealIventPlayerMove : MonoBehaviour
         mText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
 
+        mPlayerCamera = GameObject.FindGameObjectWithTag("RawCamera").gameObject;
+
         mInputTime = 0.0f;
         mInputDir = InputDir.INPUT_NO;
         mNowInputDir = InputDir.INPUT_NO;
 
+        mInputPlates = new Dictionary<InputDir, GameObject>();
         mInputFlags = new Dictionary<InputDir, bool>();
         //フラグ初期化
         mInputFlags[InputDir.INPUT_LEFT] = false;
         mInputFlags[InputDir.INPUT_RIGHT] = false;
         mInputFlags[InputDir.INPUT_BACK] = false;
         mInputFlags[InputDir.INPUT_FRONT] = false;
+
+        mMoveCheckTrans = transform.FindChild("PlayerMoveCheck");
+        mInputPlates[InputDir.INPUT_LEFT] = mMoveCheckTrans.FindChild("Left").gameObject;
+        mInputPlates[InputDir.INPUT_RIGHT] = mMoveCheckTrans.FindChild("Right").gameObject;
+        mInputPlates[InputDir.INPUT_FRONT] = mMoveCheckTrans.FindChild("Front").gameObject;
+        mInputPlates[InputDir.INPUT_BACK] = mMoveCheckTrans.FindChild("Back").gameObject;
+
     }
 
     // Update is called once per frame
@@ -70,6 +88,14 @@ public class TutorealIventPlayerMove : MonoBehaviour
     {
         if (!GetComponent<TutorealIventFlag>().GetIventFlag() ||
         mText.GetDrawTextFlag()) return;
+
+        mMoveCheckTrans.gameObject.SetActive(true);
+        mMoveCheckTrans.transform.position = mPlayerTutoreal.gameObject.transform.position;
+        mMoveCheckTrans.rotation =
+            Quaternion.Euler(mMoveCheckTrans.rotation.eulerAngles.x,
+            mPlayerCamera.transform.rotation.eulerAngles.y,
+            mMoveCheckTrans.rotation.eulerAngles.z);
+
         mPlayerTutoreal.SetIsArmMove(!m_PlayerArmMove);
         mPlayerTutoreal.SetIsPlayerMove(!m_PlayerMove);
         mPlayerTutoreal.SetIsCamerMove(!m_PlayerCameraMove);
@@ -107,22 +133,38 @@ public class TutorealIventPlayerMove : MonoBehaviour
         if (inputVec.y >= 1.0f) mInputDir = InputDir.INPUT_FRONT;
         if (inputVec.y <= -1.0f) mInputDir = InputDir.INPUT_BACK;
 
-
-        if (mInputDir != InputDir.INPUT_NO)
+        if (mInputDir == InputDir.INPUT_NO)
         {
-            if (mInputDir == mNowInputDir)
+            mInputPlates[InputDir.INPUT_BACK].GetComponent<PlayerMoveCheckPlate>().SetColor(0.0f);
+            mInputPlates[InputDir.INPUT_FRONT].GetComponent<PlayerMoveCheckPlate>().SetColor(0.0f);
+            mInputPlates[InputDir.INPUT_LEFT].GetComponent<PlayerMoveCheckPlate>().SetColor(0.0f);
+            mInputPlates[InputDir.INPUT_RIGHT].GetComponent<PlayerMoveCheckPlate>().SetColor(0.0f);
+            mInputTime = 0.0f;
+            return;
+        }
+
+        if (!mInputFlags[mInputDir])
+        {
+            if (mInputDir != mNowInputDir)
             {
-                mInputTime += Time.deltaTime;
+                mInputTime = 0.0f;
+                if (mNowInputDir != InputDir.INPUT_NO)
+                    mInputPlates[mNowInputDir].GetComponent<PlayerMoveCheckPlate>().SetColor(0.0f);
+
             }
             else
-                mInputTime = 0.0f;
-        }
-        mNowInputDir = mInputDir;
+            {
+                mInputTime += Time.deltaTime;
+                mInputPlates[mInputDir].GetComponent<PlayerMoveCheckPlate>().SetColor(mInputTime);
+            }
 
-        if (mInputTime >= m_InputTime)
-        {
-            mInputFlags[mInputDir] = true;
-            mInputTime = 0.0f;
+            if (mInputTime >= m_InputTime)
+            {
+                mInputFlags[mInputDir] = true;
+                mInputPlates[mInputDir].GetComponent<PlayerMoveCheckPlate>().IsDead();
+            }
+
+            mNowInputDir = mInputDir;
         }
 
 
@@ -131,8 +173,6 @@ public class TutorealIventPlayerMove : MonoBehaviour
             mInputFlags[InputDir.INPUT_LEFT] &&
             mInputFlags[InputDir.INPUT_RIGHT])
         {
-            //次のイベントテキスト有効化
-
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
                 for (int i = 0; m_IventCollisions.Length > i; i++)
