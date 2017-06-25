@@ -13,7 +13,7 @@ public class SteppingOnSwitchPush : MonoBehaviour {
     private bool m_Repeat = false;
 
     [SerializeField]
-    private GameObject m_MoveObject;
+    private GameObject m_Switch;
 
     // Use this for initialization
     void Start () {
@@ -26,30 +26,14 @@ public class SteppingOnSwitchPush : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (GameObject.Find("SteppingSwitch3").GetComponent<SteppingOnSwitch>().GetIsCollide() &&
-            !m_Repeat)
-        {
-            //MoveObjectを動かす
-            m_MoveObject.GetComponent<MoveObject>().isMotion = true;
 
-            m_Repeat = true;
-        }
-        else if (!GameObject.Find("SteppingSwitch3").GetComponent<SteppingOnSwitch>().GetIsCollide() &&
-                 m_Repeat)
-        {
-            //MoveObjectを動かす
-            m_MoveObject.GetComponent<MoveObject>().isMotion = true;
-            m_Rate = 1.0f;
-            m_Repeat = false;
-        }
-
-        if (m_Repeat)
+        if (m_Switch.GetComponent<SteppingOnSwitch>().GetIsEnter())
         {
             //スイッチを動かす
             if (m_Rate <= 1.0f) m_Rate += 0.04f;
             transform.localPosition = Vector3.Lerp(m_StartPosition, m_GoalPosition, m_Rate);
         }
-        else
+        if (m_Switch.GetComponent<SteppingOnSwitch>().GetIsExit())
         {
             //スイッチを動かす
             if (m_Rate >= 0.0f) m_Rate -= 0.04f;
