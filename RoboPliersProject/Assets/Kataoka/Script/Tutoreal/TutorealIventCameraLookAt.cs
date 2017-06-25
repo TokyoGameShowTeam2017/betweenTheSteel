@@ -6,6 +6,8 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
 
     private PlayerTutorialControl mPlayerTutoreal;
     private TutorealText mText;
+    private  Transform[] mTransforms;
+
     //プレイヤーカメラ
     private GameObject mPlayerCamera;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
@@ -37,15 +39,19 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
         mText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         mPlayerCamera = GameObject.FindGameObjectWithTag("RawCamera");
+        mTransforms = transform.GetComponentsInChildren<Transform>();
+        LookAtActiveObject(false);
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-        bool flag = mText.GetDrawTextFlag();
-        bool flag2 = GetComponent<TutorealIventFlag>().GetIventFlag();
+        if (GetComponent<TutorealIventFlag>().GetIventFlag())
+            LookAtActiveObject(true);
         if (!GetComponent<TutorealIventFlag>().GetIventFlag() ||
         mText.GetDrawTextFlag()) return;
+
+
         mPlayerTutoreal.SetIsArmMove(!m_PlayerArmMove);
         mPlayerTutoreal.SetIsPlayerMove(!m_PlayerMove);
         mPlayerTutoreal.SetIsCamerMove(!m_PlayerCameraMove);
@@ -78,10 +84,18 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
             mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
             Destroy(gameObject);
         }
-
-
 	}
 
-
+    public void LookAtActiveObject(bool flag)
+    {
+        foreach (var i in mTransforms)
+        {
+            if (i == null) return;
+            if (i.name != name)
+            {
+                i.gameObject.SetActive(flag);
+            }
+        }
+    }
 
 }
