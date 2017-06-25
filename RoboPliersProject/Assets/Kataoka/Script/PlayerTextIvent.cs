@@ -14,6 +14,9 @@ public class PlayerTextIvent : MonoBehaviour
     public bool m_IsDrawPoint;
     [SerializeField, Tooltip("最初からポイントを表示させるか")]
     public bool m_IsDrawFirstPoint;
+    [SerializeField, Tooltip("次のポイントのUIを表示させるか")]
+    public bool m_NextPointUi;
+
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("プレイヤーが当たった時の状態")]
     public bool m_PlayerMove;
     [SerializeField, Tooltip("プレイヤーカメラ移動させるか")]
