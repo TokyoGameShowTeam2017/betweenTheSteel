@@ -63,6 +63,10 @@ public class TutorealIventSetObject : MonoBehaviour {
                 mTransorms.Add(i);
             }
         }
+        foreach (var i in mTransorms)
+        {
+            i.gameObject.SetActive(false);
+        }
     }
 
     void Update()
@@ -71,6 +75,9 @@ public class TutorealIventSetObject : MonoBehaviour {
             mTutorealText.GetDrawTextFlag())
         {
             return;
+        }
+        foreach (var i in mTransorms) {
+            i.gameObject.SetActive(true);
         }
         mPlayerTutorial.SetIsArmRelease(false);
         mPlayerTutorial.SetIsArmMove(!m_PlayerArmMove);
