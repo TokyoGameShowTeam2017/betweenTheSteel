@@ -66,6 +66,9 @@ public class HungRodCollision : MonoBehaviour {
     }
 
 
-
+    public bool GetHungFlag()
+    {
+        return mIsCollision;
+    }
 
 }
