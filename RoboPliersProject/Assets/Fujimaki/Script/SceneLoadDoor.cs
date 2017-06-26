@@ -118,7 +118,7 @@ public class SceneLoadDoor : MonoBehaviour {
     {
         Destroy(SceneLoadInitializer.Instance.usedArea);
 
-        yield return SceneManager.LoadSceneAsync("LoadTmpScene", LoadSceneMode.Additive);
+        yield return SceneManager.LoadSceneAsync("load", LoadSceneMode.Additive);
         Move();
 
         yield return SceneManager.UnloadSceneAsync(unloadSceneName_);
@@ -131,7 +131,7 @@ public class SceneLoadDoor : MonoBehaviour {
             Destroy(playerObject_);
         }
 
-        yield return SceneManager.UnloadSceneAsync("LoadTmpScene");
+        yield return SceneManager.UnloadSceneAsync("load");
 
         Destroy(g);
         Loaded();

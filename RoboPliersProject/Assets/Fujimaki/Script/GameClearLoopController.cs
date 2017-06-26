@@ -39,7 +39,7 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
     private IEnumerator SafeMode()
     {
         Destroy(GameObject.FindGameObjectWithTag("Player"));
-        yield return SceneManager.LoadSceneAsync("Title 1");
+        yield return SceneManager.LoadSceneAsync("title");
     }
 
     private IEnumerator MoveDroneGoalPoint()
