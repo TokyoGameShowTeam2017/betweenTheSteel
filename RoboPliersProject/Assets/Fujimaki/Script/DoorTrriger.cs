@@ -34,5 +34,7 @@ public class DoorTrriger : MonoBehaviour {
         {
             sceneLoadDoor_.CloseBackDoor(g);
         }
+
+        Destroy(gameObject);
     }
 }
