@@ -30,6 +30,7 @@ public class HungRodCollision : MonoBehaviour {
             CatchObject obj = mArmManager.GetEnablArmCatchingObject();
             if (state.armInputY > 0.0f && catchingrod.GetCatchType() == CatchObject.CatchType.Dynamic)
             {
+                mIsCollision = true;
                 mArmManager.GetEnablPliersMove().ForceCatchReleaseHungRod();
                 catchingrod.SetCatchType(CatchObject.CatchType.Static);
                 mArmManager.GetEnablPliersMove().ForceCatching(obj);
