@@ -15,6 +15,9 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
     [SerializeField]
     private DoorTrriger doortrriger;
 
+    [SerializeField]
+    private GameObject sceneLoadDoor;
+
     private GameObject drone;
 
 	void Start ()
@@ -22,7 +25,7 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
         drone = GameObject.FindGameObjectWithTag("RawCamera");
 
-        goalPoint.transform.parent = doortrriger.transform;
+        goalPoint.transform.parent = sceneLoadDoor.transform;
         if (safeMode)
         {
             StartCoroutine(SafeMode());

@@ -10,7 +10,8 @@ public class StartCorridor : MonoBehaviour {
         if (SceneLoadInitializer.Instance.continueScene)
         {
             Destroy(gameObject);
-        }else
+        }
+        else
         {
             SceneLoadInitializer.Instance.usedArea = gameObject;
         }
