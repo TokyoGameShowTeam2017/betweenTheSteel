@@ -102,6 +102,7 @@ public class SceneLoadDoor : MonoBehaviour {
 
     public void CloseBackDoor(GameObject player)
     {
+        
         StartCoroutine(DoorAnim(false, false, LoadNextScene));
         playerObject_ = player;
     }
@@ -175,6 +176,8 @@ public class SceneLoadDoor : MonoBehaviour {
         StartCoroutine(DoorAnim(true, true));
         
         SceneLoadInitializer.Instance.usedArea = gameObject;
+
+        GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(true);
     }
 
 

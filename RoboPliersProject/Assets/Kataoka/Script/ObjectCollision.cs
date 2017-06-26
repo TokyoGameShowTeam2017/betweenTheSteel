@@ -18,7 +18,11 @@ public class ObjectCollision : MonoBehaviour {
 
     public void OnTriggerStay(Collider other)
     {
-        mIsCollision = true;
+        if (other.name.Substring(0, 4) != "Plie"&&
+            other.GetComponent<CatchObject>()==null)
+        {
+            mIsCollision = true;
+        }
     }
 
     public bool GetCollisionFlag()

@@ -82,9 +82,9 @@ public class PlayerTextIvent : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public void IsCollisionFlag()
+    public void IsCollisionFlag(bool flag = true)
     {
-        m_IsCollision = true;
+        m_IsCollision = flag;
     }
 
     public GameObject GetIvent()
