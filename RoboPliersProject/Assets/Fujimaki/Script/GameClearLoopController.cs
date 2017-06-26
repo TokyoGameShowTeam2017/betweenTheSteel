@@ -41,8 +41,11 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
     private IEnumerator MoveDroneGoalPoint()
     {
         Vector3 defaultPosition = drone.transform.position;
+
         float time = 0;
         float arriveTime = 8.0f;
+
+        drone.transform.parent = null;
         while (time < 1)
         {
             time += Time.deltaTime / arriveTime;
@@ -51,7 +54,8 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
             yield return null;
         }
 
-        doortrriger.Execute(GameObject.FindGameObjectWithTag("Player"));
+        Destroy(GameObject.FindGameObjectWithTag("Player"));
+        doortrriger.Execute(drone);
     }
 	
 	void Update ()
