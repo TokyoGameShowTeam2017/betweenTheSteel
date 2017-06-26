@@ -264,4 +264,9 @@ public class StageSelectMap : MonoBehaviour
 
         SceneManager.UnloadSceneAsync("title");
     }
+
+    private void AllCompleat()
+    {
+
+    }
 }
