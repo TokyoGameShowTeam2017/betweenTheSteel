@@ -176,6 +176,8 @@ public class SceneLoadDoor : MonoBehaviour {
         StartCoroutine(DoorAnim(true, true));
         
         SceneLoadInitializer.Instance.usedArea = gameObject;
+
+        GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(true);
     }
 
 

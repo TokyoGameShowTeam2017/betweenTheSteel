@@ -215,7 +215,6 @@ public class StageSelectMap : MonoBehaviour
 
         SceneManager.UnloadSceneAsync("Stage01");
         yield return SceneManager.LoadSceneAsync(loadedScene, LoadSceneMode.Additive);
-
         StartCoroutine(StartScene(num, GameObject.FindGameObjectWithTag("ThumbnailCamera")));
     }
 
@@ -266,11 +265,11 @@ public class StageSelectMap : MonoBehaviour
 
         SceneManager.UnloadSceneAsync("title");
 
-        AllCompleat();
+        SwitchPlayerText(true);
     }
 
-    private void AllCompleat()
+    private void SwitchPlayerText(bool enable)
     {
-
+        GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(enable);
     }
 }
