@@ -10,8 +10,8 @@ public class TutorealIventRodCut : MonoBehaviour
 
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
-    [SerializeField, Tooltip("Rod")]
-    public GameObject m_Rod;
+    [SerializeField, Tooltip("Rodたち")]
+    public GameObject[] m_Rod;
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("目的を達成した時のプレイヤーの状態")]
     public bool m_PlayerClerMove;
@@ -51,22 +51,26 @@ public class TutorealIventRodCut : MonoBehaviour
         mTutorialPlayer.SetIsCamerMove(!m_PlayerCameraMove);
         mTutorialPlayer.SetIsArmCatchAble(!m_PlayerArmCath);
         mTutorialPlayer.SetIsArmRelease(!m_PlayerArmNoCath);
-        //Cutされたら
-        if (m_Rod.GetComponent<CutRod>().GetCutFlag())
-        {
-            //次のイベントテキスト有効化
-            if (m_IventCollisions.Length != 0)
-                for (int i = 0; m_IventCollisions.Length > i; i++)
-                {
-                    m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
-                }
-            mTutorialPlayer.SetIsArmMove(!m_PlayerClerArmMove);
-            mTutorialPlayer.SetIsPlayerMove(!m_PlayerClerMove);
-            mTutorialPlayer.SetIsCamerMove(!m_PlayerClerCameraMove);
-            mTutorialPlayer.SetIsArmCatchAble(!m_PlayerClerArmCath);
-            mTutorialPlayer.SetIsArmRelease(!m_PlayerClerArmNoCath);
 
-            Destroy(gameObject);
+        foreach (var i in m_Rod)
+        {
+            //Cutされたら
+            if (i.GetComponent<CutRod>().GetCutFlag())
+            {
+                //次のイベントテキスト有効化
+                if (m_IventCollisions.Length != 0)
+                    for (int j = 0; m_IventCollisions.Length > j; j++)
+                    {
+                        m_IventCollisions[j].GetComponent<PlayerTextIvent>().IsCollisionFlag();
+                    }
+                mTutorialPlayer.SetIsArmMove(!m_PlayerClerArmMove);
+                mTutorialPlayer.SetIsPlayerMove(!m_PlayerClerMove);
+                mTutorialPlayer.SetIsCamerMove(!m_PlayerClerCameraMove);
+                mTutorialPlayer.SetIsArmCatchAble(!m_PlayerClerArmCath);
+                mTutorialPlayer.SetIsArmRelease(!m_PlayerClerArmNoCath);
+
+                Destroy(gameObject);
+            }
         }
     }
 }
