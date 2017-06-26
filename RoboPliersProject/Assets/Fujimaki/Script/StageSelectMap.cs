@@ -263,10 +263,12 @@ public class StageSelectMap : MonoBehaviour
         camera.enabled = false;
 
         SceneManager.UnloadSceneAsync("title");
+        AllCompleat();
     }
 
     private void AllCompleat()
     {
-
+        //ここを呼んでね
+        GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag();
     }
 }
