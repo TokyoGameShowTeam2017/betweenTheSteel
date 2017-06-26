@@ -22,6 +22,18 @@ public class MoveObjectMiniMap : MonoBehaviour {
         Destroy(mMiniMapObject.GetComponent<MoveObject>());
         Destroy(mMiniMapObject.GetComponent<MoveObjectMiniMap>());
 
+
+        Transform[] transs;
+        transs = miniMap.transform.GetComponentsInChildren<Transform>();
+
+        foreach (var i in transs)
+        {
+            if (i.name != miniMap.name)
+            {
+                Destroy(i);
+            }
+        }
+
         mMiniMapObject.transform.localPosition = transform.localPosition;
         //mMiniMapObject.GetComponent<Renderer>().material = m_MiniMapMaterial;
 
