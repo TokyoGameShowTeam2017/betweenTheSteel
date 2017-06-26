@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorealIventTurnRod : MonoBehaviour
+public class TutorealIventRodCut : MonoBehaviour
 {
+
+    private PlayerTutorialControl mTutorialPlayer;
+    private TutorealText mTutorialText;
 
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
+    [SerializeField, Tooltip("Rod")]
+    public GameObject m_Rod;
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("目的を達成した時のプレイヤーの状態")]
     public bool m_PlayerClerMove;
@@ -29,39 +34,25 @@ public class TutorealIventTurnRod : MonoBehaviour
     public bool m_PlayerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
-
-    //プレイヤーチュートリアル
-    private PlayerTutorialControl mPlayerTutoreal;
-    //チュートリアルテキスト
-    private TutorealText mTutorealText;
-
-
-    //比較するボーン番号
-    private int mBoneNumber;
     // Use this for initialization
     void Start()
     {
-        mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
-        mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
-
+        mTutorialPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
+        mTutorialText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (!GetComponent<TutorealIventFlag>().GetIventFlag() ||
-            mTutorealText.GetDrawTextFlag()) return;
-
-        //プレイヤー状態登録
-        mPlayerTutoreal.SetIsArmMove(!m_PlayerArmMove);
-        mPlayerTutoreal.SetIsPlayerMove(!m_PlayerMove);
-        mPlayerTutoreal.SetIsCamerMove(!m_PlayerCameraMove);
-        mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
-        mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
-
-
-        //曲がって当たったら
-        if (transform.FindChild("Collision").GetComponent<TutorealIventCollision>().GetIsCollision())
+        mTutorialText.GetDrawTextFlag()) return;
+        mTutorialPlayer.SetIsArmMove(!m_PlayerArmMove);
+        mTutorialPlayer.SetIsPlayerMove(!m_PlayerMove);
+        mTutorialPlayer.SetIsCamerMove(!m_PlayerCameraMove);
+        mTutorialPlayer.SetIsArmCatchAble(!m_PlayerArmCath);
+        mTutorialPlayer.SetIsArmRelease(!m_PlayerArmNoCath);
+        //Cutされたら
+        if (m_Rod.GetComponent<CutRod>().GetCutFlag())
         {
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
@@ -69,12 +60,11 @@ public class TutorealIventTurnRod : MonoBehaviour
                 {
                     m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                 }
-            //プレイヤー状態登録
-            mPlayerTutoreal.SetIsArmMove(!m_PlayerClerArmMove);
-            mPlayerTutoreal.SetIsPlayerMove(!m_PlayerClerMove);
-            mPlayerTutoreal.SetIsCamerMove(!m_PlayerClerCameraMove);
-            mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerClerArmCath);
-            mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
+            mTutorialPlayer.SetIsArmMove(!m_PlayerClerArmMove);
+            mTutorialPlayer.SetIsPlayerMove(!m_PlayerClerMove);
+            mTutorialPlayer.SetIsCamerMove(!m_PlayerClerCameraMove);
+            mTutorialPlayer.SetIsArmCatchAble(!m_PlayerClerArmCath);
+            mTutorialPlayer.SetIsArmRelease(!m_PlayerClerArmNoCath);
 
             Destroy(gameObject);
         }

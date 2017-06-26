@@ -14,6 +14,8 @@ public class CutRod : MonoBehaviour
     private bool mIsSpawnPrefab;
     //重力を適応させるか
     private bool mIsPrefabGravity;
+    //カットされたか
+    private bool mIsCutFlag;
     [SerializeField, Tooltip("ここはいじらないで")]
     public bool m_StartRodFlag;
     [SerializeField, Tooltip("両端固定されているか"), Space(15)]
@@ -27,7 +29,7 @@ public class CutRod : MonoBehaviour
         //初期化
         mIsSpawnPrefab = false;
         mIsPrefabGravity = m_FixBothEnds;
-
+        mIsCutFlag = false;
         //取得
         m_Bones = GetComponent<Rod>().GetBone();
         m_RotatePoints = GetComponent<Rod>().GetRotatePoint();
@@ -48,6 +50,8 @@ public class CutRod : MonoBehaviour
             {
                 //端は切れない（変える）
                 if (i == m_Bones.Count - 1) return;
+                //切れたよ
+                mIsCutFlag = true;
                 //親情報を初期化
                 m_Bones[i + 1].transform.parent.parent = null;
                 //新しいオブジェクト生成
@@ -127,5 +131,9 @@ public class CutRod : MonoBehaviour
                 mIsSpawnPrefab = true;
             }
         }
+    }
+    public bool GetCutFlag()
+    {
+        return mIsCutFlag;
     }
 }
