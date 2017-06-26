@@ -22,6 +22,7 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
         drone = GameObject.FindGameObjectWithTag("RawCamera");
 
+        goalPoint.transform.parent = doortrriger.transform;
         if (safeMode)
         {
             StartCoroutine(SafeMode());
@@ -41,8 +42,11 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
     private IEnumerator MoveDroneGoalPoint()
     {
         Vector3 defaultPosition = drone.transform.position;
+
         float time = 0;
         float arriveTime = 8.0f;
+
+        drone.transform.parent = null;
         while (time < 1)
         {
             time += Time.deltaTime / arriveTime;
@@ -51,15 +55,7 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
             yield return null;
         }
 
-        doortrriger.Execute(GameObject.FindGameObjectWithTag("Player"));
-    }
-	
-	void Update ()
-    {
-		
-	}
-
-    public void MoveDrone()
-    {
+        Destroy(GameObject.FindGameObjectWithTag("Player"));
+        doortrriger.Execute(drone);
     }
 }
