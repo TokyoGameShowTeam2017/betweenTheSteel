@@ -53,7 +53,9 @@ public class ArmManager : MonoBehaviour
 
     //ＵＩ(表示／非表示を行う)
     private Transform m_UI;
-
+    //アームのUI
+    private Transform[] m_GaugeUIs;
+    private Transform[] m_ButtonUIs;
 
     private TutorialSetting m_TutorialSetting;
 
@@ -101,6 +103,31 @@ public class ArmManager : MonoBehaviour
         IsCatchAble = true;
         IsRelease = true;
         IsStretch = true;
+
+        //UIを登録
+        m_GaugeUIs = new Transform[4];
+        m_ButtonUIs = new Transform[4];
+        Transform gauge = m_UI.FindChild("gauge");
+        string name = "";
+        for(int i = 0;i < 4 ;i++)
+        {
+            name = NameByID(i);
+
+            m_GaugeUIs[i] = gauge.FindChild(name + "gauge1");
+            m_ButtonUIs[i] = gauge.Find(name);
+        }
+
+        //アクティブではないアームのＵＩを変更
+        for (int i = 0; i < 4; i++)
+        {
+            if(!m_TutorialSetting.GetIsActiveArm(i))
+            {
+                SetGaugeUINoActive(i);
+            }
+        }
+
+        //SetGaugeUINoActive(3);
+
 	}
 	
 	void Update()
@@ -505,6 +532,51 @@ public class ArmManager : MonoBehaviour
         }
     }
 
+    private string NameByID(int id)
+    {
+        string result = "";
+        switch (id)
+        {
+            case 0: result = "Y"; break;
+            case 1: result = "B"; break;
+            case 2: result = "A"; break;
+            case 3: result = "X"; break;
+            default: break;
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// ゲージのＵＩを非アクティブに設定する
+    /// </summary>
+    public void SetGaugeUINoActive(int id)
+    {
+        string name = NameByID(id);
+        m_GaugeUIs[id].FindChild(name + "gaugearrow").GetComponent<RawImage>().color = new Color(0, 0, 0, 50);
+        m_GaugeUIs[id].FindChild(name + "gauge2").GetComponent<RawImage>().color = new Color(0, 0, 0, 50);
+        m_ButtonUIs[id].GetComponent<RawImage>().color = new Color(0, 0, 0, 50);
+    }
+    /// <summary>
+    /// ゲージのＵＩをアクティブに設定する
+    /// </summary>
+    public void SetGaugeUIActive(int id)
+    {
+        string name = NameByID(id);
+        Color armcolor = Color.white;
+        switch(id)
+        {
+            //後から色変更できるように直打ち
+            case 0: armcolor = new Color(255, 255, 0, 255); break;
+            case 1: armcolor = new Color(255, 0, 0, 255); break;
+            case 2: armcolor = new Color(0, 255, 0, 255); break;
+            case 3: armcolor = new Color(0, 0, 255, 255); break;
+            default: break;
+        }
+        m_GaugeUIs[id].FindChild(name + "gaugearrow").GetComponent<RawImage>().color = new Color(0, 0, 0, 255);
+        m_GaugeUIs[id].FindChild(name + "gauge2").GetComponent<RawImage>().color = armcolor;
+        m_ButtonUIs[id].GetComponent<RawImage>().color = armcolor;
+    }
+
     public struct HookState
     {
         public float armInputY;
@@ -523,4 +595,7 @@ public class ArmManager : MonoBehaviour
         result.playerIsGround = p.IsGround;
         return result;
     }
+
+
+
 }
