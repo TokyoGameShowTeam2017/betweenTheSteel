@@ -10,20 +10,20 @@ public class TutorealIventCollision : MonoBehaviour {
         mIsCollision = false;
 	}
 
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerStay(Collider other)
     {
-        if (other.tag != "Player")
-        {
+        if (other.name.Substring(0,4)=="iron"||
+            other.name.Substring(0,4)=="Bone")
             mIsCollision = true;
-        }
+        
     }
 
     public void OnTriggerExit(Collider other)
     {
-        if (other.tag != "Player")
-        {
+        if (other.name.Substring(0, 4) == "iron" ||
+            other.name.Substring(0, 4) == "Bone")
             mIsCollision = false;
-        }
+        
     }
 
     public bool GetIsCollision()
