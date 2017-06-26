@@ -163,6 +163,10 @@ public class TutorialSetting : MonoBehaviour
 
         //制限を解除
         m_IsActiveArms[armID] = true;
+
+        //アームのＵＩの色を変更
+        m_ArmManager.SetGaugeUIActive(armID);
+
         yield break;
     }
 

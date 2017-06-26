@@ -43,9 +43,15 @@ public class MenuCollection : MonoBehaviour
     private int m_BeflorNum;
 
     private SceneState m_MenuState;
+
+    private StickState m_StickState;
+    private bool m_Once;
     // Use this for initialization
     void Start()
     {
+        m_StickState = StickState.None;
+        m_Once = false;
+
         m_MenuNum = 0;
         m_BeflorNum = 0;
         m_IsSceneEnd = false;
@@ -74,6 +80,8 @@ public class MenuCollection : MonoBehaviour
             case SceneState.MenuSelectState:
                 //メニュー選択
                 MenuSelect();
+                StickState l_state = InputManager.GetStick();
+                print(l_state);
 
                 //選択されているメニューの色を変える
                 MenuColoring();
@@ -89,31 +97,55 @@ public class MenuCollection : MonoBehaviour
     /// </summary>
     private void MenuSelect()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        m_StickState = InputManager.GetStick();
+
+        switch (m_StickState)
         {
-            m_MenuNum = m_MenuNum - 1;
-            if (m_MenuNum - 1 < -1)
-            {
-                m_MenuNum = 0;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (m_MenuNum == 4) return;
-            m_MenuNum = m_MenuNum + 1;
-            if (m_MenuNum + 1 > 4)
-            {
-                m_MenuNum = 3;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            m_BeflorNum = m_MenuNum;
-            m_MenuNum = 4;
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            m_MenuNum = m_BeflorNum;
+            case StickState.Up:
+                if (!m_Once)
+                {
+                    m_Once = true;
+                    m_MenuNum = m_MenuNum - 1;
+                    if (m_MenuNum - 1 < -1)
+                    {
+                        m_MenuNum = 0;
+                    }
+                }
+                break;
+
+            case StickState.Down:
+                if (!m_Once)
+                {
+                    m_Once = true;
+                    if (m_MenuNum == 4) return;
+                    m_MenuNum = m_MenuNum + 1;
+                    if (m_MenuNum + 1 > 4)
+                    {
+                        m_MenuNum = 3;
+                    }
+                }
+                break;
+
+            case StickState.Right:
+                if (!m_Once)
+                {
+                    if (m_MenuNum != 4) return;
+                    m_MenuNum = m_BeflorNum;
+                }
+                break;
+
+            case StickState.Left:
+                if (!m_Once)
+                {
+                    if (m_MenuNum == 4) return;
+                    m_BeflorNum = m_MenuNum;
+                    m_MenuNum = 4;
+                }
+                break;
+
+            default:
+                m_Once = false;
+                break;
         }
     }
 
@@ -209,7 +241,7 @@ public class MenuCollection : MonoBehaviour
         switch (m_MenuNum)
         {
             case 0:
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (InputManager.GetSelectArm().isDown ||Input.GetKeyDown(KeyCode.Space))
                 {
                     m_State = MenuState.GameStart;
                     m_Scale = GameObject.Find("startgame").transform.localScale;
@@ -232,7 +264,7 @@ public class MenuCollection : MonoBehaviour
                 break;
 
             case 1:
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (InputManager.GetSelectArm().isDown || Input.GetKeyDown(KeyCode.Space))
                 {
                     m_State = MenuState.StageSelect;
                     m_Scale = GameObject.Find("selectstage").transform.localScale;
@@ -258,7 +290,7 @@ public class MenuCollection : MonoBehaviour
                 break;
 
             case 2:
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (InputManager.GetSelectArm().isDown || Input.GetKeyDown(KeyCode.Space))
                 {
                     m_State = MenuState.Manual;
                 }
@@ -269,7 +301,7 @@ public class MenuCollection : MonoBehaviour
                 break;
 
             case 3:
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (InputManager.GetSelectArm().isDown || Input.GetKeyDown(KeyCode.Space))
                 {
                     m_State = MenuState.Exit;
                 }
@@ -280,7 +312,7 @@ public class MenuCollection : MonoBehaviour
                 break;
 
             case 4:
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (InputManager.GetSelectArm().isDown || Input.GetKeyDown(KeyCode.Space))
                 {
                     m_State = MenuState.Back;
                 }

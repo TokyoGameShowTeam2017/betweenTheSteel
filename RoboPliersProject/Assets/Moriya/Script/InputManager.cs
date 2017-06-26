@@ -8,6 +8,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum StickState
+{
+    Up,
+    Down,
+    Left,
+    Right,
+
+    None
+}
+
 public class InputManager : MonoBehaviour 
 {
     /// <summary>
@@ -112,6 +122,18 @@ public class InputManager : MonoBehaviour
         return vec;
     }
 
+    public static StickState GetStick()
+    {
+        float vecX = GetMove().x;
+        float vecY = GetMove().y;
+
+        if (vecX > 0.3f) return StickState.Right;
+        if (vecX < -0.3f) return StickState.Left;
+        if (vecY > 0.3f) return StickState.Up;
+        if (vecY < -0.3f) return StickState.Down;
+
+        return StickState.None;
+    }
 
     /// <summary>
     /// 右スティック入力方向を返す
@@ -273,4 +295,6 @@ public class InputManager : MonoBehaviour
     {
         return Input.GetButton(InputPadType.Instance.TypeName + "Right1");
     }
+
+
 }

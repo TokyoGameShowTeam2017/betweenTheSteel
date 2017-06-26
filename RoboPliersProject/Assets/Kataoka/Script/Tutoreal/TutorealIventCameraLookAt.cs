@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorealIventCameraLookAt : MonoBehaviour {
+public class TutorealIventCameraLookAt : MonoBehaviour
+{
 
     private PlayerTutorialControl mPlayerTutoreal;
     private TutorealText mText;
-    private  Transform[] mTransforms;
+    private Transform[] mTransforms;
 
     //プレイヤーカメラ
     private GameObject mPlayerCamera;
@@ -34,17 +35,19 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
     public bool m_PlayerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         mText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         mPlayerCamera = GameObject.FindGameObjectWithTag("RawCamera");
         mTransforms = transform.GetComponentsInChildren<Transform>();
         LookAtActiveObject(false);
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
 
         if (GetComponent<TutorealIventFlag>().GetIventFlag())
             LookAtActiveObject(true);
@@ -58,10 +61,10 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
         mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
 
-        Ray ray = new Ray(mPlayerCamera.transform.position, mPlayerCamera.transform.forward*50.0f);
+        Ray ray = new Ray(mPlayerCamera.transform.position, mPlayerCamera.transform.forward * 50.0f);
         RaycastHit hit;
-        int layer = ~(1 << 15);
-        if (Physics.SphereCast(ray,1.5f,out hit,200.0f,layer))
+        int layer = ~(1 << 15 | 1 << 17);
+        if (Physics.SphereCast(ray, 1.5f, out hit, 200.0f, layer))
         {
             if (hit.collider.name == "LookAtObject")
             {
@@ -69,7 +72,7 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
             }
         }
         //子を全部消したら
-        if (transform.childCount<=0)
+        if (transform.childCount <= 0)
         {
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
@@ -84,7 +87,7 @@ public class TutorealIventCameraLookAt : MonoBehaviour {
             mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
             Destroy(gameObject);
         }
-	}
+    }
 
     public void LookAtActiveObject(bool flag)
     {

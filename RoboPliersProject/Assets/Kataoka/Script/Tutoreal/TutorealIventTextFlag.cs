@@ -6,6 +6,7 @@ public class TutorealIventTextFlag : MonoBehaviour
 {
     private PlayerTutorialControl mTutorealPlayer;
     private TutorealText mTutorealText;
+    private GameObject mPoint;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("テキストが終わった時のプレイヤーの状態")]
@@ -18,21 +19,30 @@ public class TutorealIventTextFlag : MonoBehaviour
     public bool m_PlayerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
-
+    [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15)]
+    public bool m_NextDrawPoint;
     // Use this for initialization
     void Start()
     {
         mTutorealPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
+        if(m_NextDrawPoint)
+        mPoint = m_IventCollisions[0].transform.FindChild("Point").gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (GetComponent<TutorealIventFlag>().GetIventFlag() &&
+            mPoint != null &&
+            m_NextDrawPoint)
+        {
+            mPoint.SetActive(true);
+        }
         if (!GetComponent<TutorealIventFlag>().GetIventFlag()) return;
 
         //テキストが終わったら全部の移動を解除
-        if(!mTutorealText.GetDrawTextFlag())
+        if (!mTutorealText.GetDrawTextFlag())
         {
             mTutorealPlayer.SetIsPlayerAndCameraMove(true);
             mTutorealPlayer.SetIsArmMove(true);

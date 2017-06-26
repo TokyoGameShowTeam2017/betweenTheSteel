@@ -563,10 +563,9 @@ public class PliersMove : MonoBehaviour
 
         EasyInput();
 
-
-
         //オブジェクトを切断する
         Cut();
+        KusariCut();
 
 
         //前フレームと同じ入力ならここで終了　これ以降の行はボタンを入力した瞬間or離した瞬間のみ呼ばれる
