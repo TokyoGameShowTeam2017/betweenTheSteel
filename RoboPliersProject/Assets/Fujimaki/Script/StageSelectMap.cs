@@ -48,12 +48,18 @@ public class StageSelectMap : MonoBehaviour
     {
         yield return SceneManager.LoadSceneAsync("Stage01", LoadSceneMode.Additive);
 
-        float time = 0;
-        while (time < 1)
+        if (!SceneLoadInitializer.Instance.continueScene)
         {
-            time += Time.deltaTime;
-            fadeImage.color = new Color(0, 0, 0, 1 - time);
-            yield return null;
+            float time = 0;
+            while (time < 1)
+            {
+                time += Time.deltaTime;
+                fadeImage.color = new Color(0, 0, 0, 1 - time);
+                yield return null;
+            }
+        }else
+        {
+            fadeImage.color = new Color(0, 0, 0, 0);
         }
 
         GameObject.FindGameObjectWithTag("RawCamera").GetComponent<Camera>().enabled = false;
@@ -257,5 +263,10 @@ public class StageSelectMap : MonoBehaviour
         camera.enabled = false;
 
         SceneManager.UnloadSceneAsync("title");
+    }
+
+    private void AllCompleat()
+    {
+
     }
 }
