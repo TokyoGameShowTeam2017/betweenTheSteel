@@ -42,6 +42,11 @@ public class StageSelectMap : MonoBehaviour
     {
         exit = true;
         StartCoroutine(BackGroundLoad());
+
+        if (SceneLoadInitializer.Instance.continueScene)
+        {
+            fadeImage.color = new Color(0, 0, 0, 0);
+        }
     }
 
     private IEnumerator BackGroundLoad()
@@ -57,9 +62,6 @@ public class StageSelectMap : MonoBehaviour
                 fadeImage.color = new Color(0, 0, 0, 1 - time);
                 yield return null;
             }
-        }else
-        {
-            fadeImage.color = new Color(0, 0, 0, 0);
         }
 
         GameObject.FindGameObjectWithTag("RawCamera").GetComponent<Camera>().enabled = false;
@@ -263,6 +265,8 @@ public class StageSelectMap : MonoBehaviour
         camera.enabled = false;
 
         SceneManager.UnloadSceneAsync("title");
+
+        AllCompleat();
     }
 
     private void AllCompleat()

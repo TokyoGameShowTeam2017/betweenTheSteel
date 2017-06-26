@@ -102,6 +102,7 @@ public class SceneLoadDoor : MonoBehaviour {
 
     public void CloseBackDoor(GameObject player)
     {
+        
         StartCoroutine(DoorAnim(false, false, LoadNextScene));
         playerObject_ = player;
     }
