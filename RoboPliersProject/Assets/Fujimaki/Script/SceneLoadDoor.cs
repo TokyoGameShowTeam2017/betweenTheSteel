@@ -124,6 +124,12 @@ public class SceneLoadDoor : MonoBehaviour {
 
         GameObject g = Instantiate(loadingCanvasPrefab_);
         yield return SceneManager.LoadSceneAsync(nextSceneName_, LoadSceneMode.Additive);
+
+        if (endFrag_)
+        {
+            Destroy(playerObject_);
+        }
+
         yield return SceneManager.UnloadSceneAsync("LoadTmpScene");
 
         Destroy(g);
@@ -166,21 +172,11 @@ public class SceneLoadDoor : MonoBehaviour {
         light2_.color = blueLightColor_;
         reflection_.RenderProbe();
 
-        if(endFrag_)
-        {
-            StartCoroutine(DoorAnim(true, true, End));
-        }
-        else
-        {
-            StartCoroutine(DoorAnim(true, true));
-        }
+        StartCoroutine(DoorAnim(true, true));
+        
         SceneLoadInitializer.Instance.usedArea = gameObject;
     }
 
-    private void End()
-    {
-        Destroy(playerObject_);
-    }
 
     private void Move()
     {
