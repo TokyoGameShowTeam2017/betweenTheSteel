@@ -452,4 +452,9 @@ public class Rod : MonoBehaviour
     {
         mIsHong = true;
     }
+
+    public CatchObject.CatchType GetCatchType()
+    {
+        return m_CatchType;
+    }
 }

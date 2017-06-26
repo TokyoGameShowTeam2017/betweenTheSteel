@@ -13,12 +13,17 @@ public class StageSelectCollection : MonoBehaviour
     private int m_BeforStageNum;
     private RectTransform m_StageSelect;
     private bool m_BackMenu = false;
+
+    private bool m_Once;
+    private StickState m_StickState;
     // Use this for initialization
     void Start()
     {
+        m_Once = false;
         m_IsLoad = false;
         m_BackMenu = false;
         m_StageNum = 1;
+        m_StickState = StickState.None;
         GameObject.Find("sideFrame").GetComponent<MenuFrame>().InitializeSpreadRate();
     }
 
@@ -55,37 +60,59 @@ public class StageSelectCollection : MonoBehaviour
     //選択中のインプット関係
     private void StageSelectInput()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        m_StickState = InputManager.GetStick();
+
+        switch (m_StickState)
         {
-            if (m_StageNum == 20) return;
-            m_StageNum -= 1;
-            m_IsLoad = false;
-            //m_BeforPosition = transform.position;
-            if (m_StageNum - 1 < 0)
-            {
-                m_StageNum = 12;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            if (m_StageNum == 20) return;
-            m_StageNum += 1;
-            m_IsLoad = false;
-            //m_BeforPosition = transform.position;
-            if (m_StageNum + 1 > 13)
-            {
-                m_StageNum = 1;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (m_StageNum == 20) return;
-            m_BeforStageNum = m_StageNum;
-            m_StageNum = 20;
-        }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            m_StageNum = m_BeforStageNum;
+            case StickState.Up:
+                if (!m_Once)
+                {
+                    m_Once = true;
+                    m_StageNum = m_BeforStageNum;
+                }
+                break;
+
+            case StickState.Down:
+                if (!m_Once)
+                {
+                    m_Once = true;
+                    if (m_StageNum == 20) return;
+                    m_BeforStageNum = m_StageNum;
+                    m_StageNum = 20;
+                }
+                break;
+
+            case StickState.Right:
+                if (!m_Once)
+                {
+                    m_Once = true;
+                    if (m_StageNum == 20) return;
+                    m_StageNum += 1;
+                    m_IsLoad = false;
+                    if (m_StageNum + 1 > 13)
+                    {
+                        m_StageNum = 1;
+                    }
+                }
+                break;
+
+            case StickState.Left:
+                if (!m_Once)
+                {
+                    m_Once = true;
+                    if (m_StageNum == 20) return;
+                    m_StageNum -= 1;
+                    m_IsLoad = false;
+                    if (m_StageNum - 1 < 0)
+                    {
+                        m_StageNum = 12;
+                    }
+                }
+                break;
+
+            default:
+                m_Once = false;
+                break;
         }
     }
 
@@ -170,7 +197,7 @@ public class StageSelectCollection : MonoBehaviour
     //メニュー画面へ戻る
     private void BackMenu()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (InputManager.GetSelectArm().isDown || Input.GetKeyDown(KeyCode.Space))
         {
             m_BackMenu = true;
             StageMapUnLoad();
@@ -185,9 +212,9 @@ public class StageSelectCollection : MonoBehaviour
     private void StartStaeMap()
     {
         if (m_StageNum == 20) return;
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (InputManager.GetSelectArm().isDown)
         {
-            //GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().StartOtherScene(m_StageNum);
+            GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().StartOtherScene(m_StageNum);
         }
     }
 }

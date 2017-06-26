@@ -5,11 +5,6 @@ using UnityEngine;
 public class TutorealIventTurnRod : MonoBehaviour
 {
 
-    public GameObject mMainRod1;
-    public GameObject mPlayerMainRod2;
-
-    private List<GameObject> mRotatePoint1;
-    private List<GameObject> mRotatePoint2;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
 
@@ -46,19 +41,6 @@ public class TutorealIventTurnRod : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        mRotatePoint1 = mMainRod1.GetComponent<Rod>().GetBone();
-        mRotatePoint2 = mPlayerMainRod2.GetComponent<Rod>().GetBone();
-
-        int index = 0;
-        foreach (var i in mRotatePoint1)
-        {
-            if (i.transform.eulerAngles.x != 0.0f ||
-                i.transform.eulerAngles.y != 0.0f)
-                break;
-            index++;
-        }
-        mBoneNumber = index;
-
         mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
 
@@ -77,12 +59,9 @@ public class TutorealIventTurnRod : MonoBehaviour
         mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
 
-        Vector3 angle1=mRotatePoint1[mBoneNumber].transform.eulerAngles;
-        Vector3 angle2=mRotatePoint2[mBoneNumber].transform.eulerAngles;
-        float disX =Mathf.Abs(angle1.x-angle2.x);
-        float disZ=Mathf.Abs(angle1.z-angle2.z);
-        //曲がりがほとんど一緒だったら
-        if (disX <= 10.0f && disZ <= 10.0f)
+
+        //曲がって当たったら
+        if (transform.FindChild("Collision").GetComponent<TutorealIventCollision>().GetIsCollision())
         {
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)

@@ -5,8 +5,9 @@ using UnityEngine;
 public class SteppingOnSwitch : MonoBehaviour
 {
 
-    private bool m_IsCollide = false;
+    private bool m_IsEnter = false;
 
+    private bool m_IsExit = false;
     // Use this for initialization
     void Start()
     {
@@ -22,23 +23,29 @@ public class SteppingOnSwitch : MonoBehaviour
     //プレイヤーが触れたら
     public void OnTriggerEnter(Collider other)
     {
-        if (!m_IsCollide)
+        m_IsExit = false;
+        if (!m_IsEnter)
         {
-            m_IsCollide = true;
+            m_IsEnter = true;
         }
     }
 
     public void OnTriggerExit(Collider other)
     {
-        if (m_IsCollide)
+        m_IsEnter = false;
+        if (!m_IsExit)
         {
-            m_IsCollide = false;
+            m_IsExit = true;
         }
     }
 
-    public bool GetIsCollide()
+    public bool GetIsEnter()
     {
-        return m_IsCollide;
+        return m_IsEnter;
+    }
+    public bool GetIsExit()
+    {
+        return m_IsExit;
     }
 
 }

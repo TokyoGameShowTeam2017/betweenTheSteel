@@ -26,7 +26,7 @@ public class ScaffoldChainBreakManager : MonoBehaviour
             if (t.name != name &&
                 t.name != "Chain")
             {
-                if(t.name.Substring(0,6)!="Kusari")
+                if(t.name.Substring(0,5)!="Kusar")
                 mKusaris.Add(t.gameObject);
             }
 
