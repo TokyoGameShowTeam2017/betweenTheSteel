@@ -328,6 +328,9 @@ public class PliersMove : MonoBehaviour
                     if (chi != null)
                         chi.parent = null;
                 } while (chi != null);
+
+
+                
             }
 
 
@@ -439,11 +442,22 @@ public class PliersMove : MonoBehaviour
         m_ArmManager.GetEnablArmMove().SetStaticCatchPoint(m_PlayerAxisMoveY.transform.position);
         m_CatchObject.SetCatchPoint(m_PlayerAxisMoveY.transform.position);
         m_CatchObjPrevPos = m_CatchObject.transform.position;
+
+
+        //他のアーム、ペンチをリセット
+        m_ArmManager.ResetOther(m_ID);
     }
 
     //動かせるオブジェクトを掴んだ時の処理
     private void CatchedDynamic()
     {
+        ////他のオブジェクトが掴んでいるなら掴めない
+        if (m_ArmManager.GetCountCatchingDynamicObjects() >= 2)
+        {
+            Reset();
+            return;
+        }
+
         //掴んだオブジェクトを子にする
         //Rigidbodyが見つかるまで親をたどる
         Rigidbody r;
@@ -475,6 +489,9 @@ public class PliersMove : MonoBehaviour
             m_CatchParent.parent = this.transform;
             m_CatchParent.GetComponent<Rigidbody>().isKinematic = true;
         }
+
+        //他のアーム、ペンチをリセット
+        m_ArmManager.ResetOther(m_ID);
     }
 
     //掴んでいるオブジェクトを手放す処理
@@ -862,6 +879,7 @@ public class PliersMove : MonoBehaviour
         m_Input = false;
         m_LateEasyMoveInput = false;
         m_EasyMoveInput = false;
+        m_GaugeArrowTargetValue = 0.0f;
 
   
         if (!m_TutorialSetting.GetIsActiveArm(m_ID))
