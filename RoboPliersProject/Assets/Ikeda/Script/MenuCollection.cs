@@ -338,10 +338,7 @@ public class MenuCollection : MonoBehaviour
                 if (m_State == MenuState.Back)
                 {
                     /*変えられるなら変えたいところ*/
-
-
-                    GameObject.Find("SceneCollection").GetComponent<SceneCollection>().SetNextScene(0);
-                    GameObject.Find("SceneCollection").GetComponent<SceneCollection>().IsEndScene(true);
+                    transform.FindChild("selectMenu").GetComponent<SelectMenuEnter>().MenusOut();
                 }
                 break;
         }

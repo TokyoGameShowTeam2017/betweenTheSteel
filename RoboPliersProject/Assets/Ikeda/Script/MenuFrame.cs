@@ -53,6 +53,21 @@ public class MenuFrame : MonoBehaviour
                 m_RectLeft.localPosition = Vector3.Lerp(m_StartPositionLeft, new Vector3(-230.0f, 0.0f, 0.0f), m_EnterRate);
                 m_RectRight.localPosition = Vector3.Lerp(m_StartPositionRight, new Vector3(230.0f, 0.0f, 0.0f), m_EnterRate);
             }
+            //メニューからタイトルへ戻るとき
+            else if (GameObject.Find("Canvas menu(Clone)").GetComponent<MenuCollection>().GetMenuState() == 4)
+            {
+                if (GameObject.Find("selectMenu").GetComponent<SelectMenuEnter>().GetIsEndOut())
+                {
+                    if (m_EnterRate > 0) m_EnterRate -= 0.1f;
+                    else
+                    {
+                        GameObject.Find("SceneCollection").GetComponent<SceneCollection>().SetNextScene(0);
+                        GameObject.Find("SceneCollection").GetComponent<SceneCollection>().IsEndScene(true);
+                    }
+                    m_RectLeft.localPosition = Vector3.Lerp(m_StartPositionLeft, new Vector3(-230.0f, 0.0f, 0.0f), m_EnterRate);
+                    m_RectRight.localPosition = Vector3.Lerp(m_StartPositionRight, new Vector3(230.0f, 0.0f, 0.0f), m_EnterRate);
+                }
+            }
         }
     }
 
@@ -108,6 +123,9 @@ public class MenuFrame : MonoBehaviour
 
         return false;
     }
+
+
+
 
     public void InitializeSpreadRate()
     {

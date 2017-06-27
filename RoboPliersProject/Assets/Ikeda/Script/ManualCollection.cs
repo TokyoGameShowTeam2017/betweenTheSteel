@@ -134,6 +134,13 @@ public class ManualCollection : MonoBehaviour {
                 }
                 break;
 
+            case StickState.Right:
+                if (!m_Once)
+                {
+                    m_Once = true;
+                    m_ManualNum = 0;
+                }
+                break;
 
             default:
                 m_Once = false;
