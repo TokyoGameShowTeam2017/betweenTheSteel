@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //あたり判定しているかどうかフラグ
-public class ObjectCollision : MonoBehaviour {
+public class ObjectCollision : MonoBehaviour
+{
     private bool mIsCollision = false;
     void Update()
     {
-        mIsCollision = false;
     }
 
     public void OnCollisionStay(Collision collision)
@@ -18,10 +18,31 @@ public class ObjectCollision : MonoBehaviour {
 
     public void OnTriggerStay(Collider other)
     {
-        if (other.name.Substring(0, 4) != "Plie"&&
-            other.GetComponent<CatchObject>()==null)
+        if (other.name.Substring(0, 4) != "Plie" &&
+            other.GetComponent<CatchObject>() == null)
         {
-            mIsCollision = true;
+            if (other.GetComponent<BoxCollider>() == null)
+                mIsCollision = true;
+            else
+            {
+                if (!other.GetComponent<BoxCollider>().isTrigger)
+                    mIsCollision = true;
+            }
+        }
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.name.Substring(0, 4) != "Plie" &&
+    other.GetComponent<CatchObject>() == null)
+        {
+            if (other.GetComponent<BoxCollider>() == null)
+                mIsCollision = false;
+            else
+            {
+                if (!other.GetComponent<BoxCollider>().isTrigger)
+                    mIsCollision = false;
+            }
         }
     }
 
