@@ -19,6 +19,8 @@ public class TutorealIventAssistPoint : MonoBehaviour {
     public bool m_PlayerClerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerClerArmNoCath;
+    [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
+    public bool m_PlayerClerArmReset;
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("テキストが終わった時のプレイヤーの状態")]
     public bool m_PlayerMove;
@@ -30,6 +32,8 @@ public class TutorealIventAssistPoint : MonoBehaviour {
     public bool m_PlayerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
+    [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
+    public bool m_PlayerArmReset;
     //プレイヤーチュートリアル
     private PlayerTutorialControl mPlayerTutorial;
     //プレイヤーテキスト
@@ -65,6 +69,7 @@ public class TutorealIventAssistPoint : MonoBehaviour {
                 mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
                 mPlayerTutorial.SetIsArmCatchAble(!m_PlayerClerArmCath);
                 mPlayerTutorial.SetIsArmRelease(!m_PlayerClerArmNoCath);
+                mPlayerTutorial.SetIsResetAble(!m_PlayerArmReset);
                 Destroy(gameObject);
             }
         }
@@ -83,6 +88,7 @@ public class TutorealIventAssistPoint : MonoBehaviour {
                 mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
                 mPlayerTutorial.SetIsArmCatchAble(!m_PlayerClerArmCath);
                 mPlayerTutorial.SetIsArmRelease(!m_PlayerClerArmNoCath);
+                mPlayerTutorial.SetIsResetAble(!m_PlayerClerArmReset);
                 Destroy(gameObject);
             }
         }

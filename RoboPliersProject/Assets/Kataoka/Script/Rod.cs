@@ -56,38 +56,33 @@ public class Rod : MonoBehaviour
     }
     void Update()
     {
-        //引っ掛かっているときの曲げる処理
-        if (m_CatchType == CatchObject.CatchType.Static&&
-            mArm.GetEnablePliersCatchRod()==gameObject)
-        {
-            //どのボーン番号が当たっているか
-            int isHung=999;
-            foreach (var i in mBones)
-            {
-                if (i.GetComponent<RodTurnBone>().GetHungFlag())
-                {
-                    isHung = i.GetComponent<RodTurnBone>().GetBoneNumber();
-                    break;
-                }
-            }
-            //当たっていない場合は入らない
-            if (isHung == 999) return;
+        ////引っ掛かっているときの曲げる処理
+        //if (m_CatchType == CatchObject.CatchType.Static&&
+        //    mArm.GetEnablePliersCatchRod()==gameObject)
+        //{
+        //    //どのボーン番号が当たっているか
+        //    int isHung=999;
+        //    foreach (var i in mBones)
+        //    {
+        //        if (i.GetComponent<RodTurnBone>().GetHungFlag())
+        //        {
+        //            isHung = i.GetComponent<RodTurnBone>().GetBoneNumber();
+        //            break;
+        //        }
+        //    }
+        //    //当たっていない場合は入らない
+        //    if (isHung == 999) return;
 
-            if (mArm.GetEnablArmCatchingObject().GetComponent<RodTurnBone>().GetBoneNumber() > isHung)
-                m_point = StartPoint.RIGHT_POINT;
-            else
-                m_point = StartPoint.LEFT_POINT;
-        }
+        //    if (mArm.GetEnablArmCatchingObject().GetComponent<RodTurnBone>().GetBoneNumber() > isHung)
+        //        m_point = StartPoint.RIGHT_POINT;
+        //    else
+        //        m_point = StartPoint.LEFT_POINT;
+        //}
 
 
     }
     public void LateUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            SetRotatePoint(StartPoint.LEFT_POINT);
-        }
-
         //2つのアームで曲げた時
         TowArmRotate();
         //アウトライン設定

@@ -19,8 +19,11 @@ public class TutorealIventTextFlag : MonoBehaviour
     public bool m_PlayerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
+    [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
+    public bool m_PlayerArmReset;
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15)]
     public bool m_NextDrawPoint;
+
     // Use this for initialization
     void Start()
     {
@@ -58,7 +61,7 @@ public class TutorealIventTextFlag : MonoBehaviour
             mTutorealPlayer.SetIsCamerMove(!m_PlayerCameraMove);
             mTutorealPlayer.SetIsArmCatchAble(!m_PlayerArmCath);
             mTutorealPlayer.SetIsArmRelease(!m_PlayerArmNoCath);
-
+            mTutorealPlayer.SetIsResetAble(!m_PlayerArmReset);
             Destroy(gameObject);
         }
     }
