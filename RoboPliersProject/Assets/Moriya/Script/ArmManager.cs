@@ -1,6 +1,6 @@
 ﻿/**==========================================================================*/
-/**aaa
- * アームとペンチの管理、制御 
+/**
+ * アームとペンチの管理、制御
  * 作成者：守屋   作成日：17/04/21
 /**==========================================================================*/
 
@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ArmManager : MonoBehaviour 
+public class ArmManager : MonoBehaviour
 {
-	/*==所持コンポーネント==*/
+    /*==所持コンポーネント==*/
     private Transform tr;
 
     /*==外部設定変数==*/
@@ -25,10 +25,10 @@ public class ArmManager : MonoBehaviour
     private float[] m_PliersPower;
     [SerializeField, Tooltip("アームの角度限界")]
     private float m_ArmAngleMax = 80.0f;
-    [SerializeField,Tooltip("現在選択中のアームID(0～4)")]
+    [SerializeField, Tooltip("現在選択中のアームID(0～4)")]
     private int m_EnableArmID = 0;
     [SerializeField, Tooltip("ペンチのZ軸回転速度")]
-    private float m_PliersRollSpeed  = 120.0f;
+    private float m_PliersRollSpeed = 120.0f;
     [SerializeField, Tooltip("アームの伸び補完値")]
     private float m_StretchLerpValue = 0.2f;
 
@@ -57,6 +57,7 @@ public class ArmManager : MonoBehaviour
     private Transform[] m_GaugeUIs;
     private Transform[] m_ButtonUIs;
 
+
     private TutorialSetting m_TutorialSetting;
 
     /// <summary>
@@ -71,12 +72,19 @@ public class ArmManager : MonoBehaviour
     public bool IsRelease { get; set; }
     //伸び縮みできるか？
     public bool IsStretch { get; set; }
+    //アームを選択できるか？(アームのidごとに指定)(0～3)
+    public bool[] IsArmSelectAble { get; set; }
+    //アームリセットできるか？
+    public bool IsResetAble { get; set; }
+
 
     /*==外部参照変数==*/
 
     void Awake()
     {
         tr = GetComponent<Transform>();
+
+
 
         m_PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         m_TutorialSetting = m_PlayerManager.GetComponent<TutorialSetting>();
@@ -93,23 +101,33 @@ public class ArmManager : MonoBehaviour
         m_EnableArmID = 0;
         m_EnableArm = m_Arms[0];
         m_EnablePliers = m_Pliers[0];
-    }
-
-	void Start()
-	{
-        m_UI = GameObject.Find("Canvas ingame").transform;
 
         IsMove = true;
         IsCatchAble = true;
         IsRelease = true;
         IsStretch = true;
+        IsArmSelectAble = new bool[4];
+        for (int i = 0; i < 4; i++)
+        {
+            IsArmSelectAble[i] = true;
+        }
+        IsResetAble = true;
 
+
+
+    }
+
+    void Start()
+    {
         //UIを登録
+        m_UI = GameObject.Find("Canvas ingame").transform;
+
         m_GaugeUIs = new Transform[4];
         m_ButtonUIs = new Transform[4];
         Transform gauge = m_UI.FindChild("left").FindChild("gauge");
+
         string name = "";
-        for(int i = 0;i < 4 ;i++)
+        for (int i = 0; i < 4; i++)
         {
             name = NameByID(i);
 
@@ -117,32 +135,34 @@ public class ArmManager : MonoBehaviour
             m_ButtonUIs[i] = gauge.Find(name);
         }
 
+
         //アクティブではないアームのＵＩを変更
         for (int i = 0; i < 4; i++)
         {
-            if(!m_TutorialSetting.GetIsActiveArm(i))
+            if (!m_TutorialSetting.GetIsActiveArm(i))
             {
                 SetGaugeUINoActive(i);
             }
         }
+    }
 
-        //SetGaugeUINoActive(3);
-
-	}
-	
-	void Update()
+    void Update()
     {
         if (!IsMove) return;
 
         //アーム切り替え
         if (InputManager.GetSelectArm().isDown)
         {
-            SwitchEnableArm(InputManager.GetSelectArm().id - 1);
-            SoundManager.Instance.PlaySe("xg-2armmove");
+            int armid = InputManager.GetSelectArm().id - 1;
+            if (IsArmSelectAble[armid])
+            {
+                SwitchEnableArm(armid);
+                SoundManager.Instance.PlaySe("xg-2armmove");
 
-            //何も掴んでなければ正面を向く
-            if (GetCountCatchingDynamicObjects() <= 0 && GetCountCatchingObjects() <= 0)
-                m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
+                //何も掴んでなければ正面を向く
+                if (GetCountCatchingDynamicObjects() <= 0 && GetCountCatchingObjects() <= 0)
+                    m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
+            }
         }
 
         //選択中のアームとペンチ更新処理
@@ -151,7 +171,7 @@ public class ArmManager : MonoBehaviour
 
 
         //何らかのアームが動かないオブジェクトを掴んでいる時
-        if(GetCountCatchingObjects() > 0)
+        if (GetCountCatchingObjects() > 0)
         {
 
         }
@@ -173,7 +193,7 @@ public class ArmManager : MonoBehaviour
 
             //}
             //else
-                m_RotateY += m_PlayerManager.GetArmAngleOver();
+            m_RotateY += m_PlayerManager.GetArmAngleOver();
 
             Quaternion target = Quaternion.Euler(new Vector3(0.0f, -90.0f * m_EnableArmID + m_RotateY, 0.0f));
             //m_Base.rotation = target;
@@ -183,7 +203,7 @@ public class ArmManager : MonoBehaviour
 
 
         //選択中のアーム以外の向き、伸び、掴み状態等をリセット
-        if (InputManager.GetDash())
+        if (InputManager.GetDash() && IsResetAble)
         {
             //アームとペンチのリセット
             for (int i = 0; i < m_Arms.Length; i++)
@@ -198,7 +218,7 @@ public class ArmManager : MonoBehaviour
             //ベースを正面に向ける
             m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
         }
-	}
+    }
 
 
     void LateUpdate()
@@ -341,8 +361,8 @@ public class ArmManager : MonoBehaviour
     {
         for (int i = 0; i < m_Pliers.Length; i++)
         {
-            if(i != id && m_Pliers[i].GetIsCatch())
-               if( m_Pliers[i].GetCatchObject().GetCatchType() == CatchObject.CatchType.Static)
+            if (i != id && m_Pliers[i].GetIsCatch())
+                if (m_Pliers[i].GetCatchObject().GetCatchType() == CatchObject.CatchType.Static)
                     return m_Pliers[i];
         }
         return null;
@@ -355,7 +375,7 @@ public class ArmManager : MonoBehaviour
     {
         int count = 0;
 
-        for (int i = 0; i < m_Pliers.Length;i++ )
+        for (int i = 0; i < m_Pliers.Length; i++)
         {
             CatchObject obj = m_Pliers[i].GetCatchObject();
             if (obj != null)
@@ -532,6 +552,7 @@ public class ArmManager : MonoBehaviour
         }
     }
 
+
     private string NameByID(int id)
     {
         string result = "";
@@ -545,6 +566,8 @@ public class ArmManager : MonoBehaviour
         }
         return result;
     }
+
+
 
     /// <summary>
     /// ゲージのＵＩを非アクティブに設定する
@@ -563,7 +586,7 @@ public class ArmManager : MonoBehaviour
     {
         string name = NameByID(id);
         Color armcolor = Color.white;
-        switch(id)
+        switch (id)
         {
             //後から色変更できるように直打ち
             case 0: armcolor = new Color(255, 255, 0, 255); break;
@@ -595,7 +618,4 @@ public class ArmManager : MonoBehaviour
         result.playerIsGround = p.IsGround;
         return result;
     }
-
-
-
 }
