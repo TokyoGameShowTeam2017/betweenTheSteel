@@ -60,7 +60,8 @@ public class TutorealIventCamera : MonoBehaviour
     public bool m_PlayerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
-
+    [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
+    public bool m_PlayerArmReset;
 
     //座標index
     private int mPointIndex = 1;
@@ -170,6 +171,7 @@ public class TutorealIventCamera : MonoBehaviour
             mTutorealPlayer.SetIsCamerMove(!m_PlayerCameraMove);
             mTutorealPlayer.SetIsArmCatchAble(!m_PlayerArmCath);
             mTutorealPlayer.SetIsArmRelease(!m_PlayerArmNoCath);
+            mTutorealPlayer.SetIsResetAble(!m_PlayerArmReset);
             Destroy(gameObject);
         }
     }

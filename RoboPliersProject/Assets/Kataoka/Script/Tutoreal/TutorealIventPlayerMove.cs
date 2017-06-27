@@ -27,6 +27,8 @@ public class TutorealIventPlayerMove : MonoBehaviour
     public bool m_PlayerClerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerClerArmNoCath;
+    [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
+    public bool m_PlayerClerArmReset;
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("テキストが終わった時のプレイヤーの状態")]
     public bool m_PlayerMove;
@@ -38,6 +40,8 @@ public class TutorealIventPlayerMove : MonoBehaviour
     public bool m_PlayerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
+    [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
+    public bool m_PlayerArmReset;
     struct PlateState
     {
         GameObject plate;
@@ -101,7 +105,7 @@ public class TutorealIventPlayerMove : MonoBehaviour
         mPlayerTutoreal.SetIsCamerMove(!m_PlayerCameraMove);
         mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
-
+        mPlayerTutoreal.SetIsResetAble(!m_PlayerArmReset);
 
         Vector2 inputVec = InputManager.GetMove();
         Vector2 absVec = new Vector2(Mathf.Abs(inputVec.x), Mathf.Abs(inputVec.y));
@@ -184,6 +188,8 @@ public class TutorealIventPlayerMove : MonoBehaviour
             mPlayerTutoreal.SetIsCamerMove(!m_PlayerClerCameraMove);
             mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerClerArmCath);
             mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
+            mPlayerTutoreal.SetIsResetAble(!m_PlayerClerArmReset);
+
             Destroy(gameObject);
         }
 

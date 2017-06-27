@@ -19,7 +19,8 @@ public class TutorealIventHungRod : MonoBehaviour {
     public bool m_PlayerClerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerClerArmNoCath;
-
+    [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
+    public bool m_PlayerClerArmReset;
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("テキストが終わった時のプレイヤーの状態")]
     public bool m_PlayerMove;
     [SerializeField, Tooltip("プレイヤーカメラ移動させるか")]
@@ -30,6 +31,8 @@ public class TutorealIventHungRod : MonoBehaviour {
     public bool m_PlayerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
+    [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
+    public bool m_PlayerArmReset;
     //プレイヤーチュートリアル
     private PlayerTutorialControl mPlayerTutorial;
     //プレイヤーテキスト
@@ -51,7 +54,7 @@ public class TutorealIventHungRod : MonoBehaviour {
         mPlayerTutorial.SetIsCamerMove(!m_PlayerCameraMove);
         mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutorial.SetIsArmRelease(!m_PlayerArmNoCath);
-
+        mPlayerTutorial.SetIsResetAble(!m_PlayerArmReset);
 
         if (m_HungCollision.GetComponent<HungRodCollision>().GetHungFlag())
         {
@@ -60,7 +63,7 @@ public class TutorealIventHungRod : MonoBehaviour {
             mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
             mPlayerTutorial.SetIsArmCatchAble(!m_PlayerClerArmCath);
             mPlayerTutorial.SetIsArmRelease(!m_PlayerClerArmNoCath);
-
+            mPlayerTutorial.SetIsResetAble(!m_PlayerClerArmReset);
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
                 for (int i = 0; m_IventCollisions.Length > i; i++)
