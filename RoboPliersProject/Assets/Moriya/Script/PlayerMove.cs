@@ -49,6 +49,9 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField, Tooltip("カメラ")]
     private Transform m_CameraTransform;
+    [SerializeField, Tooltip("ジャンプ時に使用する判定")]
+    private LegCollision[] m_LegCollisions;
+
 
     /*==内部設定変数==*/
     //[SerializeField, Tooltip("アームマネージャー")]
@@ -87,6 +90,8 @@ public class PlayerMove : MonoBehaviour
     public bool IsGround { get; set; }
     //アーム移動入力Y方向
     public float ArmInputY { get; set; }
+
+    private RaycastHit m_HitInfo;
 
     void Awake()
     {
@@ -222,12 +227,15 @@ public class PlayerMove : MonoBehaviour
     //ジャンプ移動
     private void JumpMove()
     {
-        //レイを飛ばす
-        Vector3 dir = -tr.up;
-        Ray ray = new Ray(tr.position - tr.forward, dir);
-        int mask = LayerMask.NameToLayer("ArmAndPliers");
-        RaycastHit hit;
-        bool ishit = Physics.Raycast(ray, out hit, 2.0f, mask);
+        ////レイを飛ばす
+        //Vector3 dir = -tr.up;
+        //Ray ray = new Ray(tr.position - tr.forward, dir);
+        //int mask = LayerMask.NameToLayer("ArmAndPliers");
+        //RaycastHit hit;
+        //bool ishit = Physics.Raycast(ray, out hit, 2.0f, mask);
+        //IsGround = ishit;
+
+        bool ishit = IsLegCollisionAnyHit();
         IsGround = ishit;
 
         //print(m_GravityMoveValue);
@@ -243,15 +251,15 @@ public class PlayerMove : MonoBehaviour
             m_JumpPowerXZ = 0.0f;
 
             //入力取得
-            if (InputManager.GetJump() && m_Manager.IsMove)
+            if (InputManager.GetJump() && IsLegCollisionAllHit() && m_Manager.IsMove)
             {
                 SoundManager.Instance.PlaySe("xg-2jump");
                 m_IsJumpPossible = false;
                 m_GravityMoveValue = m_JumpPower;
             }
 
-            if (hit.transform.tag == "Beltconveyor")
-                m_LastVelocity += hit.transform.GetComponent<BeltConveyor>().GetBeltVelocity();
+            if (m_HitInfo.transform.tag == "Beltconveyor")
+                m_LastVelocity += m_HitInfo.transform.GetComponent<BeltConveyor>().GetBeltVelocity();
         }
 
 
@@ -290,6 +298,7 @@ public class PlayerMove : MonoBehaviour
         if (m_ArmManager.GetCountCatchingObjects() >= 2)
         {
             //現状何もしない
+            print("called");
 
         }
         //選択中のアームが掴んでいるなら
@@ -448,21 +457,57 @@ public class PlayerMove : MonoBehaviour
         //選択中以外のアームが掴んでいるなら
         else
         {
+            //水平回転のみ行う
+            float inputX = InputManager.GetMove().x;
+
+            Transform roty = m_Manager.GetAxisMoveObject().transform;
+            Transform prilesposTr = roty.FindChild("PliersRotX").FindChild("PliersPos");
+            float h = -inputX * m_AxisMoveSpeed * Time.deltaTime;
             //水平回転
-            float inputX = -InputManager.GetMove().x;
-            m_Manager.GetAxisMoveObject().transform.Rotate(tr.up, inputX * m_AxisMoveSpeed * Time.deltaTime);
+            roty.localEulerAngles += new Vector3(0.0f, h, 0.0f);
+            tr.localEulerAngles += new Vector3(0.0f, h, 0.0f);
+
+            //キャッチしているアームを特定
+            int catchid = m_ArmManager.GetIsCatchArmID();
+
+            //アームの伸び縮みを考慮した移動
+            Transform armtr = m_ArmManager.GetArmByID(catchid).transform;
+            Vector3 armforward = armtr.forward;
+            float armlength = m_ArmManager.GetArmMoveByID(catchid).GetArmStretch();
+
+            //アーム根元座標からプレイヤー座標に向かうベクトル
+            Vector3 arm2player = tr.position - armtr.position;
+            //掴んだ座標からペンチの根元座標に向かうベクトル
+            Vector3 catch2pliers = prilesposTr.position - roty.position;
+            Vector3 offset = catch2pliers.normalized * m_PliersOffset;
+
+            Vector3 pos =
+                roty.position   //キャッチした座標
+                + catch2pliers  //キャッチした座標からペンチまでのベクトル
+                + -armforward * armlength   //アームの伸びベクトル
+                + arm2player   //アームの根元からプレイヤー座標までのベクトル
+                + offset;
+
+            tr.position = pos;
 
 
-            //計算後のトランスフォーム
-            Transform posTr = m_Manager.GetAxisMoveObject().transform.FindChild("RotX").FindChild("Pos");
-            //移動
-            tr.position = posTr.position;
 
-            Vector3 euler = posTr.rotation.eulerAngles;
-            euler.x = euler.z = 0.0f;
-            //回転計算
-            tr.eulerAngles += euler - m_PrevRotYEuler;
-            m_PrevRotYEuler = euler;
+
+
+
+
+            ////以前
+            //m_Manager.GetAxisMoveObject().transform.Rotate(tr.up, inputX * m_AxisMoveSpeed * Time.deltaTime);
+            ////計算後のトランスフォーム
+            //Transform posTr = m_Manager.GetAxisMoveObject().transform.FindChild("RotX").FindChild("Pos");
+            ////移動
+            //tr.position = posTr.position;
+
+            //Vector3 euler = posTr.rotation.eulerAngles;
+            //euler.x = euler.z = 0.0f;
+            ////回転計算
+            //tr.eulerAngles += euler - m_PrevRotYEuler;
+            //m_PrevRotYEuler = euler;
         }
     }
 
@@ -572,5 +617,39 @@ public class PlayerMove : MonoBehaviour
 
                 break;
         }
+    }
+
+    /// <summary>
+    /// 足のあたり判定のどれかが地面に当たっているかを取得
+    /// </summary>
+    /// <returns></returns>
+    private bool IsLegCollisionAnyHit()
+    {
+        bool result = false;
+        foreach (LegCollision col in m_LegCollisions)
+        {
+            if (col.IsHit)
+            {
+                result = true;
+                m_HitInfo = col.HitInfo;
+            }
+                
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 足のあたり判定がすべて地面に当たっているかを取得
+    /// </summary>
+    /// <returns></returns>
+    private bool IsLegCollisionAllHit()
+    {
+        bool result = true;
+        foreach(LegCollision col in m_LegCollisions)
+        {
+            if (!col.IsHit)
+                result = false;
+        }
+        return result;
     }
 }
