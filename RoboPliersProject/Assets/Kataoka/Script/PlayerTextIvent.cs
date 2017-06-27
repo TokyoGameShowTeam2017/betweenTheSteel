@@ -10,12 +10,11 @@ public class PlayerTextIvent : MonoBehaviour
     public string[] m_Text;
     [SerializeField, Tooltip("イベントプレハブ")]
     public GameObject m_IventPrefab;
-    [SerializeField, Tooltip("ポイントをを表示するかどうか"), Space(15)]
-    public bool m_IsDrawPoint;
-    [SerializeField, Tooltip("最初からポイントを表示させるか")]
-    public bool m_IsDrawFirstPoint;
-    [SerializeField, Tooltip("次のポイントのUIを表示させるか")]
-    public bool m_NextPointUi;
+
+    [SerializeField, Tooltip("表示させたいPointオブジェクト"), Space(15)]
+    public GameObject m_DrawPointObject;
+    [SerializeField, Tooltip("表示を消したいPointオブジェクト")]
+    public GameObject m_NoDrawPointObject;
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("プレイヤーが当たった時の状態")]
     public bool m_PlayerMove;
@@ -53,21 +52,13 @@ public class PlayerTextIvent : MonoBehaviour
     {
         mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mPlayerTurorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
-        if (transform.FindChild("Point") != null)
-        {
-            mPointObject = transform.FindChild("Point").gameObject;
-            mPointObject.SetActive(false);
-        }
-
-
     }
     public void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player" && m_IsCollision)
         {
-            if (mPointObject != null&&m_IsDrawPoint)
-                mPointObject.SetActive(true);
-
+            if (m_DrawPointObject != null) m_DrawPointObject.SetActive(true);
+            if (m_NoDrawPointObject != null) m_NoDrawPointObject.SetActive(false);
             if (m_Text.Length > 0)
                 mTutorealText.SetText(m_Text);
             if (m_Voice != null)

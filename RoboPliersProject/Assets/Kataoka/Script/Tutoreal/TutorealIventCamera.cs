@@ -40,8 +40,6 @@ public class TutorealIventCamera : MonoBehaviour
     //一回しか入らないために
     private bool mFlag = true;
 
-    [SerializeField, Tooltip("ポイントを先にDrawさせるか")]
-    public bool m_BeforeDrawPoint;
     [SerializeField, Tooltip("ブロックをを先にDrawさせるか")]
     public bool m_BeforeDrawBlock;
     [SerializeField, Tooltip("ズームするかどうか"),Space(15)]
@@ -97,8 +95,6 @@ public class TutorealIventCamera : MonoBehaviour
         mTutorealPlayer = GameObject.FindGameObjectWithTag("Player").
             GetComponent<PlayerTutorialControl>();
 
-        if (m_BeforeDrawPoint)
-            m_IventCollisions[0].transform.FindChild("Point").gameObject.SetActive(true);
         if (m_BeforeDrawBlock)
             m_IventCollisions[0].GetComponent<PlayerTextIvent>().GetIvent().
                 GetComponent<TutorealIventSetObject>().
