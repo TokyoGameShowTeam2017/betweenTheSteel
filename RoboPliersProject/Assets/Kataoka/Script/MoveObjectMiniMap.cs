@@ -24,14 +24,19 @@ public class MoveObjectMiniMap : MonoBehaviour {
 
 
         Transform[] transs;
-        transs = miniMap.transform.GetComponentsInChildren<Transform>();
-
+        transs = mMiniMapObject.GetComponentsInChildren<Transform>();
+        List<GameObject> swi = new List<GameObject>();
         foreach (var i in transs)
         {
-            if (i.name != miniMap.name)
+            if (i.name.Substring(0, 5) == "switc")
             {
-                Destroy(i);
+                swi.Add(i.gameObject);
             }
+        }
+        foreach (var i in swi)
+        {
+            if (i != null)
+                Destroy(i);
         }
 
         mMiniMapObject.transform.localPosition = transform.localPosition;

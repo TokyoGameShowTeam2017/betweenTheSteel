@@ -7,6 +7,8 @@ public class TutorealIventTurnRod : MonoBehaviour
 
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
+    [SerializeField, Tooltip("消したいオブジェクト")]
+    public GameObject m_DeleteObject;
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("目的を達成した時のプレイヤーの状態")]
     public bool m_PlayerClerMove;
@@ -77,6 +79,8 @@ public class TutorealIventTurnRod : MonoBehaviour
             mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
 
             Destroy(gameObject);
+
+            Destroy(m_DeleteObject);
         }
     }
 }

@@ -102,6 +102,7 @@ public class SceneLoadDoor : MonoBehaviour {
 
     public void CloseBackDoor(GameObject player)
     {
+        
         StartCoroutine(DoorAnim(false, false, LoadNextScene));
         playerObject_ = player;
     }
@@ -117,7 +118,7 @@ public class SceneLoadDoor : MonoBehaviour {
     {
         Destroy(SceneLoadInitializer.Instance.usedArea);
 
-        yield return SceneManager.LoadSceneAsync("LoadTmpScene", LoadSceneMode.Additive);
+        yield return SceneManager.LoadSceneAsync("load", LoadSceneMode.Additive);
         Move();
 
         yield return SceneManager.UnloadSceneAsync(unloadSceneName_);
@@ -130,7 +131,7 @@ public class SceneLoadDoor : MonoBehaviour {
             Destroy(playerObject_);
         }
 
-        yield return SceneManager.UnloadSceneAsync("LoadTmpScene");
+        yield return SceneManager.UnloadSceneAsync("load");
 
         Destroy(g);
         Loaded();
@@ -175,6 +176,8 @@ public class SceneLoadDoor : MonoBehaviour {
         StartCoroutine(DoorAnim(true, true));
         
         SceneLoadInitializer.Instance.usedArea = gameObject;
+
+        GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(true);
     }
 
 

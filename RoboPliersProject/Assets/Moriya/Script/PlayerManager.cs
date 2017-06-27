@@ -269,6 +269,6 @@ public class PlayerManager : MonoBehaviour
     {
         IsMove = value;
         GameObject.Find("CameraMove").GetComponent<CameraMove>().IsMove = value;
-        m_ArmManager.SetUIVisible(value);
+       // m_ArmManager.SetUIVisible(value);
     }
 }
