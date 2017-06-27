@@ -21,27 +21,17 @@ public class TutorealIventTextFlag : MonoBehaviour
     public bool m_PlayerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerArmReset;
-    [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15)]
-    public bool m_NextDrawPoint;
 
     // Use this for initialization
     void Start()
     {
         mTutorealPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
-        if(m_NextDrawPoint)
-        mPoint = m_IventCollisions[0].transform.FindChild("Point").gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GetComponent<TutorealIventFlag>().GetIventFlag() &&
-            mPoint != null &&
-            m_NextDrawPoint)
-        {
-            mPoint.SetActive(true);
-        }
         if (!GetComponent<TutorealIventFlag>().GetIventFlag()) return;
 
         //テキストが終わったら全部の移動を解除
