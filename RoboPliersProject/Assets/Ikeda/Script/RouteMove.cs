@@ -45,6 +45,7 @@ public class RouteMove : MonoBehaviour
     private Quaternion m_StartAngle;
 
     private Vector3 m_DroneArrivePoint;
+    private GameObject m_TitleCanvas;
 
     // Use this for initialization
     void Start()
@@ -56,17 +57,23 @@ public class RouteMove : MonoBehaviour
         m_OnryOnce = false;
         m_PressStart = false;
         m_DroneState = DroneState.PatrolState;
-        
+
         if (GameObject.FindGameObjectWithTag("DroneArrivePoint") != null)
         {
             m_DroneArrivePoint = GameObject.FindGameObjectWithTag("DroneArrivePoint").transform.position;
             transform.position = m_DroneArrivePoint;
         }
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (m_TitleCanvas == null)
+        {
+            m_TitleCanvas = GameObject.Find("Canvas title(Clone)");
+        }
+
         switch (m_DroneState)
         {
             //巡回中
@@ -85,12 +92,15 @@ public class RouteMove : MonoBehaviour
                     m_BeforeAngle_Y = transform.localEulerAngles.y;
                     ArrivedProcessing();
                 }
-                if (GameObject.Find("Canvas title(Clone)").GetComponent<TitleCollection>().GetPressStart() && !m_OnryOnce)
+                if (m_TitleCanvas != null)
                 {
-                    m_StartPos = transform.localPosition;
-                    m_StartAngle = transform.rotation;
-                    m_OnryOnce = true;
-                    m_DroneState = DroneState.GoalMoveState;
+                    if (m_TitleCanvas.GetComponent<TitleCollection>().GetPressStart() && !m_OnryOnce)
+                    {
+                        m_StartPos = transform.localPosition;
+                        m_StartAngle = transform.rotation;
+                        m_OnryOnce = true;
+                        m_DroneState = DroneState.GoalMoveState;
+                    }
                 }
                 break;
 
@@ -127,16 +137,19 @@ public class RouteMove : MonoBehaviour
                 }
 
                 //ボタンが押されたら巡回をやめる
-                if (GameObject.Find("Canvas title(Clone)").GetComponent<TitleCollection>().GetPressStart() && !m_OnryOnce)
+                if (m_TitleCanvas != null)
                 {
-                    //その角度を向き終わったかどうか
-                    if (Quaternion.Angle(transform.localRotation, Quaternion.Euler(0.0f, m_FirstAngle + m_BeforeAngle_Y, 0.0f)) <= 0.0f ||
-                        Quaternion.Angle(transform.localRotation, Quaternion.Euler(0.0f, m_SecondAngle + m_BeforeAngle_Y, 0.0f)) <= 0.0f)
+                    if (m_TitleCanvas.GetComponent<TitleCollection>().GetPressStart() && !m_OnryOnce)
                     {
-                        m_StartPos = transform.localPosition;
-                        m_StartAngle = transform.rotation;
-                        m_OnryOnce = true;
-                        m_DroneState = DroneState.GoalMoveState;
+                        //その角度を向き終わったかどうか
+                        if (Quaternion.Angle(transform.localRotation, Quaternion.Euler(0.0f, m_FirstAngle + m_BeforeAngle_Y, 0.0f)) <= 0.0f ||
+                            Quaternion.Angle(transform.localRotation, Quaternion.Euler(0.0f, m_SecondAngle + m_BeforeAngle_Y, 0.0f)) <= 0.0f)
+                        {
+                            m_StartPos = transform.localPosition;
+                            m_StartAngle = transform.rotation;
+                            m_OnryOnce = true;
+                            m_DroneState = DroneState.GoalMoveState;
+                        }
                     }
                 }
                 break;

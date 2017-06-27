@@ -107,7 +107,7 @@ public class ArmManager : MonoBehaviour
         //UIを登録
         m_GaugeUIs = new Transform[4];
         m_ButtonUIs = new Transform[4];
-        Transform gauge = m_UI.FindChild("gauge");
+        Transform gauge = m_UI.FindChild("left").FindChild("gauge");
         string name = "";
         for(int i = 0;i < 4 ;i++)
         {

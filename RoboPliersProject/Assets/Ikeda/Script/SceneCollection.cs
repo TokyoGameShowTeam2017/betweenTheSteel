@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class SceneCollection : MonoBehaviour
@@ -16,7 +17,6 @@ public class SceneCollection : MonoBehaviour
         None
     }
 
-    //
     private Dictionary<SceneState, GameObject> m_SceneCollections = new Dictionary<SceneState, GameObject>();
 
     [SerializeField]
@@ -35,6 +35,23 @@ public class SceneCollection : MonoBehaviour
     //次のシーン
     private SceneState m_NextScene = SceneState.None;
 
+
+    private IEnumerator MyNameSceneCheck()
+    {
+        while (true)
+        {
+            if (SceneManager.GetActiveScene().name == "title")
+            {
+                break;
+            }
+            yield return null;
+        }
+        //シーンを生成
+        NextSceneInstantiate();
+        
+        m_CurrentScene = m_NextScene;
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -48,8 +65,8 @@ public class SceneCollection : MonoBehaviour
         m_CurrentScene = SceneState.None;
         m_NextScene = SceneState.TitleScene;
 
-        NextSceneInstantiate();
-        m_CurrentScene = m_NextScene;
+
+        StartCoroutine(MyNameSceneCheck());
     }
 
     // Update is called once per frame
