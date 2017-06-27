@@ -25,8 +25,8 @@ public class SceneCollection : MonoBehaviour
     private GameObject m_MenuPrefab;
     [SerializeField]
     private GameObject m_StageSelect;
-    //[SerializeField]
-    //private GameObject m_ManualPrefab;
+    [SerializeField]
+    private GameObject m_ManualPrefab;
 
     private bool m_IsSceneEnd;
 
@@ -60,7 +60,7 @@ public class SceneCollection : MonoBehaviour
         AddScene(SceneState.TitleScene, m_TitlePrefab);
         AddScene(SceneState.MenuScene, m_MenuPrefab);
         AddScene(SceneState.StageSelect, m_StageSelect);
-        //AddScene(SceneState.ManualScene, m_ManualPrefab);
+        AddScene(SceneState.ManualScene, m_ManualPrefab);
 
         m_CurrentScene = SceneState.None;
         m_NextScene = SceneState.TitleScene;
