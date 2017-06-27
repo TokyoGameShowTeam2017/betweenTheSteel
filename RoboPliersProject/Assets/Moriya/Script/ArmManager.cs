@@ -152,6 +152,9 @@ public class ArmManager : MonoBehaviour
     {
         if (!IsMove) return;
 
+        //あとで直す
+        SceneChange();
+
         //アーム切り替え
         if (InputManager.GetSelectArm().isDown)
         {
@@ -628,7 +631,10 @@ public class ArmManager : MonoBehaviour
     public void SceneChange()
     {
         //ＵＩを取得しなおす
+        if (GameObject.Find("Canvas ingame") == null) return;
         m_UI = GameObject.Find("Canvas ingame").transform;
+
+
         m_GaugeUIs = new Transform[4];
         m_ButtonUIs = new Transform[4];
         Transform gauge = m_UI.FindChild("left").FindChild("gauge");

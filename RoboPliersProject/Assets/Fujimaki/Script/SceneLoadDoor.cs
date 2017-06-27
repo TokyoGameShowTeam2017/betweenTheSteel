@@ -126,6 +126,8 @@ public class SceneLoadDoor : MonoBehaviour
 
         GameObject g = Instantiate(loadingCanvasPrefab_);
         yield return SceneManager.LoadSceneAsync(nextSceneName_, LoadSceneMode.Additive);
+        //GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>().SceneChange();
+
 
         if (endFrag_)
         {
@@ -164,6 +166,8 @@ public class SceneLoadDoor : MonoBehaviour
 
     private void Loaded()
     {
+
+
         for (int i = 0; i < emissiveRenders_.Length; i++)
         {
             emissiveRenders_[i].materials[1].SetColor("_EmissionColor", blueColor_ * 1.2f);
