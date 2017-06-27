@@ -133,12 +133,18 @@ public class ArmMove : MonoBehaviour
     {
         if (!m_ArmManager.IsMove) return;
 
-        if(m_ArmManager.GetEnablArmID() == m_ID)
+        int catchid = m_ArmManager.GetCatchingArmID();
+        if (catchid != -1 && catchid == m_ID)
         {
-            Vector3 l = Vector3.Lerp(m_LookPositionPrev, m_LookPosition, 0.3f);
-            tr.LookAt(l);
-            m_LookPositionPrev = l;
+            tr.LookAt(m_ArmManager.GetPliersMoveByID(m_ID).GetPlayerAxisMoveObject().transform.position);
         }
+
+        //if (m_ArmManager.GetEnablArmID() == m_ID)
+        //{
+        //    Vector3 l = Vector3.Lerp(m_LookPositionPrev, m_LookPosition, 0.3f);
+        //    tr.LookAt(l);
+        //    m_LookPositionPrev = l;
+        //}
         //Rotation();
             
     }
@@ -156,13 +162,23 @@ public class ArmMove : MonoBehaviour
             NormalMode();
 
         ////元々ここで回転計算
-        Rotation();
+        //Rotation();
+
         StretceLerp();
         m_PrevArmStretchLength = m_ArmStretchLength;
         m_ArmStretchLength = Mathf.Lerp(0.0f, m_MaxArmLength, m_ArmLengthValue);
                     ////ペンチのズレの分を加味 アームの関節の個数で割って値を均等に振り分ける
                     //- Mathf.Lerp(0.0f, m_PlayerManager.GetAimAssistPliersLength(), 1.0f - m_ArmLengthValue) / m_MoveObjects.Length;
         m_ArmStretchLength *= m_MoveObjects.Length;
+
+
+        if (m_ArmManager.GetEnablArmID() == m_ID)
+        {
+            Vector3 l = Vector3.Lerp(m_LookPositionPrev, m_LookPosition, 0.3f);
+            tr.LookAt(l);
+            m_LookPositionPrev = l;
+        }
+        Rotation();
     }
 
     //入力処理
@@ -625,7 +641,6 @@ public class ArmMove : MonoBehaviour
             over = rotY - limit;
         else if (rotY < -limit)
             over = rotY + limit;
-
 
         //print("local:" + tr.localEulerAngles.y);
         //print("over :" + over);

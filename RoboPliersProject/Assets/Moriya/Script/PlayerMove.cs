@@ -290,6 +290,7 @@ public class PlayerMove : MonoBehaviour
         if (m_ArmManager.GetCountCatchingObjects() >= 2)
         {
             //現状何もしない
+            print("called");
 
         }
         //選択中のアームが掴んでいるなら
@@ -448,21 +449,57 @@ public class PlayerMove : MonoBehaviour
         //選択中以外のアームが掴んでいるなら
         else
         {
+            //水平回転のみ行う
+            float inputX = InputManager.GetMove().x;
+
+            Transform roty = m_Manager.GetAxisMoveObject().transform;
+            Transform prilesposTr = roty.FindChild("PliersRotX").FindChild("PliersPos");
+            float h = -inputX * m_AxisMoveSpeed * Time.deltaTime;
             //水平回転
-            float inputX = -InputManager.GetMove().x;
-            m_Manager.GetAxisMoveObject().transform.Rotate(tr.up, inputX * m_AxisMoveSpeed * Time.deltaTime);
+            roty.localEulerAngles += new Vector3(0.0f, h, 0.0f);
+            tr.localEulerAngles += new Vector3(0.0f, h, 0.0f);
+
+            //キャッチしているアームを特定
+            int catchid = m_ArmManager.GetIsCatchArmID();
+
+            //アームの伸び縮みを考慮した移動
+            Transform armtr = m_ArmManager.GetArmByID(catchid).transform;
+            Vector3 armforward = armtr.forward;
+            float armlength = m_ArmManager.GetArmMoveByID(catchid).GetArmStretch();
+
+            //アーム根元座標からプレイヤー座標に向かうベクトル
+            Vector3 arm2player = tr.position - armtr.position;
+            //掴んだ座標からペンチの根元座標に向かうベクトル
+            Vector3 catch2pliers = prilesposTr.position - roty.position;
+            Vector3 offset = catch2pliers.normalized * m_PliersOffset;
+
+            Vector3 pos =
+                roty.position   //キャッチした座標
+                + catch2pliers  //キャッチした座標からペンチまでのベクトル
+                + -armforward * armlength   //アームの伸びベクトル
+                + arm2player   //アームの根元からプレイヤー座標までのベクトル
+                + offset;
+
+            tr.position = pos;
 
 
-            //計算後のトランスフォーム
-            Transform posTr = m_Manager.GetAxisMoveObject().transform.FindChild("RotX").FindChild("Pos");
-            //移動
-            tr.position = posTr.position;
 
-            Vector3 euler = posTr.rotation.eulerAngles;
-            euler.x = euler.z = 0.0f;
-            //回転計算
-            tr.eulerAngles += euler - m_PrevRotYEuler;
-            m_PrevRotYEuler = euler;
+
+
+
+
+            ////以前
+            //m_Manager.GetAxisMoveObject().transform.Rotate(tr.up, inputX * m_AxisMoveSpeed * Time.deltaTime);
+            ////計算後のトランスフォーム
+            //Transform posTr = m_Manager.GetAxisMoveObject().transform.FindChild("RotX").FindChild("Pos");
+            ////移動
+            //tr.position = posTr.position;
+
+            //Vector3 euler = posTr.rotation.eulerAngles;
+            //euler.x = euler.z = 0.0f;
+            ////回転計算
+            //tr.eulerAngles += euler - m_PrevRotYEuler;
+            //m_PrevRotYEuler = euler;
         }
     }
 
