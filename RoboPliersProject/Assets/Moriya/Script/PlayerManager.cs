@@ -53,6 +53,11 @@ public class PlayerManager : MonoBehaviour
 
     void Awake()
     {
+        if(SceneLoadInitializer.Instance.continueScene)
+        {
+            Destroy(gameObject);
+        }
+
         m_PlayerMove = this.gameObject.GetComponent<PlayerMove>();
         IsMove = true;
         IsHardModeAble = false;

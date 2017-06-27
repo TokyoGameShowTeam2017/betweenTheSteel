@@ -27,14 +27,19 @@ public class InputPadType : SingletonMonoBehaviour<InputPadType>
 
     /*==外部参照変数==*/
 
-	void Start() 
-	{
-		switch(m_Type)
+    void Awake()
+    {
+        switch (m_Type)
         {
             case INPUT_TYPE.PS4: TypeName = "PS4"; break;
             case INPUT_TYPE.XBOX_AND_KEY: TypeName = "XBOX"; break;
             default: TypeName = ""; break;
         }
+    }
+
+	void Start() 
+	{
+	
 	}
 	
 	void Update ()

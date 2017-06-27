@@ -114,11 +114,6 @@ public class ArmManager : MonoBehaviour
         IsResetAble = true;
 
 
-
-    }
-
-    void Start()
-    {
         //UIを登録
         m_UI = GameObject.Find("Canvas ingame").transform;
 
@@ -134,6 +129,13 @@ public class ArmManager : MonoBehaviour
             m_GaugeUIs[i] = gauge.FindChild(name + "gauge1");
             m_ButtonUIs[i] = gauge.Find(name);
         }
+
+
+
+    }
+
+    void Start()
+    {
 
 
         //アクティブではないアームのＵＩを変更
