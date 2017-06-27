@@ -33,14 +33,14 @@ public class StageSelectCollection : MonoBehaviour
         //選択中のインプット
         StageSelectInput();
 
-        //ステージ選択中
-        StageSelect();
-
         //ステージのマップをロード
         StageMapLoad();
 
         //ステージを始める
         StartStaeMap();
+
+        //ステージ選択中
+        StageSelect();
     }
 
     private void StageMapLoad()
@@ -196,7 +196,7 @@ public class StageSelectCollection : MonoBehaviour
         }
 
         //バックの時以外は大きくして白くする
-        if (m_StageNum == 20) return;
+        //if (m_StageNum == 20) return;
         GameObject.Find("Stage0" + m_StageNum).transform.localScale = new Vector3(0.5f, 0.5f, 0f);
         GameObject.Find("Stage0" + m_StageNum).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     }

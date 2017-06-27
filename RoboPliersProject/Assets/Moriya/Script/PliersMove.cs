@@ -1020,4 +1020,20 @@ public class PliersMove : MonoBehaviour
     {
         return m_CatchObjVelocity;
     }
+
+    /// <summary>
+    /// シーンが変わった後で呼ぶ処理
+    /// </summary>
+    public void SceneChange()
+    {
+        //ペンチゲージＵＩを取得しなおす
+        switch (m_ID)
+        {
+            case 0: m_PliersGaugeArrow = GameObject.Find("Ygaugearrow").GetComponent<RectTransform>(); break;
+            case 1: m_PliersGaugeArrow = GameObject.Find("Agaugearrow").GetComponent<RectTransform>(); break;
+            case 2: m_PliersGaugeArrow = GameObject.Find("Bgaugearrow").GetComponent<RectTransform>(); break;
+            case 3: m_PliersGaugeArrow = GameObject.Find("Xgaugearrow").GetComponent<RectTransform>(); break;
+        }
+        
+    }
 }
