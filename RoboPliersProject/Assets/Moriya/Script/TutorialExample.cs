@@ -34,6 +34,9 @@ public class TutorialExample : MonoBehaviour
             control.SetIsArmMove(true);
             control.SetIsArmCatchAble(true);
             control.SetIsArmRelease(true);
+
+
+            control.SetIsResetAble(true);
         }
 
         //プレイヤーを操作不能にし、カメラを右スティックで操作できる
@@ -41,6 +44,8 @@ public class TutorialExample : MonoBehaviour
         {
             control.SetIsPlayerMove(false);
             control.SetIsCamerMove(true);
+
+            control.SetIsResetAble(false);
         }
         //プレイヤーとカメラを操作不能にする
         if (Input.GetKeyDown(KeyCode.C))
