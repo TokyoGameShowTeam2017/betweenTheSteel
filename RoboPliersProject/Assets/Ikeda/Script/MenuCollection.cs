@@ -80,7 +80,7 @@ public class MenuCollection : MonoBehaviour
             case SceneState.MenuSelectState:
                 //メニュー選択
                 MenuSelect();
-                StickState l_state = InputManager.GetStick();
+                StickState l_state = GetStick();
                 print(l_state);
 
                 //選択されているメニューの色を変える
@@ -97,7 +97,7 @@ public class MenuCollection : MonoBehaviour
     /// </summary>
     private void MenuSelect()
     {
-        m_StickState = InputManager.GetStick();
+        m_StickState = GetStick();
 
         switch (m_StickState)
         {
@@ -235,13 +235,12 @@ public class MenuCollection : MonoBehaviour
         }
     }
 
-
     private void MenuDecision()
     {
         switch (m_MenuNum)
         {
             case 0:
-                if (InputManager.GetSelectArm().isDown ||Input.GetKeyDown(KeyCode.Space))
+                if ((InputWrap() || Input.GetKeyDown(KeyCode.Space)) && m_State != MenuState.GameStart)
                 {
                     m_State = MenuState.GameStart;
                     m_Scale = GameObject.Find("startgame").transform.localScale;
@@ -264,7 +263,7 @@ public class MenuCollection : MonoBehaviour
                 break;
 
             case 1:
-                if (InputManager.GetSelectArm().isDown || Input.GetKeyDown(KeyCode.Space))
+                if ((InputWrap() || Input.GetKeyDown(KeyCode.Space)) && m_State != MenuState.StageSelect)
                 {
                     m_State = MenuState.StageSelect;
                     m_Scale = GameObject.Find("selectstage").transform.localScale;
@@ -290,7 +289,7 @@ public class MenuCollection : MonoBehaviour
                 break;
 
             case 2:
-                if (InputManager.GetSelectArm().isDown || Input.GetKeyDown(KeyCode.Space))
+                if ((InputWrap() || Input.GetKeyDown(KeyCode.Space)) && m_State != MenuState.Manual)
                 {
                     m_State = MenuState.Manual;
                 }
@@ -301,7 +300,7 @@ public class MenuCollection : MonoBehaviour
                 break;
 
             case 3:
-                if (InputManager.GetSelectArm().isDown || Input.GetKeyDown(KeyCode.Space))
+                if ((InputWrap() || Input.GetKeyDown(KeyCode.Space)) && m_State != MenuState.Exit)
                 {
                     m_State = MenuState.Exit;
                 }
@@ -312,7 +311,7 @@ public class MenuCollection : MonoBehaviour
                 break;
 
             case 4:
-                if (InputManager.GetSelectArm().isDown || Input.GetKeyDown(KeyCode.Space))
+                if ((InputWrap() || Input.GetKeyDown(KeyCode.Space)) && m_State != MenuState.Back)
                 {
                     m_State = MenuState.Back;
                 }
@@ -325,8 +324,6 @@ public class MenuCollection : MonoBehaviour
         }
     }
 
-
-
     public void SetSceneState(int sceneState)
     {
         m_MenuState = (SceneState)sceneState;
@@ -335,5 +332,54 @@ public class MenuCollection : MonoBehaviour
     public int GetMenuState()
     {
         return (int)m_State;
+    }
+
+    //ボタンの押されたとき
+    private bool InputWrap()
+    {
+        int id = 0;
+
+        if (Input.GetButtonDown("XBOXArm1"))
+            id = 1;
+        if (Input.GetButtonDown("XBOXArm2"))
+            id = 2;
+        if (Input.GetButtonDown("XBOXArm3"))
+            id = 3;
+        if (Input.GetButtonDown("XBOXArm4"))
+            id = 4;
+
+        if (id != 0)
+            return true;
+
+        return false;
+    }
+
+    public static Vector2 GetMove()
+    {
+        float h = Input.GetAxis("XBOXLeftStickH");
+        float v = Input.GetAxis("XBOXLeftStickV");
+
+        Vector2 vec = new Vector2(h, v);
+        if (vec.magnitude <= 0.0f)
+        {
+            h = Input.GetAxis("XBOXLeftStickH");
+            v = Input.GetAxis("XBOXLeftStickV");
+            vec = new Vector2(h, v);
+        }
+
+        return vec;
+    }
+
+    public static StickState GetStick()
+    {
+        float vecX = GetMove().x;
+        float vecY = GetMove().y;
+
+        if (vecX > 0.3f) return StickState.Right;
+        if (vecX < -0.3f) return StickState.Left;
+        if (vecY > 0.3f) return StickState.Up;
+        if (vecY < -0.3f) return StickState.Down;
+
+        return StickState.None;
     }
 }

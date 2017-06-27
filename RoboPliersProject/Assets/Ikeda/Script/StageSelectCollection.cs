@@ -60,7 +60,7 @@ public class StageSelectCollection : MonoBehaviour
     //選択中のインプット関係
     private void StageSelectInput()
     {
-        m_StickState = InputManager.GetStick();
+        m_StickState = GetStick();
 
         switch (m_StickState)
         {
@@ -204,7 +204,7 @@ public class StageSelectCollection : MonoBehaviour
     //メニュー画面へ戻る
     private void BackMenu()
     {
-        if (InputManager.GetSelectArm().isDown || Input.GetKeyDown(KeyCode.Space))
+        if (InputWrap() || Input.GetKeyDown(KeyCode.Space))
         {
             m_BackMenu = true;
             StageMapUnLoad();
@@ -219,9 +219,58 @@ public class StageSelectCollection : MonoBehaviour
     private void StartStaeMap()
     {
         if (m_StageNum == 20) return;
-        if (InputManager.GetSelectArm().isDown)
+        if (InputWrap())
         {
             GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().StartOtherScene(m_StageNum);
         }
+    }
+
+    //ボタンの押されたとき
+    private bool InputWrap()
+    {
+        int id = 0;
+
+        if (Input.GetButtonDown("XBOXArm1"))
+            id = 1;
+        if (Input.GetButtonDown("XBOXArm2"))
+            id = 2;
+        if (Input.GetButtonDown("XBOXArm3"))
+            id = 3;
+        if (Input.GetButtonDown("XBOXArm4"))
+            id = 4;
+
+        if (id != 0)
+            return true;
+
+        return false;
+    }
+
+    public static Vector2 GetMove()
+    {
+        float h = Input.GetAxis("XBOXLeftStickH");
+        float v = Input.GetAxis("XBOXLeftStickV");
+
+        Vector2 vec = new Vector2(h, v);
+        if (vec.magnitude <= 0.0f)
+        {
+            h = Input.GetAxis("XBOXLeftStickH");
+            v = Input.GetAxis("XBOXLeftStickV");
+            vec = new Vector2(h, v);
+        }
+
+        return vec;
+    }
+
+    public static StickState GetStick()
+    {
+        float vecX = GetMove().x;
+        float vecY = GetMove().y;
+
+        if (vecX > 0.3f) return StickState.Right;
+        if (vecX < -0.3f) return StickState.Left;
+        if (vecY > 0.3f) return StickState.Up;
+        if (vecY < -0.3f) return StickState.Down;
+
+        return StickState.None;
     }
 }
