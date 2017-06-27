@@ -15,8 +15,8 @@ public class ScaffoldManager : MonoBehaviour
         {
             //自分自身は入れない
             if (t.name != name&&
-                t.name!="AimAssist"&&
-                t.name != "CatchPoint")
+                t.name.Substring(0,4)!="AimA"&&
+                t.name.Substring(0,4) != "Catc")
                 mCollisions.Add(t.gameObject);
         }
         SetNoRigitBodyType(CatchObject.CatchType.Static);
