@@ -114,11 +114,6 @@ public class ArmManager : MonoBehaviour
         IsResetAble = true;
 
 
-
-    }
-
-    void Start()
-    {
         //UIを登録
         m_UI = GameObject.Find("Canvas ingame").transform;
 
@@ -134,6 +129,13 @@ public class ArmManager : MonoBehaviour
             m_GaugeUIs[i] = gauge.FindChild(name + "gauge1");
             m_ButtonUIs[i] = gauge.Find(name);
         }
+
+
+
+    }
+
+    void Start()
+    {
 
 
         //アクティブではないアームのＵＩを変更
@@ -617,5 +619,35 @@ public class ArmManager : MonoBehaviour
         result.armInputY = p.ArmInputY;
         result.playerIsGround = p.IsGround;
         return result;
+    }
+
+
+    /// <summary>
+    /// シーンが変わった直後に呼ぶ処理
+    /// </summary>
+    public void SceneChange()
+    {
+        //ＵＩを取得しなおす
+        m_UI = GameObject.Find("Canvas ingame").transform;
+        m_GaugeUIs = new Transform[4];
+        m_ButtonUIs = new Transform[4];
+        Transform gauge = m_UI.FindChild("left").FindChild("gauge");
+
+        string name = "";
+        for (int i = 0; i < 4; i++)
+        {
+            name = NameByID(i);
+
+            m_GaugeUIs[i] = gauge.FindChild(name + "gauge1");
+            m_ButtonUIs[i] = gauge.Find(name);
+        }
+
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            m_Pliers[i].SceneChange();
+        }
+
     }
 }
