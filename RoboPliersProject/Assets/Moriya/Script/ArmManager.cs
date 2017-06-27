@@ -60,6 +60,8 @@ public class ArmManager : MonoBehaviour
 
     private TutorialSetting m_TutorialSetting;
 
+    private CameraMove m_CameraMove;
+
     /// <summary>
     /// 動かせるか？
     /// trueで動かせるようになり、エイムアシスト等が働く。カメラも動かせる状態ならば、カメラの向いたほうを向く。
@@ -87,6 +89,9 @@ public class ArmManager : MonoBehaviour
 
 
         m_PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+
+        m_CameraMove = GameObject.Find("CameraMove").GetComponent<CameraMove>();
+
         m_TutorialSetting = m_PlayerManager.GetComponent<TutorialSetting>();
         SwitchEnableArm(m_EnableArmID);
 
@@ -137,7 +142,6 @@ public class ArmManager : MonoBehaviour
     void Start()
     {
 
-
         //アクティブではないアームのＵＩを変更
         for (int i = 0; i < 4; i++)
         {
@@ -155,6 +159,7 @@ public class ArmManager : MonoBehaviour
         //アーム切り替え
         if (InputManager.GetSelectArm().isDown)
         {
+            int prev = m_EnableArmID;
             int armid = InputManager.GetSelectArm().id - 1;
             if (IsArmSelectAble[armid])
             {
@@ -164,6 +169,10 @@ public class ArmManager : MonoBehaviour
                 //何も掴んでなければ正面を向く
                 if (GetCountCatchingDynamicObjects() <= 0 && GetCountCatchingObjects() <= 0)
                     m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
+                else if (GetCountCatchingObjects() >= 1)
+                {
+                    StartCoroutine(CameraRotationCalc(armid, prev));
+                }
             }
         }
 
@@ -208,15 +217,7 @@ public class ArmManager : MonoBehaviour
         if (InputManager.GetDash() && IsResetAble)
         {
             //アームとペンチのリセット
-            for (int i = 0; i < m_Arms.Length; i++)
-            {
-                if (i != m_EnableArmID)
-                {
-                    m_Arms[i].Reset();
-                    m_Pliers[i].Reset();
-                }
-            }
-
+            ResetOther(m_EnableArmID);
             //ベースを正面に向ける
             m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
         }
@@ -368,6 +369,35 @@ public class ArmManager : MonoBehaviour
                     return m_Pliers[i];
         }
         return null;
+    }
+
+    /// <summary>
+    /// 動かないオブジェクトを掴んでいるアームのIDを返す
+    /// どのアームも掴んでない場合は-1を返す
+    /// </summary>
+    public int GetCatchingArmID()
+    {
+        for (int i = 0; i < m_Pliers.Length; i++)
+        {
+            if (m_Pliers[i].GetIsCatch())
+                if (m_Pliers[i].GetCatchObject().GetCatchType() == CatchObject.CatchType.Static)
+                    return i;
+        }
+        return -1;
+    }
+
+    /// <summary>
+    /// 何らかのオブジェクトを掴んでいるアームのIDを返す
+    /// どのアームも掴んでない場合は-1を返す
+    /// </summary>
+    public int GetIsCatchArmID()
+    {
+        for (int i = 0; i < m_Pliers.Length; i++)
+        {
+            if (m_Pliers[i].GetIsCatch())
+                return i;
+        }
+        return -1;
     }
 
     /// <summary>
@@ -649,5 +679,57 @@ public class ArmManager : MonoBehaviour
             m_Pliers[i].SceneChange();
         }
 
+    }
+
+
+    //指定したＩＤのアーム、ペンチ以外をリセットする
+    public void ResetOther(int id)
+    {
+        //アームとペンチのリセット
+        for (int i = 0; i < m_Arms.Length; i++)
+        {
+            if (i != id)
+            {
+                m_Arms[i].Reset();
+                m_Pliers[i].Reset();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Static掴み中のカメラ回転処理
+    /// </summary>
+    private IEnumerator CameraRotationCalc(int currid,int previd)
+    {
+        float maxtime = 0.5f;
+        int i = currid - previd;    //idの差
+        float maxrot = 0.0f;        //総回転量
+        float rotation = 0.0f;      //回転量
+
+        //maxrot = GetArmByID(currid).transform.eulerAngles.y - GetArmByID(previd).transform.eulerAngles.y;
+        maxrot = 90.0f * currid - GetArmByID(previd).transform.localEulerAngles.y;
+        //print(maxrot);
+
+        //maxrot = GetArmByID(currid).transform.eulerAngles.y - 90.0f * previd;
+        //maxrot = 90.0f * currid - 90.0f * previd;
+
+        //rot *= 1.5f;
+
+        //if (Mathf.Abs(i) == 2)
+        //    rot = 180.0f;
+        //else if ((previd == 0 && currid == 1) || (previd == 1 && currid == 2) || (previd == 2 && currid == 3) || (previd == 3 && currid == 0))
+        //    rot = 90.0f;
+        //else if ((previd == 0 && currid == 3) || (previd == 1 && currid == 0) || (previd == 2 && currid == 1) || (previd == 3 && currid == 2))
+        //    rot = -90.0f;
+
+        float r = maxrot * Time.deltaTime / maxtime;
+        while (Mathf.Abs( rotation) < Mathf.Abs( maxrot))
+        {
+            //timer += Time.deltaTime;
+            m_CameraMove.Rotation(r, 0);
+            rotation += r;
+            yield return null;
+        }
+        yield break;
     }
 }
