@@ -272,6 +272,7 @@ public class StageSelectMap : MonoBehaviour
 
     private void SwitchPlayerText(bool enable)
     {
+        if (GameObject.FindGameObjectWithTag("StartEventObject")!=null)
         GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(enable);
     }
 }
