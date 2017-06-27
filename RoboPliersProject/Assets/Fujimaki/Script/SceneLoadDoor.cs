@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoadDoor : MonoBehaviour {
+public class SceneLoadDoor : MonoBehaviour
+{
 
     private float doorSlideDistance_ = 6.4f;
-    
+
 
     [SerializeField, Tooltip("次の読み込むシーン名")]
     private string nextSceneName_;
@@ -14,7 +15,7 @@ public class SceneLoadDoor : MonoBehaviour {
     [SerializeField, Tooltip("破棄するシーン名")]
     private string unloadSceneName_;
 
-    [SerializeField,Tooltip("シーンロード後のStartCrriderの設置位置")]
+    [SerializeField, Tooltip("シーンロード後のStartCrriderの設置位置")]
     private Vector3 startPosition;
 
     [SerializeField, Tooltip("前の上のドア")]
@@ -59,7 +60,7 @@ public class SceneLoadDoor : MonoBehaviour {
     public delegate void AnimEndCallback();
     private GameObject playerObject_;
 
-    void Start ()
+    void Start()
     {
         SceneLoadInitializer.Instance.usedAreas.Add(gameObject);
         DontDestroyOnLoad(transform.gameObject);
@@ -102,7 +103,7 @@ public class SceneLoadDoor : MonoBehaviour {
 
     public void CloseBackDoor(GameObject player)
     {
-        
+
         StartCoroutine(DoorAnim(false, false, LoadNextScene));
         playerObject_ = player;
     }
@@ -111,7 +112,7 @@ public class SceneLoadDoor : MonoBehaviour {
     {
         StartCoroutine(ScanAnim());
         SceneLoadInitializer.Instance.continueScene = true;
-        
+
     }
 
     private IEnumerator LoadScene()
@@ -144,7 +145,7 @@ public class SceneLoadDoor : MonoBehaviour {
         float time = 0;
         while (time < 1)
         {
-            time += Time.deltaTime/2;
+            time += Time.deltaTime / 2;
             scanPlane_.transform.localEulerAngles = Vector3.Lerp(new Vector3(90, 0, 0), new Vector3(-90, 0, 0), time);
             yield return null;
         }
@@ -174,10 +175,11 @@ public class SceneLoadDoor : MonoBehaviour {
         reflection_.RenderProbe();
 
         StartCoroutine(DoorAnim(true, true));
-        
+
         SceneLoadInitializer.Instance.usedArea = gameObject;
 
-        GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(true);
+        if (GameObject.FindGameObjectWithTag("StartEventObject") != null)
+            GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(true);
     }
 
 
