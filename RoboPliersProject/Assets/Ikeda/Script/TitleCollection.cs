@@ -36,12 +36,12 @@ public class TitleCollection : MonoBehaviour
         switch (m_TitleState)
         {
             case TitleState.TitleStart:
-                //黒い画像をフェードアウトさせる
-                transform.FindChild("BlackImage").GetComponent<AlphaChanger>().BlackImageUpdate();
+                ////黒い画像をフェードアウトさせる
+                //transform.FindChild("BlackImage").GetComponent<AlphaChanger>().BlackImageUpdate();
 
-                //黒い画像がフェードアウトし終わったら
-                if (transform.FindChild("BlackImage").GetComponent<AlphaChanger>().GetIsBlackImageEnd())
-                {
+                ////黒い画像がフェードアウトし終わったら
+                //if (transform.FindChild("BlackImage").GetComponent<AlphaChanger>().GetIsBlackImageEnd())
+                //{
                     //早く描画させる入力
                     RapidTitle();
                     //早く描画させる処理
@@ -53,7 +53,7 @@ public class TitleCollection : MonoBehaviour
                     transform.FindChild("title").GetComponent<Title>().TitleFadeIn();
                     //PressStartの描画
                     transform.FindChild("pressstartback").GetComponent<PressStart>().PressStartDraw();
-                }
+                //}
                 break;
 
             case TitleState.TitleWaitState:

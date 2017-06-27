@@ -45,6 +45,7 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
     private IEnumerator MoveDroneGoalPoint()
     {
         Vector3 defaultPosition = drone.transform.position;
+        Quaternion defaultRotation = drone.transform.rotation;
 
         float time = 0;
         float arriveTime = 8.0f;
@@ -54,7 +55,7 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
         {
             time += Time.deltaTime / arriveTime;
             drone.transform.position = Vector3.Lerp(defaultPosition, goalPoint.position, time);
-            print(drone.transform.position);
+            drone.transform.rotation = Quaternion.Lerp(defaultRotation, goalPoint.rotation, time);
             yield return null;
         }
 
