@@ -44,14 +44,12 @@ public class RouteMove : MonoBehaviour
     private Vector3 m_StartPos;
     private Quaternion m_StartAngle;
 
-    private Vector3 m_DroneArrivePoint;
     private GameObject m_TitleCanvas;
 
     // Use this for initialization
     void Start()
     {
         m_Ratio = 0;
-        m_DroneArrivePoint = new Vector3(0, 0, 0);
         m_IsAngleEnd = true;
         m_IsOnce = false;
         m_OnryOnce = false;
@@ -60,10 +58,9 @@ public class RouteMove : MonoBehaviour
 
         if (GameObject.FindGameObjectWithTag("DroneArrivePoint") != null)
         {
-            m_DroneArrivePoint = GameObject.FindGameObjectWithTag("DroneArrivePoint").transform.position;
-            transform.position = m_DroneArrivePoint;
+            transform.position = GameObject.FindGameObjectWithTag("DroneArrivePoint").transform.position;
+            transform.rotation = GameObject.FindGameObjectWithTag("DroneArrivePoint").transform.rotation;
         }
-
     }
 
     // Update is called once per frame

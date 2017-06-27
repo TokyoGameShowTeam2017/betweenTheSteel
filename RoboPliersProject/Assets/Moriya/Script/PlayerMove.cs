@@ -105,6 +105,8 @@ public class PlayerMove : MonoBehaviour
         m_LookTr = GameObject.Find("ArmLookPosition").transform;
         m_CameraMove = m_CameraTransform.GetComponent<CameraMove>();
         SceneLoader.GetInstance()._playerMove = this;
+
+        m_MoveSpeed = m_WalkSpeed;
     }
 
     void LateUpdate()
@@ -204,10 +206,10 @@ public class PlayerMove : MonoBehaviour
 
         //移動方向、速度計算
         m_LastVelocity = front * input.y + right * input.x;
-        if (InputManager.GetDash())
-            m_MoveSpeed = m_DashSpeed;
-        else
-            m_MoveSpeed = m_WalkSpeed;
+        //if (InputManager.GetDash())
+        //    m_MoveSpeed = m_DashSpeed;
+        //else
+        //    m_MoveSpeed = m_WalkSpeed;
 
         //移動量を掛ける
         m_LastVelocity *= m_MoveSpeed;
@@ -507,12 +509,68 @@ public class PlayerMove : MonoBehaviour
         m_GravityMoveValue = powerY;
     }
 
-    public void TutorialMove()
+
+    private void TutoJump()
     {
         JumpMove();
         Vector3 v = m_LastVelocity;
         v.x = 0.0f;
         v.z = 0.0f;
-        cc.Move(v * Time.deltaTime);
+        cc.Move(v * Time.deltaTime);    
+
+    }
+
+
+    private void TutoCatch()
+    {
+        m_GravityMoveValue = 0.0f;
+        m_LastVelocity = Vector3.zero;
+
+        //軸回転用のオブジェクトを回し、その計算後のトランスフォームを使ってプレイヤーの座標と回転を決定する
+        Transform roty = m_Manager.GetAxisMoveObject().transform;
+        Transform rotx = roty.FindChild("RotX");
+        Transform pliersrotx = roty.FindChild("PliersRotX");
+
+        //プレイヤー本体の移動計算
+        //回転計算後のプレイヤー座標用のトランスフォーム取得
+        Transform posTr = rotx.FindChild("Pos");
+        Transform prilesposTr = roty.FindChild("PliersRotX").FindChild("PliersPos");
+        //アームの伸び縮みを考慮した移動
+        Transform armtr = m_ArmManager.GetEnablArm().transform;
+        Vector3 armforward = armtr.forward;
+        float armlength = m_ArmManager.GetEnablArmMove().GetArmStretch();
+        //アーム根元座標からプレイヤー座標に向かうベクトル
+        Vector3 arm2player = tr.position - armtr.position;
+        //掴んだ座標からペンチの根元座標に向かうベクトル
+        Vector3 catch2pliers = prilesposTr.position - roty.position;
+        Vector3 offset = catch2pliers.normalized * m_PliersOffset;
+        Vector3 pos =
+            roty.position   //キャッチした座標
+            + catch2pliers  //キャッチした座標からペンチまでのベクトル
+            + -armforward * armlength   //アームの伸びベクトル
+            + arm2player   //アームの根元からプレイヤー座標までのベクトル
+            + offset;
+        tr.position = pos;
+    }
+
+    /// <summary>
+    /// チュートリアル用の移動制限掛かったときの動き
+    /// </summary>
+    public void TutorialMove()
+    {
+        switch (m_Manager.GetMoveState())
+        {
+            case MoveState.NORMAL:
+                TutoJump();
+                break;
+
+            case MoveState.CATCH:
+                TutoCatch();
+                break;
+
+            case MoveState.NOT:
+
+                break;
+        }
     }
 }
