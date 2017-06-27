@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorealIventCathObject : MonoBehaviour
+public class TutorealIventArmSelect : MonoBehaviour
 {
-    [SerializeField, Tooltip("掴みたいオブジェクト")]
-    public GameObject m_CathObject;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
+    [SerializeField, Tooltip("セレクトしたいアーム")]
+    public int m_ArmId;
+
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("目的を達成した時のプレイヤーの状態")]
     public bool m_PlayerClerMove;
@@ -34,55 +35,50 @@ public class TutorealIventCathObject : MonoBehaviour
     public bool m_PlayerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerArmReset;
-
-    //アームマネージャー
-    private ArmManager mArm;
     //プレイヤーチュートリアル
-    private PlayerTutorialControl mPlayerTutoreal;
-    //チュートリアルテキスト
-    private TutorealText mTutorealText;
+    private PlayerTutorialControl mPlayerTutorial;
+    //プレイヤーテキスト
+    private TutorealText mPlayerText;
+    //アームマネージャー
+    private ArmManager mArmManager;
     // Use this for initialization
     void Start()
     {
-        mArm = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
-        mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
-        mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
+        mPlayerTutorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
+        mArmManager = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
+        mPlayerText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (!GetComponent<TutorealIventFlag>().GetIventFlag() ||
-            mTutorealText.GetDrawTextFlag()) return;
+            mPlayerText.GetDrawTextFlag()) return;
+        mPlayerTutorial.SetIsArmMove(!m_PlayerArmMove);
+        mPlayerTutorial.SetIsPlayerMove(!m_PlayerMove);
+        mPlayerTutorial.SetIsCamerMove(!m_PlayerCameraMove);
+        mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
+        mPlayerTutorial.SetIsArmRelease(!m_PlayerArmNoCath);
 
-        //プレイヤー状態登録
-        mPlayerTutoreal.SetIsArmMove(!m_PlayerArmMove);
-        mPlayerTutoreal.SetIsPlayerMove(!m_PlayerMove);
-        mPlayerTutoreal.SetIsCamerMove(!m_PlayerCameraMove);
-        mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
-        mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
-        mPlayerTutoreal.SetIsResetAble(!m_PlayerArmReset);
-
-         if (mArm.GetEnablArmCatchingObject() == null) return;
-
-        if (mArm.GetEnablArmCatchingObject()!=null)
+        mPlayerTutorial.SetAllIsArmSelectAble(false);
+        mPlayerTutorial.SetIsArmSelectAble(m_ArmId, true);
+        if (mArmManager.GetEnablArmID() == m_ArmId)
         {
-            mPlayerTutoreal.SetIsArmMove(true);
-            mPlayerTutoreal.SetIsPlayerAndCameraMove(true);
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
+            {
                 for (int i = 0; m_IventCollisions.Length > i; i++)
                 {
                     m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                 }
-            //プレイヤー状態登録
-            mPlayerTutoreal.SetIsArmMove(!m_PlayerClerArmMove);
-            mPlayerTutoreal.SetIsPlayerMove(!m_PlayerClerMove);
-            mPlayerTutoreal.SetIsCamerMove(!m_PlayerClerCameraMove);
-            mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerClerArmCath);
-            mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
-            mPlayerTutoreal.SetIsResetAble(!m_PlayerClerArmReset);
-
+            }
+            mPlayerTutorial.SetIsArmMove(!m_PlayerClerArmMove);
+            mPlayerTutorial.SetIsPlayerMove(!m_PlayerClerMove);
+            mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
+            mPlayerTutorial.SetIsArmCatchAble(!m_PlayerClerArmCath);
+            mPlayerTutorial.SetIsArmRelease(!m_PlayerClerArmNoCath);
+            mPlayerTutorial.SetIsResetAble(!m_PlayerArmReset);
+            mPlayerTutorial.SetAllIsArmSelectAble(true);
             Destroy(gameObject);
         }
     }

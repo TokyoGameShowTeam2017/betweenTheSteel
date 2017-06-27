@@ -27,6 +27,8 @@ public class PlayerTextIvent : MonoBehaviour
     public bool m_PlayerArmCath;
     [SerializeField, Tooltip("プレイヤーアーム離せるか")]
     public bool m_PlayerArmNoCath;
+    [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
+    public bool m_PlayerArmReset;
 
     [SerializeField, Tooltip("プレイヤーアーム1"), HeaderAttribute("プレイヤーが当たった時どのアームを展開するか")]
     public bool m_PlayerArmEnable1;
