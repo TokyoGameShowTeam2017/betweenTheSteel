@@ -54,15 +54,19 @@ public class PlayerTextIvent : MonoBehaviour
         mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mPlayerTurorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         if (transform.FindChild("Point") != null)
+        {
             mPointObject = transform.FindChild("Point").gameObject;
+            mPointObject.SetActive(false);
+        }
+
 
     }
     public void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player" && m_IsCollision)
         {
-            if (mPointObject != null)
-                mPointObject.SetActive(m_IsCollision && m_IsDrawPoint);
+            if (mPointObject != null&&m_IsDrawPoint)
+                mPointObject.SetActive(true);
 
             if (m_Text.Length > 0)
                 mTutorealText.SetText(m_Text);
