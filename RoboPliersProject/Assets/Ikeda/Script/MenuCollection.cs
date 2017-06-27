@@ -78,10 +78,13 @@ public class MenuCollection : MonoBehaviour
                 break;
 
             case SceneState.MenuSelectState:
-                //メニュー選択
-                MenuSelect();
-                StickState l_state = GetStick();
-                print(l_state);
+                if (m_State == MenuState.None)
+                {
+                    //メニュー選択
+                    MenuSelect();
+                    StickState l_state = GetStick();
+                    print(l_state);
+                }
 
                 //選択されているメニューの色を変える
                 MenuColoring();
@@ -283,6 +286,7 @@ public class MenuCollection : MonoBehaviour
                     GameObject.Find("menuselectback2").GetComponent<CanvasGroup>().alpha = m_ChoiceLowerAlpha;
                     GameObject.Find("menuselectback3").GetComponent<CanvasGroup>().alpha = m_ChoiceLowerAlpha;
                     GameObject.Find("menuselectback4").GetComponent<CanvasGroup>().alpha = m_ChoiceLowerAlpha;
+                    GameObject.Find("backbackMenu").GetComponent<CanvasGroup>().alpha = m_ChoiceLowerAlpha;
 
                     GameObject.Find("sideFrame").GetComponent<MenuFrame>().SpreadFrame();
                 }
@@ -292,10 +296,26 @@ public class MenuCollection : MonoBehaviour
                 if ((InputWrap() || Input.GetKeyDown(KeyCode.Space)) && m_State != MenuState.Manual)
                 {
                     m_State = MenuState.Manual;
+                    m_Scale = GameObject.Find("manual").transform.localScale;
                 }
                 if (m_State == MenuState.Manual)
                 {
+                    if (m_LowerAlpha >= 0) m_LowerAlpha -= m_LowerSpeed;
 
+                    if (m_ChoiceLowerAlpha >= 0)
+                    {
+                        m_ChoiceLowerAlpha -= m_ChoiceLowerSpeed;
+                        m_Scale += (m_Scale * m_ScaleDouble) / 60;
+                    }
+
+                    GameObject.Find("manual").transform.localScale = new Vector3(m_Scale.x, m_Scale.y, m_Scale.z);
+                    GameObject.Find("menuselectback1").GetComponent<CanvasGroup>().alpha = m_ChoiceLowerAlpha;
+                    GameObject.Find("menuselectback2").GetComponent<CanvasGroup>().alpha = m_ChoiceLowerAlpha;
+                    GameObject.Find("menuselectback3").GetComponent<CanvasGroup>().alpha = m_ChoiceLowerAlpha;
+                    GameObject.Find("menuselectback4").GetComponent<CanvasGroup>().alpha = m_ChoiceLowerAlpha;
+                    GameObject.Find("backbackMenu").GetComponent<CanvasGroup>().alpha = m_ChoiceLowerAlpha;
+
+                    GameObject.Find("sideFrame").GetComponent<MenuFrame>().SpreadFrame();
                 }
                 break;
 
@@ -317,6 +337,9 @@ public class MenuCollection : MonoBehaviour
                 }
                 if (m_State == MenuState.Back)
                 {
+                    /*変えられるなら変えたいところ*/
+
+
                     GameObject.Find("SceneCollection").GetComponent<SceneCollection>().SetNextScene(0);
                     GameObject.Find("SceneCollection").GetComponent<SceneCollection>().IsEndScene(true);
                 }

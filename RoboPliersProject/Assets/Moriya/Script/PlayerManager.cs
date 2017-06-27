@@ -55,7 +55,7 @@ public class PlayerManager : MonoBehaviour
     {
         if(SceneLoadInitializer.Instance.continueScene)
         {
-            Destroy(gameObject);
+           // Destroy(gameObject);
         }
 
         m_PlayerMove = this.gameObject.GetComponent<PlayerMove>();

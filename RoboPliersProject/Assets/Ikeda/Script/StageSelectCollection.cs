@@ -15,10 +15,12 @@ public class StageSelectCollection : MonoBehaviour
     private bool m_BackMenu = false;
 
     private bool m_Once;
+    private float m_FeadOutRate;
     private StickState m_StickState;
     // Use this for initialization
     void Start()
     {
+        m_FeadOutRate = 1.0f;
         m_Once = false;
         m_IsLoad = false;
         m_BackMenu = false;
@@ -211,7 +213,10 @@ public class StageSelectCollection : MonoBehaviour
         }
         if (m_BackMenu)
         {
-            GameObject.Find("sideFrame").GetComponent<MenuFrame>().BackFrame();
+            if (m_FeadOutRate >= 0) m_FeadOutRate -= 0.03f;
+            else GameObject.Find("sideFrame").GetComponent<MenuFrame>().BackFrame();
+
+            GameObject.Find("backback").transform.localPosition = Vector3.Lerp(new Vector3(-350, -260, 0), new Vector3(-350, -196, 0), m_FeadOutRate);
         }
     }
 

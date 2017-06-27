@@ -45,7 +45,6 @@ public class MenuFrame : MonoBehaviour
         if (GameObject.Find("SceneCollection").GetComponent<SceneCollection>().GetSceneState() == 1)
         {
             if (GameObject.Find("Canvas menu(Clone)").GetComponent<MenuCollection>().GetMenuState() == 0 ||
-                GameObject.Find("Canvas menu(Clone)").GetComponent<MenuCollection>().GetMenuState() == 2 ||
                 GameObject.Find("Canvas menu(Clone)").GetComponent<MenuCollection>().GetMenuState() == 3)
             {
                 if (m_EnterRate > 0)
@@ -74,8 +73,16 @@ public class MenuFrame : MonoBehaviour
         if (m_SpreadRate <= 1.1f) m_SpreadRate += 0.03f;
         else if (m_SpreadRate >= 1.0f)
         {
-            GameObject.Find("SceneCollection").GetComponent<SceneCollection>().SetNextScene(2);
-            GameObject.Find("SceneCollection").GetComponent<SceneCollection>().IsEndScene(true);
+            if (GameObject.Find("Canvas menu(Clone)").GetComponent<MenuCollection>().GetMenuState() == 1)
+            {
+                GameObject.Find("SceneCollection").GetComponent<SceneCollection>().SetNextScene(2);
+                GameObject.Find("SceneCollection").GetComponent<SceneCollection>().IsEndScene(true);
+            }
+            else
+            {
+                GameObject.Find("SceneCollection").GetComponent<SceneCollection>().SetNextScene(3);
+                GameObject.Find("SceneCollection").GetComponent<SceneCollection>().IsEndScene(true);
+            }
         }
 
         m_RectLeft.localPosition = Vector3.Lerp(new Vector3(-230.0f, 0.0f, 0.0f), new Vector3(-270.0f, 0.0f, 0.0f), m_SpreadRate);
