@@ -751,7 +751,9 @@ public class PliersMove : MonoBehaviour
         //ＵＩの矢印の移動
         m_GaugeArrowValue = Mathf.Lerp(m_GaugeArrowValue, m_GaugeArrowTargetValue, 0.2f);
         m_GaugeArrowValue = Mathf.Clamp(m_GaugeArrowValue, 0.0f, 1.0f);
-        m_PliersGaugeArrow.localPosition = new Vector3(Mathf.Lerp(-40.0f, 40.0f, m_GaugeArrowValue), 32, 0);
+
+        if (m_PliersGaugeArrow != null)
+            m_PliersGaugeArrow.localPosition = new Vector3(Mathf.Lerp(-40.0f, 40.0f, m_GaugeArrowValue), 32, 0);
 
 
         //2つでつかんだ後に前に掴んだアームを選択すると離す

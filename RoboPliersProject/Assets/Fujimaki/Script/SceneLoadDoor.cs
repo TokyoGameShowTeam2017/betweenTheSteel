@@ -122,20 +122,23 @@ public class SceneLoadDoor : MonoBehaviour
         yield return SceneManager.LoadSceneAsync("load", LoadSceneMode.Additive);
         Move();
 
-        yield return SceneManager.UnloadSceneAsync(unloadSceneName_);
+         GameObject g = Instantiate(loadingCanvasPrefab_);
+         yield return SceneManager.LoadSceneAsync(nextSceneName_, LoadSceneMode.Additive);
+         //GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>().SceneChange();
 
-        GameObject g = Instantiate(loadingCanvasPrefab_);
-        yield return SceneManager.LoadSceneAsync(nextSceneName_, LoadSceneMode.Additive);
 
-        if (endFrag_)
-        {
-            Destroy(playerObject_);
-        }
+         if (endFrag_)
+         {
+             Destroy(playerObject_);
+         }
+         yield return SceneManager.UnloadSceneAsync(unloadSceneName_);
 
-        yield return SceneManager.UnloadSceneAsync("load");
+         yield return SceneManager.UnloadSceneAsync("load");
 
-        Destroy(g);
-        Loaded();
+         Destroy(g);
+         Loaded();
+
+        yield return null;
     }
 
     private IEnumerator ScanAnim()
@@ -164,6 +167,8 @@ public class SceneLoadDoor : MonoBehaviour
 
     private void Loaded()
     {
+
+
         for (int i = 0; i < emissiveRenders_.Length; i++)
         {
             emissiveRenders_[i].materials[1].SetColor("_EmissionColor", blueColor_ * 1.2f);

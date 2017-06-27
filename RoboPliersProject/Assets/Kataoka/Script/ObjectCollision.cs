@@ -19,7 +19,8 @@ public class ObjectCollision : MonoBehaviour
     public void OnTriggerStay(Collider other)
     {
         if (other.name.Substring(0, 4) != "Plie" &&
-            other.GetComponent<CatchObject>() == null)
+            other.GetComponent<CatchObject>() == null &&
+            other.name != "Player")
         {
             if (other.GetComponent<BoxCollider>() == null)
                 mIsCollision = true;
@@ -34,7 +35,8 @@ public class ObjectCollision : MonoBehaviour
     public void OnTriggerExit(Collider other)
     {
         if (other.name.Substring(0, 4) != "Plie" &&
-    other.GetComponent<CatchObject>() == null)
+            other.GetComponent<CatchObject>() == null&&
+            other.name!="Player")
         {
             if (other.GetComponent<BoxCollider>() == null)
                 mIsCollision = false;
