@@ -36,24 +36,17 @@ public class TitleCollection : MonoBehaviour
         switch (m_TitleState)
         {
             case TitleState.TitleStart:
-                ////黒い画像をフェードアウトさせる
-                //transform.FindChild("BlackImage").GetComponent<AlphaChanger>().BlackImageUpdate();
-
-                ////黒い画像がフェードアウトし終わったら
-                //if (transform.FindChild("BlackImage").GetComponent<AlphaChanger>().GetIsBlackImageEnd())
-                //{
-                    //早く描画させる入力
-                    RapidTitle();
-                    //早く描画させる処理
-                    transform.FindChild("title").GetComponent<Title>().TitleRapidFeadIn(m_RapidDraw);
-                    transform.FindChild("pressstartback").GetComponent<PressStart>().PressStartRapidDraw(m_RapidDraw);
+                //早く描画させる入力
+                RapidTitle();
+                //早く描画させる処理
+                transform.FindChild("title").GetComponent<Title>().TitleRapidFeadIn(m_RapidDraw);
+                transform.FindChild("pressstartback").GetComponent<PressStart>().PressStartRapidDraw(m_RapidDraw);
 
 
-                    //タイトルの描画
-                    transform.FindChild("title").GetComponent<Title>().TitleFadeIn();
-                    //PressStartの描画
-                    transform.FindChild("pressstartback").GetComponent<PressStart>().PressStartDraw();
-                //}
+                //タイトルの描画
+                transform.FindChild("title").GetComponent<Title>().TitleFadeIn();
+                //PressStartの描画
+                transform.FindChild("pressstartback").GetComponent<PressStart>().PressStartDraw();
                 break;
 
             case TitleState.TitleWaitState:
@@ -90,7 +83,7 @@ public class TitleCollection : MonoBehaviour
     /// </summary>
     private void PressStart()
     {
-        if (InputManager.GetSelectArm().isDown)
+        if (InputWrap())
         {
             m_PressStart = true;
         }
@@ -102,7 +95,7 @@ public class TitleCollection : MonoBehaviour
     /// </summary>
     private void RapidTitle()
     {
-        if (InputManager.GetSelectArm().isDown)
+        if (InputWrap())
         {
             m_RapidDraw = true;
         }
@@ -121,4 +114,27 @@ public class TitleCollection : MonoBehaviour
     {
         return m_PressStart;
     }
+
+
+    private bool InputWrap()
+    {
+        int id = 0;
+
+        if (Input.GetButtonDown("XBOXArm1"))
+            id = 1;
+        if (Input.GetButtonDown("XBOXArm2"))
+            id = 2;
+        if (Input.GetButtonDown("XBOXArm3"))
+            id = 3;
+        if (Input.GetButtonDown("XBOXArm4"))
+            id = 4;
+
+        if (id != 0)
+            return true;
+
+        return false;
+    }
+
+
 }
+
