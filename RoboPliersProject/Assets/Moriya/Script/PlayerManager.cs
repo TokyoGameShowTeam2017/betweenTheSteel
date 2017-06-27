@@ -68,6 +68,16 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
+        //！！！移動後！！！
+        //状態変更
+        //動かないオブジェクトを１つ以上のアームが掴んでいるなら、NORMAL→CATCHへ移行
+        if (m_MoveState == MoveState.NORMAL && m_ArmManager.GetCountCatchingObjects() >= 1)
+            m_MoveState = MoveState.CATCH;
+
+        //何も掴んでない状態になったら、CATCH→NORMALへ移行
+        else if (m_MoveState == MoveState.CATCH && m_ArmManager.GetCountCatchingObjects() <= 0)
+            m_MoveState = MoveState.NORMAL;
+
         if (!IsMove)
         {
             //ジャンプ動作だけは行う
@@ -84,15 +94,8 @@ public class PlayerManager : MonoBehaviour
                 print("Change To Hard");
         }
             
+        //！！！移動前！！！
 
-        //状態変更
-        //動かないオブジェクトを１つ以上のアームが掴んでいるなら、NORMAL→CATCHへ移行
-        if (m_MoveState == MoveState.NORMAL && m_ArmManager.GetCountCatchingObjects() >= 1)
-            m_MoveState = MoveState.CATCH;
-
-        //何も掴んでない状態になったら、CATCH→NORMALへ移行
-        else if (m_MoveState == MoveState.CATCH && m_ArmManager.GetCountCatchingObjects() <= 0)
-            m_MoveState = MoveState.NORMAL;
 
         //移動
         m_PlayerMove.Move();

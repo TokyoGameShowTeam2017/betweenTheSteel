@@ -157,4 +157,35 @@ public class PlayerTutorialControl : MonoBehaviour
     {
         return m_ArmManager.GetEnablArmMove().GetIsSearched();
     }
+
+
+    /// <summary>
+    /// アーム選択ボタン単体の制限(false)／解除(true)を行う
+    /// 大元であるアームの操作制限がかかっているとtrueにしても意味がありません
+    /// </summary>
+    public void SetIsArmSelectAble(int armid,bool value)
+    {
+        m_ArmManager.IsArmSelectAble[armid] = value;
+    }
+
+    /// <summary>
+    /// アーム選択ボタンすべてのの制限(false)／解除(true)を行う
+    /// 大元であるアームの操作制限がかかっているとtrueにしても意味がありません
+    /// </summary>
+    public void SetAllIsArmSelectAble(bool value)
+    {
+        for (int i = 0; i < 4;i++ )
+        {
+            m_ArmManager.IsArmSelectAble[i] = value;
+        }
+    }
+
+    /// <summary>
+    /// アームリセットの操作制限(false)／解除(true)を行う
+    /// 大元であるアームの操作制限がかかっているとtrueにしても意味がありません
+    /// </summary>
+    public void SetIsResetAble(bool value)
+    {
+        m_ArmManager.IsResetAble = value;
+    }
 }

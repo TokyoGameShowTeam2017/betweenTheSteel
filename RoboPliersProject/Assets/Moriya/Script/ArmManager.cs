@@ -69,6 +69,11 @@ public class ArmManager : MonoBehaviour
     public bool IsRelease { get; set; }
     //伸び縮みできるか？
     public bool IsStretch { get; set; }
+    //アームを選択できるか？(アームのidごとに指定)(0～3)
+    public bool[] IsArmSelectAble { get; set; }
+    //アームリセットできるか？
+    public bool IsResetAble { get; set; }
+
 
     /*==外部参照変数==*/
 
@@ -91,16 +96,24 @@ public class ArmManager : MonoBehaviour
         m_EnableArmID = 0;
         m_EnableArm = m_Arms[0];
         m_EnablePliers = m_Pliers[0];
+
+        IsMove = true;
+        IsCatchAble = true;
+        IsRelease = true;
+        IsStretch = true;
+        IsArmSelectAble = new bool[4];
+        for(int i=0;i<4;i++)
+        {
+            IsArmSelectAble[i] = true;
+        }
+        IsResetAble = true;
     }
 
 	void Start()
 	{
         m_UI = GameObject.Find("Canvas ingame").transform;
 
-        IsMove = true;
-        IsCatchAble = true;
-        IsRelease = true;
-        IsStretch = true;
+
 	}
 	
 	void Update()
@@ -110,12 +123,16 @@ public class ArmManager : MonoBehaviour
         //アーム切り替え
         if (InputManager.GetSelectArm().isDown)
         {
-            SwitchEnableArm(InputManager.GetSelectArm().id - 1);
-            SoundManager.Instance.PlaySe("xg-2armmove");
+            int armid = InputManager.GetSelectArm().id - 1;
+            if (IsArmSelectAble[armid])
+            {
+                SwitchEnableArm(armid);
+                SoundManager.Instance.PlaySe("xg-2armmove");
 
-            //何も掴んでなければ正面を向く
-            if (GetCountCatchingDynamicObjects() <= 0 && GetCountCatchingObjects() <= 0)
-                m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
+                //何も掴んでなければ正面を向く
+                if (GetCountCatchingDynamicObjects() <= 0 && GetCountCatchingObjects() <= 0)
+                    m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
+            }
         }
 
         //選択中のアームとペンチ更新処理
@@ -156,7 +173,7 @@ public class ArmManager : MonoBehaviour
 
 
         //選択中のアーム以外の向き、伸び、掴み状態等をリセット
-        if (InputManager.GetDash())
+        if (InputManager.GetDash() && IsResetAble)
         {
             //アームとペンチのリセット
             for (int i = 0; i < m_Arms.Length; i++)
