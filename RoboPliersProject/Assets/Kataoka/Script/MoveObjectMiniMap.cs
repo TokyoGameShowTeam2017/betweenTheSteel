@@ -22,6 +22,23 @@ public class MoveObjectMiniMap : MonoBehaviour {
         Destroy(mMiniMapObject.GetComponent<MoveObject>());
         Destroy(mMiniMapObject.GetComponent<MoveObjectMiniMap>());
 
+
+        Transform[] transs;
+        transs = mMiniMapObject.GetComponentsInChildren<Transform>();
+        List<GameObject> swi = new List<GameObject>();
+        foreach (var i in transs)
+        {
+            if (i.name.Substring(0, 5) == "switc")
+            {
+                swi.Add(i.gameObject);
+            }
+        }
+        foreach (var i in swi)
+        {
+            if (i != null)
+                Destroy(i);
+        }
+
         mMiniMapObject.transform.localPosition = transform.localPosition;
         //mMiniMapObject.GetComponent<Renderer>().material = m_MiniMapMaterial;
 

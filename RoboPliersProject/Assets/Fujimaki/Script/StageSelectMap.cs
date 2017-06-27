@@ -42,18 +42,26 @@ public class StageSelectMap : MonoBehaviour
     {
         exit = true;
         StartCoroutine(BackGroundLoad());
+
+        if (SceneLoadInitializer.Instance.continueScene)
+        {
+            fadeImage.color = new Color(0, 0, 0, 0);
+        }
     }
 
     private IEnumerator BackGroundLoad()
     {
         yield return SceneManager.LoadSceneAsync("Stage01", LoadSceneMode.Additive);
 
-        float time = 0;
-        while (time < 1)
+        if (!SceneLoadInitializer.Instance.continueScene)
         {
-            time += Time.deltaTime;
-            fadeImage.color = new Color(0, 0, 0, 1 - time);
-            yield return null;
+            float time = 0;
+            while (time < 1)
+            {
+                time += Time.deltaTime;
+                fadeImage.color = new Color(0, 0, 0, 1 - time);
+                yield return null;
+            }
         }
 
         GameObject.FindGameObjectWithTag("RawCamera").GetComponent<Camera>().enabled = false;
@@ -207,7 +215,6 @@ public class StageSelectMap : MonoBehaviour
 
         SceneManager.UnloadSceneAsync("Stage01");
         yield return SceneManager.LoadSceneAsync(loadedScene, LoadSceneMode.Additive);
-
         StartCoroutine(StartScene(num, GameObject.FindGameObjectWithTag("ThumbnailCamera")));
     }
 
@@ -257,5 +264,12 @@ public class StageSelectMap : MonoBehaviour
         camera.enabled = false;
 
         SceneManager.UnloadSceneAsync("title");
+
+        SwitchPlayerText(true);
+    }
+
+    private void SwitchPlayerText(bool enable)
+    {
+        GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(enable);
     }
 }

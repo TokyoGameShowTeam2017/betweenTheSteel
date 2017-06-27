@@ -21,6 +21,7 @@ public class IKLegController : MonoBehaviour {
 
     private Quaternion[] _defaultNailRotation;
 
+    private Quaternion beforeRotation;
 
     void Start()
     {
@@ -37,6 +38,8 @@ public class IKLegController : MonoBehaviour {
         {
             _defaultNailRotation[i] = _nails[i].transform.localRotation;
         }
+
+        beforeRotation = transform.rotation;
 
     }
 	
@@ -60,8 +63,11 @@ public class IKLegController : MonoBehaviour {
         _animator.SetFloat("MoveAxisZ", _input.y);
 
         //ターンの回転を計算
-        _animator.SetFloat("TurnRotate", _playerManager.GetArmAngleOver()/10);
-        _animator.SetBool("Turn", Mathf.Abs(_playerManager.GetArmAngleOver()) > 1);
+        float r = Quaternion.Angle(transform.rotation, beforeRotation);
+        _animator.SetFloat("TurnRotate", r);
+        _animator.SetBool("Turn", r > 1);
+
+        beforeRotation = transform.rotation;
     }
 
     private void LateUpdate()

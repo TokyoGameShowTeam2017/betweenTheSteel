@@ -102,6 +102,7 @@ public class SceneLoadDoor : MonoBehaviour {
 
     public void CloseBackDoor(GameObject player)
     {
+        
         StartCoroutine(DoorAnim(false, false, LoadNextScene));
         playerObject_ = player;
     }
@@ -117,14 +118,20 @@ public class SceneLoadDoor : MonoBehaviour {
     {
         Destroy(SceneLoadInitializer.Instance.usedArea);
 
-        yield return SceneManager.LoadSceneAsync("LoadTmpScene", LoadSceneMode.Additive);
+        yield return SceneManager.LoadSceneAsync("load", LoadSceneMode.Additive);
         Move();
 
         yield return SceneManager.UnloadSceneAsync(unloadSceneName_);
 
         GameObject g = Instantiate(loadingCanvasPrefab_);
         yield return SceneManager.LoadSceneAsync(nextSceneName_, LoadSceneMode.Additive);
-        yield return SceneManager.UnloadSceneAsync("LoadTmpScene");
+
+        if (endFrag_)
+        {
+            Destroy(playerObject_);
+        }
+
+        yield return SceneManager.UnloadSceneAsync("load");
 
         Destroy(g);
         Loaded();
@@ -166,21 +173,13 @@ public class SceneLoadDoor : MonoBehaviour {
         light2_.color = blueLightColor_;
         reflection_.RenderProbe();
 
-        if(endFrag_)
-        {
-            StartCoroutine(DoorAnim(true, true, End));
-        }
-        else
-        {
-            StartCoroutine(DoorAnim(true, true));
-        }
+        StartCoroutine(DoorAnim(true, true));
+        
         SceneLoadInitializer.Instance.usedArea = gameObject;
+
+        GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(true);
     }
 
-    private void End()
-    {
-        Destroy(playerObject_);
-    }
 
     private void Move()
     {
