@@ -109,6 +109,8 @@ public class MenuCollection : MonoBehaviour
                 {
                     m_Once = true;
                     m_MenuNum = m_MenuNum - 1;
+                    SoundManager.Instance.PlaySe("select");
+                    SoundManager.Instance.StopBgm();
                     if (m_MenuNum - 1 < -1)
                     {
                         m_MenuNum = 0;
@@ -122,6 +124,7 @@ public class MenuCollection : MonoBehaviour
                     m_Once = true;
                     if (m_MenuNum == 4) return;
                     m_MenuNum = m_MenuNum + 1;
+                    SoundManager.Instance.PlaySe("select");
                     if (m_MenuNum + 1 > 4)
                     {
                         m_MenuNum = 3;
@@ -134,6 +137,7 @@ public class MenuCollection : MonoBehaviour
                 {
                     if (m_MenuNum != 4) return;
                     m_MenuNum = m_BeflorNum;
+                    SoundManager.Instance.PlaySe("select");
                 }
                 break;
 
@@ -143,6 +147,7 @@ public class MenuCollection : MonoBehaviour
                     if (m_MenuNum == 4) return;
                     m_BeflorNum = m_MenuNum;
                     m_MenuNum = 4;
+                    SoundManager.Instance.PlaySe("select");
                 }
                 break;
 
@@ -247,6 +252,8 @@ public class MenuCollection : MonoBehaviour
                 {
                     m_State = MenuState.GameStart;
                     m_Scale = GameObject.Find("startgame").transform.localScale;
+                    SoundManager.Instance.StopBgm();
+                    SoundManager.Instance.PlaySe("enter");
                 }
                 if (m_State == MenuState.GameStart)
                 {
@@ -270,6 +277,7 @@ public class MenuCollection : MonoBehaviour
                 {
                     m_State = MenuState.StageSelect;
                     m_Scale = GameObject.Find("selectstage").transform.localScale;
+                    SoundManager.Instance.PlaySe("enter");
                 }
                 if (m_State == MenuState.StageSelect)
                 {
@@ -297,6 +305,7 @@ public class MenuCollection : MonoBehaviour
                 {
                     m_State = MenuState.Manual;
                     m_Scale = GameObject.Find("manual").transform.localScale;
+                    SoundManager.Instance.PlaySe("enter");
                 }
                 if (m_State == MenuState.Manual)
                 {
@@ -323,6 +332,7 @@ public class MenuCollection : MonoBehaviour
                 if ((InputWrap() || Input.GetKeyDown(KeyCode.Space)) && m_State != MenuState.Exit)
                 {
                     m_State = MenuState.Exit;
+                    SoundManager.Instance.PlaySe("enter");
                 }
                 if (m_State == MenuState.Exit)
                 {
@@ -334,10 +344,10 @@ public class MenuCollection : MonoBehaviour
                 if ((InputWrap() || Input.GetKeyDown(KeyCode.Space)) && m_State != MenuState.Back)
                 {
                     m_State = MenuState.Back;
+                    SoundManager.Instance.PlaySe("back");
                 }
                 if (m_State == MenuState.Back)
                 {
-                    /*変えられるなら変えたいところ*/
                     transform.FindChild("selectMenu").GetComponent<SelectMenuEnter>().MenusOut();
                 }
                 break;
