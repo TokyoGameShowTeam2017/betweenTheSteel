@@ -77,8 +77,6 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         m_ArmManager = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
-
-        print("player start");
     }
 
     void Update()
