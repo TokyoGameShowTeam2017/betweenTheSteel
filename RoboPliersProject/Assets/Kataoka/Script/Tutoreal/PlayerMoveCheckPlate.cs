@@ -4,28 +4,33 @@ using UnityEngine;
 
 public class PlayerMoveCheckPlate : MonoBehaviour
 {
+    [SerializeField, Tooltip("点滅スピード")]
+    public float m_TimeSpeed = 1.0f;
+
     private bool mDeadFlag;
     private float mCount;
+    private Vector3 mStartScale;
     // Use this for initialization
     void Start()
     {
         mDeadFlag = false;
         mCount = 0.0f;
+        mStartScale = transform.localScale;
     }
 
     // Update is called once per frame
     void Update()
     {
         Color color = GetComponent<Renderer>().material.color;
-        mCount += Time.deltaTime;
+        mCount += m_TimeSpeed * Time.deltaTime;
         if (mDeadFlag)
         {
             GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f, Mathf.Lerp(1.0f, 0.0f, mCount));
             transform.localScale =
                 new Vector3(
-                    Mathf.Lerp(0.2f, 0.3f, mCount),
-                    Mathf.Lerp(0.2f, 0.3f, mCount),
-                    Mathf.Lerp(0.2f, 0.3f, mCount));
+                    Mathf.Lerp(mStartScale.x, mStartScale.x + 0.1f, mCount),
+                    Mathf.Lerp(mStartScale.y, mStartScale.y + 0.1f, mCount),
+                    Mathf.Lerp(mStartScale.z, mStartScale.z + 0.1f, mCount));
         }
         else
         {

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TutorealIventTurnRod : MonoBehaviour
 {
-
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
     [SerializeField, Tooltip("消したいオブジェクト")]
@@ -71,6 +70,8 @@ public class TutorealIventTurnRod : MonoBehaviour
                 {
                     m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                 }
+
+            SoundManager.Instance.PlaySe("Answer");
             //プレイヤー状態登録
             mPlayerTutoreal.SetIsArmMove(!m_PlayerClerArmMove);
             mPlayerTutoreal.SetIsPlayerMove(!m_PlayerClerMove);

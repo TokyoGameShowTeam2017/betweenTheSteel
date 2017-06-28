@@ -70,12 +70,12 @@ public class RodTurnBone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //プレイヤーが自身を掴んでなかったらリターン
+        if (m_RodTurn != mArmManager.GetEnablePliersCatchRod()) return;
         //ボーン何番目か
         mBoneNumber = int.Parse(gameObject.name.Replace("Bone", "")) - 1;
         mBones = m_RodTurn.GetComponent<Rod>().GetBone();
         mRotatePoints = m_RodTurn.GetComponent<Rod>().GetRotatePoint();
-        //プレイヤーが自身を掴んでなかったらリターン
-        if (m_RodTurn != mArmManager.GetEnablePliersCatchRod()) return;
         //角度制限
         //x軸変換
         if (mRotatePoint.transform.localRotation.eulerAngles.x > 180) mAngleX = mRotatePoint.transform.localRotation.eulerAngles.x - 360.0f;

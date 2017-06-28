@@ -39,8 +39,9 @@ public class RodReSet : MonoBehaviour
         foreach (var i in mCollisions)
         {
             if (i == null) continue;
-            if(mArm.GetEnablArmCatchingObject()==null&&
-                i.GetComponent<ObjectCollision>().GetCollisionFlag())
+            if ((mArm.GetEnablArmCatchingObject() == null &&
+                i.GetComponent<ObjectCollision>().GetCollisionFlag()) ||
+                i.transform.position.y <= -50.0f)
             {
                 transform.position = mFirstPosition;
                 transform.rotation = mFirstQuaternion;
