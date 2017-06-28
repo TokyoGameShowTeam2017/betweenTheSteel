@@ -13,7 +13,8 @@ public class TutorealIventCameraLookAt : MonoBehaviour
     private GameObject mPlayerCamera;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
-
+    [SerializeField, Tooltip("当たる範囲")]
+    public float m_CollisionSize;
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("目的を達成した時のプレイヤーの状態")]
     public bool m_PlayerClerMove;
     [SerializeField, Tooltip("プレイヤーカメラ移動させるか")]
@@ -68,10 +69,10 @@ public class TutorealIventCameraLookAt : MonoBehaviour
         mPlayerTutoreal.SetIsResetAble(!m_PlayerArmReset);
 
 
-        Ray ray = new Ray(mPlayerCamera.transform.position, mPlayerCamera.transform.forward * 50.0f);
+        Ray ray = new Ray(mPlayerCamera.transform.position, mPlayerCamera.transform.forward * 200.0f);
         RaycastHit hit;
         int layer = ~(1 << 15 | 1 << 17);
-        if (Physics.SphereCast(ray, 1.5f, out hit, 200.0f, layer))
+        if (Physics.SphereCast(ray, m_CollisionSize, out hit, 200.0f, layer))
         {
             if (hit.collider.name == "LookAtObject")
             {

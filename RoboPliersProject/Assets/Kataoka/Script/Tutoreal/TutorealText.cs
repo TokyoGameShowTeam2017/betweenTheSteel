@@ -30,6 +30,8 @@ public class TutorealText : MonoBehaviour
     private float mTextAlpha;
     //テキストクリーンカウント
     private int mTextCreenCount;
+    //ボイスの名前たち
+    private List<string> mVoiceNames;
     //補間系
     float mY;
     float mResY;
@@ -42,7 +44,6 @@ public class TutorealText : MonoBehaviour
         mPlayerStateText = GameObject.FindGameObjectWithTag("PlayerStateText").GetComponent<Text>();
         mIsButton = false;
         mDrawTextFlag = false;
-
         mY = -370.0f;
         mResY = mY;
         mVeloY = 0.0f;
@@ -54,6 +55,8 @@ public class TutorealText : MonoBehaviour
         mPlayTextTime = 0.0f;
 
         mTextCreenCount = 0;
+
+        mVoiceNames = new List<string>();
     }
 
     // Update is called once per frame
@@ -93,7 +96,11 @@ public class TutorealText : MonoBehaviour
                 if (mTextCreenCount >= m_Text.Length-1)
                     mDrawTextFlag = false;
                 else
+                {
                     mTextCreenCount++;
+                    if(mVoiceNames.Count>mTextCreenCount)
+                    SoundManager.Instance.PlaySe(mVoiceNames[mTextCreenCount]);
+                }
             }
 
             //スキップ機能
@@ -126,11 +133,14 @@ public class TutorealText : MonoBehaviour
         SpringFloat(0.2f, 0.5f, 2.0f);
         mTrans.anchoredPosition = new Vector2(mTrans.anchoredPosition.x, mY);
     }
-    public void SetText(string[] text)
+    public void SetText(string[] text,List<string> voiceName)
     {
         m_Text = text;
         mTextCreenCount = 0;
         mDrawTextFlag = true;
+        mVoiceNames = voiceName;
+        if(mVoiceNames.Count!=0)
+        SoundManager.Instance.PlaySe(mVoiceNames[0]);
     }
     private void SpringFloat(float stiffness, float friction, float mass)
     {
