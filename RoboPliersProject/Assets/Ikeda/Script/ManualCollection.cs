@@ -19,7 +19,7 @@ public class ManualCollection : MonoBehaviour {
     private bool m_Once;
 
     private float m_Rate;
-    [SerializeField]
+    
     private int m_ManualNum;
 
     private float m_FeadOutRate;
