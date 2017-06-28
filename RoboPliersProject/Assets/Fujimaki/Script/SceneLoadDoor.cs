@@ -115,16 +115,12 @@ public class SceneLoadDoor : MonoBehaviour
     {
         StartCoroutine(ScanAnim());
 
-
-        SceneLoadInitializer.Instance.continueScene = !endFrag_;
-
     }
 
     private IEnumerator LoadScene()
     {
         Destroy(SceneLoadInitializer.Instance.usedArea);
 
-        //yield return SceneManager.LoadSceneAsync("load", LoadSceneMode.Additive);
         Move();
 
         Vector3 pos = playerObject_.transform.position;

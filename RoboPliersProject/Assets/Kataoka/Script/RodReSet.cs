@@ -38,14 +38,21 @@ public class RodReSet : MonoBehaviour
         if (GetComponent<Rod>().GetCatchType() == CatchObject.CatchType.Static) return;
         foreach (var i in mCollisions)
         {
-            if (i == null) break;
+            if (i == null) continue;
             if(mArm.GetEnablArmCatchingObject()==null&&
                 i.GetComponent<ObjectCollision>().GetCollisionFlag())
             {
                 transform.position = mFirstPosition;
                 transform.rotation = mFirstQuaternion;
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
+                break;
             }
+        }
+        //初期化
+        foreach (var i in mCollisions)
+        {
+            if (i == null) continue;
+            i.GetComponent<ObjectCollision>().IsFlagFalse();
         }
     }
 }

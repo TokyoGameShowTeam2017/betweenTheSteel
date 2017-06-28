@@ -17,13 +17,16 @@ public class PlayerMoveCheckPlate : MonoBehaviour {
         {
             Color color = GetComponent<Renderer>().material.color;
             mCount += Time.deltaTime;
-
             GetComponent<Renderer>().material.color = new Color(255.0f,0.0f,0.0f, Mathf.Lerp(1.0f, 0.0f, mCount));
             transform.localScale =
                 new Vector3(
                     Mathf.Lerp(0.2f, 0.3f, mCount),
                     Mathf.Lerp(0.2f, 0.3f, mCount),
                     Mathf.Lerp(0.2f, 0.3f, mCount));
+        }
+        else
+        {
+
         }
 
 	}
