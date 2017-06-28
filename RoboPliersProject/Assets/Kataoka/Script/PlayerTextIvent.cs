@@ -42,6 +42,8 @@ public class PlayerTextIvent : MonoBehaviour
     private TutorealText mTutorealText;
     //プレイヤーのチュートリアル
     private PlayerTutorialControl mPlayerTurorial;
+    //ダウンロードバー
+    private TutorealArmSetGaugeUi mArmSetBar;
     [SerializeField, Tooltip("当たるかどうか"), Space(15)]
     public bool m_IsCollision;
 
@@ -52,6 +54,7 @@ public class PlayerTextIvent : MonoBehaviour
     {
         mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mPlayerTurorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
+        mArmSetBar = GameObject.FindGameObjectWithTag("LoadingBar").GetComponent<TutorealArmSetGaugeUi>();
     }
     public void OnTriggerStay(Collider other)
     {
@@ -64,15 +67,10 @@ public class PlayerTextIvent : MonoBehaviour
             if (m_Voice != null)
                 SoundManager.Instance.PlaySe(m_Voice.name);
 
-            if (m_PlayerArmEnable1) mPlayerTurorial.SetIsActiveArm(0, true);
-            if (m_PlayerArmEnable2) mPlayerTurorial.SetIsActiveArm(1, true);
-            if (m_PlayerArmEnable3) mPlayerTurorial.SetIsActiveArm(2, true);
-            if (m_PlayerArmEnable4) mPlayerTurorial.SetIsActiveArm(3, true);
-
             if (m_PlayerArmEnable1 || m_PlayerArmEnable2||
                 m_PlayerArmEnable3 || m_PlayerArmEnable4)
             {
-
+                mArmSetBar.IsLoading(m_PlayerArmEnable1,m_PlayerArmEnable2,m_PlayerArmEnable3,m_PlayerArmEnable4);
             }
 
             mPlayerTurorial.SetIsArmMove(!m_PlayerArmMove);
