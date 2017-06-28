@@ -83,8 +83,8 @@ public class Rod : MonoBehaviour
     }
     public void LateUpdate()
     {
-        //2つのアームで曲げた時
-        TowArmRotate();
+        ////2つのアームで曲げた時
+        //TowArmRotate();
         //アウトライン設定
         SetOutLine();
         //中身が何もなかったら自信を消す
@@ -443,11 +443,14 @@ public class Rod : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position, transform.position + transform.up * 5.0f);
     }
-    public void IsHong()
+    public void IsHong(bool flag)
     {
-        mIsHong = true;
+        mIsHong = flag;
     }
-
+    public bool GetHongFlag()
+    {
+        return mIsHong;
+    }
     public CatchObject.CatchType GetCatchType()
     {
         return m_CatchType;
