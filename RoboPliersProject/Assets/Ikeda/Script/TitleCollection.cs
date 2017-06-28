@@ -19,6 +19,11 @@ public class TitleCollection : MonoBehaviour
     private bool m_RapidDraw = false;
     private bool m_PressStart = false;
 
+    [SerializeField, Tooltip("何フレーム無操作状態を作る")]
+    private float m_WaitTimer = 30.0f;
+    [SerializeField, Tooltip("何フレーム無操作状態を作る")]
+    private float m_WaitTimer2 = 30.0f;
+
     private TitleState m_TitleState = TitleState.None;
 
     // Use this for initialization
@@ -36,30 +41,42 @@ public class TitleCollection : MonoBehaviour
         switch (m_TitleState)
         {
             case TitleState.TitleStart:
-                //早く描画させる入力
-                RapidTitle();
-                //早く描画させる処理
-                transform.FindChild("title").GetComponent<Title>().TitleRapidFeadIn(m_RapidDraw);
-                transform.FindChild("pressstartback").GetComponent<PressStart>().PressStartRapidDraw(m_RapidDraw);
+                if (m_WaitTimer >= 0)
+                    m_WaitTimer--;
+
+                else
+                {
+                    //早く描画させる入力
+                    RapidTitle();
+                    //早く描画させる処理
+                    transform.FindChild("title").GetComponent<Title>().TitleRapidFeadIn(m_RapidDraw);
+                    transform.FindChild("pressstartback").GetComponent<PressStart>().PressStartRapidDraw(m_RapidDraw);
 
 
-                //タイトルの描画
-                transform.FindChild("title").GetComponent<Title>().TitleFadeIn();
-                //PressStartの描画
-                transform.FindChild("pressstartback").GetComponent<PressStart>().PressStartDraw();
+                    //タイトルの描画
+                    transform.FindChild("title").GetComponent<Title>().TitleFadeIn();
+                    //PressStartの描画
+                    transform.FindChild("pressstartback").GetComponent<PressStart>().PressStartDraw();
+                }
                 break;
 
             case TitleState.TitleWaitState:
-                //PressStartの入力
-                PressStart();
+                if (m_WaitTimer2 >= 0)
+                    m_WaitTimer2--;
 
-                //PressStartの点滅の処理
-                transform.FindChild("pressstartback").GetComponent<PressStart>().FlashingState();
-
-                //PressStartが押されたらフェードアウトへ
-                if (m_PressStart)
+                else
                 {
-                    m_TitleState = TitleState.TitleFeadOutState;
+                    //PressStartの入力
+                    PressStart();
+
+                    //PressStartの点滅の処理
+                    transform.FindChild("pressstartback").GetComponent<PressStart>().FlashingState();
+
+                    //PressStartが押されたらフェードアウトへ
+                    if (m_PressStart)
+                    {
+                        m_TitleState = TitleState.TitleFeadOutState;
+                    }
                 }
                 break;
 
