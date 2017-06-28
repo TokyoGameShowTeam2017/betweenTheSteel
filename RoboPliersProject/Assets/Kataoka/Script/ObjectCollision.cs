@@ -11,16 +11,8 @@ public class ObjectCollision : MonoBehaviour
     {
         mIsCollision = true;
     }
-
-
     public void OnTriggerStay(Collider other)
     {
-        if (other.name == "ResetObject") 
-        {
-            mIsCollision = true;
-            return;
-        }
-
         if (other.name.Substring(0, 4) != "Plie" &&
             other.GetComponent<CatchObject>() == null &&
             other.tag != "Player")

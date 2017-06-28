@@ -165,6 +165,7 @@ public class TutorealIventPlayerMove : MonoBehaviour
             if (mInputTime >= m_InputTime)
             {
                 mInputFlags[mInputDir] = true;
+                SoundManager.Instance.PlaySe("Answer");
                 mInputPlates[mInputDir].GetComponent<PlayerMoveCheckPlate>().IsDead();
             }
 
@@ -189,7 +190,6 @@ public class TutorealIventPlayerMove : MonoBehaviour
             mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerClerArmCath);
             mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
             mPlayerTutoreal.SetIsResetAble(!m_PlayerClerArmReset);
-
             Destroy(gameObject);
         }
 

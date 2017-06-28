@@ -94,7 +94,6 @@ public class TitleCollection : MonoBehaviour
     }
 
 
-
     /// <summary>
     /// PRESS STARTが押されてメニュー画面に移行
     /// </summary>
@@ -102,6 +101,7 @@ public class TitleCollection : MonoBehaviour
     {
         if (InputWrap())
         {
+            SoundManager.Instance.PlaySe("enter");
             m_PressStart = true;
         }
     }
@@ -114,6 +114,7 @@ public class TitleCollection : MonoBehaviour
     {
         if (InputWrap())
         {
+            SoundManager.Instance.PlaySe("enter");
             m_RapidDraw = true;
         }
     }

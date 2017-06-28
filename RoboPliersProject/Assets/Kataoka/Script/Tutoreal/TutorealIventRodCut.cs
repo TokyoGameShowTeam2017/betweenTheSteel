@@ -71,7 +71,7 @@ public class TutorealIventRodCut : MonoBehaviour
                 mTutorialPlayer.SetIsCamerMove(!m_PlayerClerCameraMove);
                 mTutorialPlayer.SetIsArmCatchAble(!m_PlayerClerArmCath);
                 mTutorialPlayer.SetIsArmRelease(!m_PlayerClerArmNoCath);
-
+                SoundManager.Instance.PlaySe("Answer");
                 Destroy(gameObject);
             }
         }

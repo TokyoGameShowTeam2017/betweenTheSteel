@@ -554,7 +554,8 @@ public class PliersMove : MonoBehaviour
                         if (flag)
                         {
                             //親子関係を解除
-                            m_CatchParent.parent = null;
+                            //m_CatchParent.parent = null;
+                            m_ArmManager.DustBoxAddChild(m_CatchParent);
                             //自由落下させる
                             m_CatchParent.GetComponent<Rigidbody>().isKinematic = false;
                         }
@@ -564,7 +565,8 @@ public class PliersMove : MonoBehaviour
                     else
                     {
                         //親子関係を解除
-                        m_CatchParent.parent = null;
+                        //m_CatchParent.parent = null;
+                        m_ArmManager.DustBoxAddChild(m_CatchParent);
                         //自由落下させる
                         m_CatchParent.GetComponent<Rigidbody>().isKinematic = false;
                     }
@@ -792,9 +794,11 @@ public class PliersMove : MonoBehaviour
         if (m_ParentNotCathFlag && (m_SeveObject == m_ArmManager.GetEnablPliers()))
         {
             //親子関係を解除
-            m_CatchParent.parent = null;
+            //m_CatchParent.parent = null;
+            m_ArmManager.DustBoxAddChild(m_CatchParent);
             //自由落下させる
             m_CatchParent.GetComponent<Rigidbody>().isKinematic = false;
+
 
             m_IsCatch = false;
             m_ReleasedObject = m_CatchObject.gameObject;
@@ -1001,7 +1005,8 @@ public class PliersMove : MonoBehaviour
                             if (flag)
                             {
                                 //親子関係を解除
-                                m_CatchParent.parent = null;
+                                //m_CatchParent.parent = null;
+                                m_ArmManager.DustBoxAddChild(m_CatchParent);
                                 //自由落下させる
                                 m_CatchParent.GetComponent<Rigidbody>().isKinematic = false;
                             }
@@ -1011,7 +1016,8 @@ public class PliersMove : MonoBehaviour
                         else
                         {
                             //親子関係を解除
-                            m_CatchParent.parent = null;
+                            //m_CatchParent.parent = null;
+                            m_ArmManager.DustBoxAddChild(m_CatchParent);
                             //自由落下させる
                             m_CatchParent.GetComponent<Rigidbody>().isKinematic = false;
                         }

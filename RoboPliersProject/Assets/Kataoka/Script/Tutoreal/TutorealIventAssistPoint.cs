@@ -64,6 +64,7 @@ public class TutorealIventAssistPoint : MonoBehaviour {
                     {
                         m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                     }
+                SoundManager.Instance.PlaySe("Answer");
                 mPlayerTutorial.SetIsArmMove(!m_PlayerClerArmMove);
                 mPlayerTutorial.SetIsPlayerMove(!m_PlayerClerMove);
                 mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
@@ -83,6 +84,7 @@ public class TutorealIventAssistPoint : MonoBehaviour {
                     {
                         m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                     }
+                SoundManager.Instance.PlaySe("Answer");
                 mPlayerTutorial.SetIsArmMove(!m_PlayerClerArmMove);
                 mPlayerTutorial.SetIsPlayerMove(!m_PlayerClerMove);
                 mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
