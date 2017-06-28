@@ -634,6 +634,8 @@ public class ArmMove : MonoBehaviour
 
         //角度限界を超えた分の値をプレイヤーに渡す
         float limit = m_ArmManager.GetArmAngleMax();
+        if (m_ArmManager.GetCatchingArmID() == m_ID)
+            limit = m_ArmManager.StaticCatchingArmAngleMax;
         float over = 0.0f;
 
 
@@ -641,10 +643,6 @@ public class ArmMove : MonoBehaviour
             over = rotY - limit;
         else if (rotY < -limit)
             over = rotY + limit;
-
-        //print("local:" + tr.localEulerAngles.y);
-        //print("over :" + over);
-        //print("rotY :" + rotY);
 
         m_PlayerManager.SetArmAngleOver(over);
 
@@ -659,10 +657,6 @@ public class ArmMove : MonoBehaviour
 
         //float angleY = rotY;
         //angleY -= 90.0f * m_ID;
-        //print("angleY       :"+angleY);
-        //print("angleY+id    :"+ (angleY + 90.0f * m_ID));
-        //print("id    :" + (90.0f * m_ID));
-
 
         //計算した角度を適用
         Vector3 angles = tr.localEulerAngles;

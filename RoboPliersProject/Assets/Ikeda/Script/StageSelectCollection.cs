@@ -133,6 +133,10 @@ public class StageSelectCollection : MonoBehaviour
 
             GameObject.Find("Stage014").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
             GameObject.Find("Stage03").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
+
+            GameObject.Find("Stage0" + m_StageNum).transform.localScale = new Vector3(0.5f, 0.5f, 0f);
+            GameObject.Find("Stage0" + m_StageNum).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            GameObject.Find("Stage0" + m_StageNum).GetComponent<RectTransform>().localPosition = new Vector3(0, 145, 0);
         }
 
         else if (m_StageNum == 2)
@@ -147,6 +151,10 @@ public class StageSelectCollection : MonoBehaviour
 
             GameObject.Find("Stage015").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
             GameObject.Find("Stage04").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
+
+            GameObject.Find("Stage0" + m_StageNum).transform.localScale = new Vector3(0.5f, 0.5f, 0f);
+            GameObject.Find("Stage0" + m_StageNum).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            GameObject.Find("Stage0" + m_StageNum).GetComponent<RectTransform>().localPosition = new Vector3(0, 145, 0);
         }
         else if (m_StageNum == 14)
         {
@@ -161,6 +169,10 @@ public class StageSelectCollection : MonoBehaviour
             GameObject.Find("Stage01").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
             GameObject.Find("Stage012").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
 
+            GameObject.Find("Stage0" + m_StageNum).transform.localScale = new Vector3(0.5f, 0.5f, 0f);
+            GameObject.Find("Stage0" + m_StageNum).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            GameObject.Find("Stage0" + m_StageNum).GetComponent<RectTransform>().localPosition = new Vector3(0, 145, 0);
+
         }
         else if (m_StageNum == 15)
         {
@@ -174,6 +186,10 @@ public class StageSelectCollection : MonoBehaviour
 
             GameObject.Find("Stage013").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
             GameObject.Find("Stage02").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
+
+            GameObject.Find("Stage0" + m_StageNum).transform.localScale = new Vector3(0.5f, 0.5f, 0f);
+            GameObject.Find("Stage0" + m_StageNum).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            GameObject.Find("Stage0" + m_StageNum).GetComponent<RectTransform>().localPosition = new Vector3(0, 145, 0);
         }
         else if (m_StageNum != 20)
         {
