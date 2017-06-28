@@ -10,6 +10,8 @@ public class TutorealText : MonoBehaviour
     private RectTransform mTrans;
     //テキスト
     private Text mText;
+    //プレイヤー状態テキスト
+    private Text mPlayerStateText;
     //ボタン押されたか
     private bool mIsButton;
     //表示するかどうか
@@ -37,6 +39,7 @@ public class TutorealText : MonoBehaviour
     {
         mTrans = GetComponent<RectTransform>();
         mText = transform.FindChild("PlayerText").GetComponent<Text>();
+        mPlayerStateText = GameObject.FindGameObjectWithTag("PlayerStateText").GetComponent<Text>();
         mIsButton = false;
         mDrawTextFlag = false;
 
@@ -62,7 +65,7 @@ public class TutorealText : MonoBehaviour
             //テキストの改行数を取得
             int returnCount=m_Text[mTextCreenCount].Count(c=>c=='\n')+1;
             //行数によって変える
-            mResY = -300.0f + (50.0f*(returnCount-1));
+            mResY = -300.0f + (30.0f*(returnCount-1));
             //mResY = 
             mDrawTextTime += Time.deltaTime;
             mPlayTextTime += Time.deltaTime;
@@ -73,6 +76,12 @@ public class TutorealText : MonoBehaviour
                 mDrawTextCount++;
                 mDrawTextTime = 0.0f;
             }
+
+            if (mDrawTextCount >= m_Text[mTextCreenCount].Length)
+            {
+                mPlayerStateText.text = "Next";
+            }
+
             //全て終わったら表示終わる機能
             if (InputManager.GetSelectArm().isDown &&
                 mDrawTextCount>=m_Text[mTextCreenCount].Length)
@@ -80,6 +89,7 @@ public class TutorealText : MonoBehaviour
                 mDrawTextCount = 0;
                 mDrawTextTime = 0;
                 mPlayTextTime = 0.0f;
+                mPlayerStateText.text = "";
                 if (mTextCreenCount >= m_Text.Length-1)
                     mDrawTextFlag = false;
                 else

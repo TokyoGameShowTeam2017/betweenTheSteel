@@ -68,6 +68,13 @@ public class PlayerTextIvent : MonoBehaviour
             if (m_PlayerArmEnable2) mPlayerTurorial.SetIsActiveArm(1, true);
             if (m_PlayerArmEnable3) mPlayerTurorial.SetIsActiveArm(2, true);
             if (m_PlayerArmEnable4) mPlayerTurorial.SetIsActiveArm(3, true);
+
+            if (m_PlayerArmEnable1 || m_PlayerArmEnable2||
+                m_PlayerArmEnable3 || m_PlayerArmEnable4)
+            {
+
+            }
+
             mPlayerTurorial.SetIsArmMove(!m_PlayerArmMove);
             mPlayerTurorial.SetIsPlayerMove(!m_PlayerMove);
             mPlayerTurorial.SetIsCamerMove(!m_PlayerCameraMove);
