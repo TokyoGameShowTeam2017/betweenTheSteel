@@ -332,7 +332,7 @@ public class PliersMove : MonoBehaviour
                 } while (chi != null);
 
 
-                CatchObjectRelease();
+                //CatchObjectRelease();
             }
 
 
@@ -522,10 +522,8 @@ public class PliersMove : MonoBehaviour
                 bool flag = true;
                 if (m_CatchParent != null)
                 {
-                    print("not null");
                     if (m_CatchParent.name == "MainRod" || m_CatchParent.name == "MainRod(Clone)")
                     {
-                        print("if");
                         for (int i = 0; i <= 3; i++)
                         {
                             GameObject catchObject = m_ArmManager.GetPliersCatchRod(i);
@@ -555,7 +553,6 @@ public class PliersMove : MonoBehaviour
                     }
                     else
                     {
-                        print("else");
                         //親子関係を解除
                         m_CatchParent.parent = null;
                         //自由落下させる
