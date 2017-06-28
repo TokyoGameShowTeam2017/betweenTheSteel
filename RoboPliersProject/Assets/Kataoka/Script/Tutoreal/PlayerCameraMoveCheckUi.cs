@@ -16,16 +16,21 @@ public class PlayerCameraMoveCheckUi : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        mCount += Time.deltaTime;
         if (mDeadFlag)
         {
-            mCount += Time.deltaTime;
-
-            GetComponent<Image>().color = new Color(255.0f, 0.0f, 0.0f, Mathf.Lerp(1.0f, 0.0f, mCount));
+            GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, Mathf.Lerp(1.0f, 0.0f, mCount));
             GetComponent<RectTransform>().localScale =
                 new Vector3(
-                    Mathf.Lerp(0.3f, 0.4f, mCount),
-                    Mathf.Lerp(0.3f, 0.4f, mCount),
-                    Mathf.Lerp(0.3f, 0.4f, mCount));
+                    Mathf.Lerp(0.2f, 0.3f, mCount),
+                    Mathf.Lerp(0.2f, 0.3f, mCount),
+                    Mathf.Lerp(0.2f, 0.3f, mCount));
+        }
+        else
+        {
+            GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, Mathf.Lerp(0.0f, 1.0f, Mathf.Sin(Mathf.Sin(mCount * 360.0f * Mathf.Deg2Rad))));
+            if (mCount >= 1.0f)
+                mCount = 0.0f;
         }
 
     }

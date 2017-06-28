@@ -22,6 +22,7 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
 
 	void Start ()
     {
+        SceneLoadInitializer.Instance.gameClear = true;
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
         drone = GameObject.FindGameObjectWithTag("RawCamera");
 

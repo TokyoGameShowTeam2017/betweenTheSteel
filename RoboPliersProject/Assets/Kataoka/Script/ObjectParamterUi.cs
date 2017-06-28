@@ -101,7 +101,7 @@ public class ObjectParamterUi : MonoBehaviour
     {
         ObjectParameter parameter = GetComponent<ObjectParameter>();
         //表示パラメーター設定
-        ParameterSet(parameter.m_Strength, 0, parameter.GetObjectMass().ToString());
+        ParameterSet(parameter.m_Strength, 0, "");
     }
     //パラメーター設定
     private void ParameterSet(int strength, int density, string mass)

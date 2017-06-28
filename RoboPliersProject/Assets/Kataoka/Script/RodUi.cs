@@ -57,21 +57,25 @@ public class RodUi : MonoBehaviour
 
     }
     //パラメーター設定
-    public void ParameterSet(float boneHp)
+    public void ParameterSet(float boneHp,float firstHp)
     {
         ObjectParameter parameter = GetComponent<ObjectParameter>();
         //表示パラメーター設定
-        ParameterSet(parameter.m_Strength,0, parameter.GetObjectMass().ToString(),boneHp);
+        ParameterSet(parameter.m_Strength,0, "",boneHp,firstHp);
     }
     //パラメーター設定
-    private void ParameterSet(int strength, int density, string mass,float boneHp)
+    private void ParameterSet(int strength, int density, string mass,float boneHp,float firstHp)
     {
         GameObject ui = GameObject.FindGameObjectWithTag("ParameterUi").transform.FindChild("RodUi").gameObject;
         ui.transform.FindChild("Strength").GetComponent<RodParameterUi>().ParameterSet(strength.ToString());
         ui.transform.FindChild("Density").GetComponent<RodParameterUi>().ParameterSet(density.ToString());
         RectTransform trans=ui.transform.FindChild("MaskGauge").GetComponent<RectTransform>();
-        float hp = boneHp;
-        trans.sizeDelta = new Vector2(boneHp*10.0f, 100.0f);
+        float lerpCount = boneHp/firstHp;
+        //118がマックス
+        trans.sizeDelta = new Vector2(Mathf.Lerp(118.0f,0.0f,lerpCount), 6.0f);
+        ui.transform.FindChild("MaskGauge").FindChild("RodGauge").GetComponent<Image>().color = new Color(1.0f, 
+            Mathf.Lerp(0.0f, 1.0f, lerpCount), 
+            Mathf.Lerp(0.0f, 1.0f, lerpCount));
 
         //ui.transform.FindChild("Omosa").GetComponent<RodParameterUi>().ParameterSet(mass);
     }

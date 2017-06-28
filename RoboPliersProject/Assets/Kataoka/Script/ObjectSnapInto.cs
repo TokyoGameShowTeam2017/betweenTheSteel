@@ -25,7 +25,6 @@ public class ObjectSnapInto : MonoBehaviour
     {
         foreach (var i in m_Collision)
         {
-            bool flag = i.GetComponent<ObjectCollision>().GetCollisionFlag();
             if (i.GetComponent<ObjectCollision>().GetCollisionFlag()&&
                 mArm.GetEnablArmCatchingObject()==null)
             {
@@ -35,6 +34,13 @@ public class ObjectSnapInto : MonoBehaviour
 
                 break;
             }
+        }
+
+        //初期化
+        foreach (var i in m_Collision)
+        {
+            if (i == null) continue;
+            i.GetComponent<ObjectCollision>().IsFlagFalse();
         }
     }
 }

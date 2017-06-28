@@ -32,6 +32,13 @@ public class StageSelectMap : MonoBehaviour
 
     [SerializeField]
     private GameObject titleDroneCamera;
+
+    [SerializeField]
+    private Transform playerSpawnPoint;
+
+    [SerializeField]
+    private GameObject playerPrefab;
+
     private int selectNum;
 
     private bool exit;

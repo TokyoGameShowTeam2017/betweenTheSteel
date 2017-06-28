@@ -57,13 +57,14 @@ public class PlayerManager : MonoBehaviour
 
     void Awake()
     {
+        if (SceneLoadInitializer.Instance.continueScene)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         //サウンドマネージャー生成
         Instantiate(m_SoundManager);
-
-        if(SceneLoadInitializer.Instance.continueScene)
-        {
-           // Destroy(gameObject);
-        }
 
         m_PlayerMove = this.gameObject.GetComponent<PlayerMove>();
         IsMove = true;
@@ -76,8 +77,6 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         m_ArmManager = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
-
-        print("player start");
     }
 
     void Update()
@@ -286,6 +285,6 @@ public class PlayerManager : MonoBehaviour
     {
         IsMove = value;
         GameObject.Find("CameraMove").GetComponent<CameraMove>().IsMove = value;
-       // m_ArmManager.SetUIVisible(value);
+        m_ArmManager.SetUIVisible(value);
     }
 }
