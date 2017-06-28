@@ -32,6 +32,13 @@ public class StageSelectMap : MonoBehaviour
 
     [SerializeField]
     private GameObject titleDroneCamera;
+
+    [SerializeField]
+    private Transform playerSpawnPoint;
+
+    [SerializeField]
+    private GameObject playerPrefab;
+
     private int selectNum;
 
     private bool exit;
@@ -46,6 +53,11 @@ public class StageSelectMap : MonoBehaviour
         if (!SceneLoadInitializer.Instance.continueScene)
         {
             fadeImage.color = new Color(0, 0, 0, 1);
+        }
+
+        if (SceneLoadInitializer.Instance.gameClear)
+        {
+            //Instantiate(playerPrefab, playerSpawnPoint.position, playerSpawnPoint.rotation);
         }
     }
 
