@@ -45,8 +45,6 @@ public class TutorealIventTextFlag : MonoBehaviour
                 {
                     m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                 }
-
-            SoundManager.Instance.PlaySe("Answer");
             //プレイヤー状態登録
             mTutorealPlayer.SetIsArmMove(!m_PlayerArmMove);
             mTutorealPlayer.SetIsPlayerMove(!m_PlayerMove);

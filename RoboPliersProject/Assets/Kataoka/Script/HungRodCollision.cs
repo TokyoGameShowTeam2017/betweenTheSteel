@@ -36,6 +36,7 @@ public class HungRodCollision : MonoBehaviour {
                 mArmManager.GetEnablPliersMove().ForceCatchReleaseHungRod();
                 catchingrod.SetCatchType(CatchObject.CatchType.Static);
                 mArmManager.GetEnablPliersMove().ForceCatching(obj);
+                mIsCollision = true;
             }
             //else if (InputManager.GetMove().magnitude > 0.0f && state.playerIsGround && catchingrod.GetCatchType() == CatchObject.CatchType.Static)
             else if (state.armInputY < 0.0f && state.playerIsGround && catchingrod.GetCatchType() == CatchObject.CatchType.Static)
