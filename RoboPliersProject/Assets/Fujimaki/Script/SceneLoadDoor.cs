@@ -111,7 +111,9 @@ public class SceneLoadDoor : MonoBehaviour
     private void LoadNextScene()
     {
         StartCoroutine(ScanAnim());
-        SceneLoadInitializer.Instance.continueScene = true;
+
+
+        SceneLoadInitializer.Instance.continueScene = !endFrag_;
 
     }
 

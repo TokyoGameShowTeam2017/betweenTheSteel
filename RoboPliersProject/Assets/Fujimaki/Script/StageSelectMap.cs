@@ -54,11 +54,6 @@ public class StageSelectMap : MonoBehaviour
         {
             fadeImage.color = new Color(0, 0, 0, 1);
         }
-
-        if (SceneLoadInitializer.Instance.gameClear)
-        {
-            //Instantiate(playerPrefab, playerSpawnPoint.position, playerSpawnPoint.rotation);
-        }
     }
 
     private IEnumerator BackGroundLoad()
