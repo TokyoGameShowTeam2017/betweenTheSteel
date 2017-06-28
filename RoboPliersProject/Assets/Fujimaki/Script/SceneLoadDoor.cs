@@ -111,7 +111,9 @@ public class SceneLoadDoor : MonoBehaviour
     private void LoadNextScene()
     {
         StartCoroutine(ScanAnim());
-        SceneLoadInitializer.Instance.continueScene = true;
+
+
+        SceneLoadInitializer.Instance.continueScene = !endFrag_;
 
     }
 
@@ -122,16 +124,17 @@ public class SceneLoadDoor : MonoBehaviour
         yield return SceneManager.LoadSceneAsync("load", LoadSceneMode.Additive);
         Move();
 
-         GameObject g = Instantiate(loadingCanvasPrefab_);
+        yield return SceneManager.UnloadSceneAsync(unloadSceneName_);
+
+        GameObject g = Instantiate(loadingCanvasPrefab_);
          yield return SceneManager.LoadSceneAsync(nextSceneName_, LoadSceneMode.Additive);
-         //GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>().SceneChange();
+        //GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>().SceneChange();
 
 
-         if (endFrag_)
-         {
-             Destroy(playerObject_);
-         }
-         yield return SceneManager.UnloadSceneAsync(unloadSceneName_);
+        if (endFrag_)
+        {
+            Destroy(playerObject_);
+        }
 
          yield return SceneManager.UnloadSceneAsync("load");
 
