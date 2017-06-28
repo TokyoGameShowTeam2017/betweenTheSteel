@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpPoint : MonoBehaviour {
+public class JumpPoint : MonoBehaviour
+{
     //現在の座標
     Vector3 mCurPosition;
     //前回の座標
@@ -15,8 +16,9 @@ public class JumpPoint : MonoBehaviour {
     bool mFlag;
 
 
-    public float m_VecY = 0.01f;
-    public float m_JumpPower = 60.0f;
+    public float m_VecY = 0.05f;
+    public float m_JumpPowerY = 20.0f;
+    public float m_JumpPowerZ = 30.0f;
 
     ArmManager mManager;
     //ジャンプしない時間
@@ -49,16 +51,17 @@ public class JumpPoint : MonoBehaviour {
     public void OnTriggerStay(Collider other)
     {
         if (mVec.y >= m_VecY && other.tag == "Player" &&
-            mFlag&& !mManager.GetIsEnablArmCatching())
+            mFlag && !mManager.GetIsEnablArmCatching())
         {
-            other.GetComponent<PlayerMove>().Jump(m_JumpPower);
+            other.GetComponent<PlayerMove>().Jump(mVec.normalized,m_JumpPowerZ , m_JumpPowerY);
             mFlag = false;
         }
     }
 
     public void OnTriggerExit(Collider other)
     {
-        mFlag = true;
+        if (other.tag == "Player")
+            mFlag = true;
     }
 
 }
