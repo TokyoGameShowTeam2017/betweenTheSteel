@@ -110,7 +110,6 @@ public class MenuCollection : MonoBehaviour
                     m_Once = true;
                     m_MenuNum = m_MenuNum - 1;
                     SoundManager.Instance.PlaySe("select");
-                    SoundManager.Instance.StopBgm();
                     if (m_MenuNum - 1 < -1)
                     {
                         m_MenuNum = 0;
