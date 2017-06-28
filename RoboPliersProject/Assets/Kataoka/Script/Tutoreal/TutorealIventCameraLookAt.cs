@@ -76,6 +76,7 @@ public class TutorealIventCameraLookAt : MonoBehaviour
         {
             if (hit.collider.name == "LookAtObject")
             {
+                SoundManager.Instance.PlaySe("Answer");
                 Destroy(hit.collider.gameObject);
             }
         }
