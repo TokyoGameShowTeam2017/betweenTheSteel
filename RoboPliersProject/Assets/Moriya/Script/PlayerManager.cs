@@ -28,6 +28,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField, Tooltip("簡単モード AimAssistPointの検索時、カメラの正面とみなす最大角度")]
     private float m_AimAssistCameraAngle = 30.0f;
 
+    [SerializeField, Tooltip("サウンドマネージャー　プレハブ")]
+    private GameObject m_SoundManager;
+
+
     /*==内部設定変数==*/
     private PlayerMove m_PlayerMove;
     //   [SerializeField, Tooltip("アームマネージャー")]
@@ -53,6 +57,9 @@ public class PlayerManager : MonoBehaviour
 
     void Awake()
     {
+        //サウンドマネージャー生成
+        Instantiate(m_SoundManager);
+
         if(SceneLoadInitializer.Instance.continueScene)
         {
            // Destroy(gameObject);
@@ -69,6 +76,8 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         m_ArmManager = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
+
+        print("player start");
     }
 
     void Update()
