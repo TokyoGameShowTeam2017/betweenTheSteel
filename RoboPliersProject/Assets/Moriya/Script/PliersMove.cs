@@ -309,6 +309,12 @@ public class PliersMove : MonoBehaviour
 
             if (life <= 0.0f)
             {
+                //パーティクル生成
+                GameObject par = Instantiate(m_ArmManager.CutParticlePrefab,m_CatchObject.transform.position,Quaternion.identity);
+                GameObject.Destroy(par, 2.0f);
+
+
+
                 CatchObjectRelease();
 
                 ////壊れた場合はnullを入れる
@@ -330,6 +336,8 @@ public class PliersMove : MonoBehaviour
                     if (chi != null)
                         chi.parent = null;
                 } while (chi != null);
+
+
 
 
                 //CatchObjectRelease();
@@ -410,7 +418,8 @@ public class PliersMove : MonoBehaviour
         m_PlayerAxisMoveY.transform.eulerAngles = a;
         //RotX
         m_PlayerAxisMoveX.transform.position = m_PlayerAxisMoveY.transform.position + m_RotXCreatePos;
-        m_PlayerAxisMoveX.transform.forward = -tr.forward;
+        ///m_PlayerAxisMoveX.transform.forward = -tr.forward;
+        m_PlayerAxisMoveX.transform.LookAt(m_PlayerAxisMoveX.transform.position - tr.forward);
 
         ////Pos
         //Transform armtr = m_ArmManager.GetEnablArm().transform;
@@ -433,6 +442,7 @@ public class PliersMove : MonoBehaviour
 
         //ペンチ
         pliersrotx.transform.position = m_PlayerAxisMoveY.transform.position;
+        pliersrotx.transform.LookAt(tr.position);
         m_AxisMovePliersPosition.transform.position = tr.position;
         m_AxisMovePlayerPosition.transform.rotation = tr.rotation;
 
@@ -583,8 +593,8 @@ public class PliersMove : MonoBehaviour
 
         EasyInput();
 
-        //オブジェクトを切断する
-        Cut();
+        ////オブジェクトを切断する
+        //Cut();
         KusariCut();
 
 
@@ -646,7 +656,7 @@ public class PliersMove : MonoBehaviour
         Input();
 
         //オブジェクトを切断する
-        Cut();
+        ///Cut();
         KusariCut();
 
 
@@ -710,6 +720,8 @@ public class PliersMove : MonoBehaviour
 
     void LateUpdate()
     {
+        Cut();
+
         if (!m_ArmManager.IsMove)
         {
             m_LeftRB.velocity = Vector3.zero;
