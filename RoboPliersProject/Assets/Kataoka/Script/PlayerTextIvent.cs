@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerTextIvent : MonoBehaviour
 {
     [SerializeField, Tooltip("声")]
-    public AudioClip m_Voice;
+    public AudioClip[] m_Voice;
     [SerializeField, Tooltip("流すテキスト"), TextArea(1, 20)]
     public string[] m_Text;
     [SerializeField, Tooltip("イベントプレハブ")]
@@ -46,6 +46,8 @@ public class PlayerTextIvent : MonoBehaviour
     private TutorealArmSetGaugeUi mArmSetBar;
     [SerializeField, Tooltip("当たるかどうか"), Space(15)]
     public bool m_IsCollision;
+    //声の名前
+    private List<string> mVoiceName;
 
 
 
@@ -55,6 +57,12 @@ public class PlayerTextIvent : MonoBehaviour
         mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mPlayerTurorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         mArmSetBar = GameObject.FindGameObjectWithTag("LoadingBar").GetComponent<TutorealArmSetGaugeUi>();
+        mVoiceName = new List<string>();
+        foreach (var i in m_Voice)
+        {
+            mVoiceName.Add(i.name);
+        }
+
     }
     public void OnTriggerStay(Collider other)
     {
@@ -63,9 +71,7 @@ public class PlayerTextIvent : MonoBehaviour
             if (m_DrawPointObject != null) m_DrawPointObject.SetActive(true);
             if (m_NoDrawPointObject != null) m_NoDrawPointObject.SetActive(false);
             if (m_Text.Length > 0)
-                mTutorealText.SetText(m_Text);
-            if (m_Voice != null)
-                SoundManager.Instance.PlaySe(m_Voice.name);
+                mTutorealText.SetText(m_Text,mVoiceName);
 
             if (m_PlayerArmEnable1 || m_PlayerArmEnable2||
                 m_PlayerArmEnable3 || m_PlayerArmEnable4)
