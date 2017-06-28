@@ -37,7 +37,7 @@ public class TutorealArmSetGaugeUi : MonoBehaviour
         if (mLoadingFlag)
         {
             mLerpCount += 0.5f*Time.deltaTime;
-            mPlayerStateText.text = "DownLoading...";
+            mPlayerStateText.text = "driver downloading...";
         }
         if (mLerpCount >= 1.0f)
         {
