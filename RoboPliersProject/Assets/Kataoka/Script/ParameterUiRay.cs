@@ -54,7 +54,17 @@ public class ParameterUiRay : MonoBehaviour
             m_IsColOBject.SetActive(false);
             m_NoColObject.SetActive(false);
         }
-        //当たらないレイヤー指定
+
+        if (mRoboArmManager.GetEnablArmCatchingObject() != null)
+        {
+            GetObjectParameterCheck(mRoboArmManager.GetEnablArmCatchingObject().gameObject);
+            mColPos=mRoboArmManager.GetEnablArmCatchingObject().transform.position;
+            return;
+        }
+        else
+        {
+
+        }//当たらないレイヤー指定
         int layer = ~(1 << 15 | 1 << 2);
         //アームの方向にパラメーターRay発射
         Transform armTrans = mRoboArmManager.GetEnablArm().transform;
@@ -66,38 +76,13 @@ public class ParameterUiRay : MonoBehaviour
         mLineRenderer.SetPosition(0, rayStart);
         mLineRenderer.SetPosition(1, rayStart + armTrans.transform.forward.normalized * 20.0f);
         //Rayあたり判定処理
-        if (Physics.Raycast(mRay, out mHit, 20.0f, layer))
+        if (Physics.SphereCast(mRay,0.5f, out mHit, 20.0f, layer))
         {
             if (mHit.collider.tag == "CatchObject" ||
                 mHit.collider.tag == "Tekkyu" ||
                 mHit.collider.tag == "UiObject")
             {
-                //RodUiがあるまで親をたどる
-                GameObject rodui = mHit.collider.gameObject;
-                GameObject firstObject = mHit.collider.gameObject;
-                while (true)
-                {
-                    if (rodui.GetComponent<RodUi>() != null)
-                    {
-                        rodui.GetComponent<RodUi>().DrawUiFlag(true);
-                        //当たったオブジェクトの情報をUIに
-                        float life = firstObject.GetComponent<CutRodCollision>().GetLife();
-                        rodui.GetComponent<RodUi>().ParameterSet(life);
-                        mIsOutline = true;
-                        break;
-                    }
-                    if (rodui.GetComponent<ObjectParamterUi>() != null)
-                    {
-                        rodui.GetComponent<ObjectParamterUi>().DrawUiFlag(true);
-                        //当たったオブジェクトの情報をUIに
-                        rodui.GetComponent<ObjectParamterUi>().ParameterSet();
-                        mIsOutline = true;
-                        break;
-                    }
-                    if (rodui.transform.parent == null) break;
-                    rodui = rodui.transform.parent.gameObject;
-
-                }
+                GetObjectParameterCheck(mHit.collider.gameObject);
             }
             //オブジェクトに当たったら線は消える
             if (mHit.collider.name != "PliersBase")
@@ -106,6 +91,7 @@ public class ParameterUiRay : MonoBehaviour
                 mLineRenderer.SetPosition(1, mColPos);
             }
         }
+        
 
 
         mExtendRay.origin = mRoboArmManager.GetEnablArm().transform.position;
@@ -140,6 +126,38 @@ public class ParameterUiRay : MonoBehaviour
             //                     m_NoColObject.transform.eulerAngles.z);
         }
 
+    }
+
+
+    private void GetObjectParameterCheck(GameObject obj)
+    {
+        //RodUiがあるまで親をたどる
+        GameObject rodui = obj.gameObject;
+        GameObject firstObject = obj.gameObject;
+        while (true)
+        {
+            if (rodui.GetComponent<RodUi>() != null)
+            {
+                rodui.GetComponent<RodUi>().DrawUiFlag(true);
+                //当たったオブジェクトの情報をUIに
+                float life = firstObject.GetComponent<CutRodCollision>().GetLife();
+                float startLife = firstObject.GetComponent<CutRodCollision>().GetStartLife();
+                rodui.GetComponent<RodUi>().ParameterSet(life, startLife);
+                mIsOutline = true;
+                break;
+            }
+            if (rodui.GetComponent<ObjectParamterUi>() != null)
+            {
+                rodui.GetComponent<ObjectParamterUi>().DrawUiFlag(true);
+                //当たったオブジェクトの情報をUIに
+                rodui.GetComponent<ObjectParamterUi>().ParameterSet();
+                mIsOutline = true;
+                break;
+            }
+            if (rodui.transform.parent == null) break;
+            rodui = rodui.transform.parent.gameObject;
+
+        }
     }
     public Vector3 GetColRayPos()
     {
