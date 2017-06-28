@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: defcc969f26fb404884ddf399248e83c
-timeCreated: 1493259331
+guid: 721e3eb6c0b69064a93d7df1718ac6f5
+timeCreated: 1498616900
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: floor1
+    4300000: roomcollider
   materials:
     importMaterials: 1
     materialName: 0
@@ -41,7 +41,7 @@ ModelImporter:
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
