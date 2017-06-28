@@ -24,6 +24,10 @@ public class PlayerMoveCheckPlate : MonoBehaviour {
                     Mathf.Lerp(0.2f, 0.3f, mCount),
                     Mathf.Lerp(0.2f, 0.3f, mCount));
         }
+        else
+        {
+
+        }
 
 	}
 
