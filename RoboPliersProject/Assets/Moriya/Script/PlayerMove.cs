@@ -787,9 +787,9 @@ public class PlayerMove : MonoBehaviour
             h = -h;
         v = -inputY * m_AxisMoveSpeed * Time.deltaTime;
 
-
         //プレイヤー回転用の回転取得
         Vector3 euler = posTr.rotation.eulerAngles;
+        //Vector3 euler = tr.eulerAngles;
         euler.x = euler.z = 0.0f;
 
         //左スティックの場合
@@ -823,7 +823,7 @@ public class PlayerMove : MonoBehaviour
         //水平回転
         roty.localEulerAngles += new Vector3(0.0f, h, 0.0f);
         //垂直回転
-        rotx.localEulerAngles += new Vector3(v, 0.0f, 0.0f);
+        //rotx.localEulerAngles += new Vector3(v, 0.0f, 0.0f);
         pliersrotx.localEulerAngles += new Vector3(v, 0.0f, 0.0f);
 
 
@@ -839,40 +839,48 @@ public class PlayerMove : MonoBehaviour
             IsGround = ishit;
             if (ishit)
             {//地面と当たっているなら押し返す
-                rotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
+                //rotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
                 pliersrotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
             }
         }
 
 
         //上または下に行き過ぎないように制限
-        float angle = 180.0f - (rotx.eulerAngles.x - 180.0f);
+        //float angle = 180.0f - (rotx.eulerAngles.x - 180.0f);
+        float angle = 180.0f - (pliersrotx.eulerAngles.x - 180.0f);
 
         if (angle > 180.0f)
             angle -= 360.0f;
         //print(angle);
 
-        if (angle > m_AxisMoveAngleLimit || angle < -m_AxisMoveAngleLimit)
+        //if (angle > m_AxisMoveAngleLimit || angle < -m_AxisMoveAngleLimit)
+        //{
+        //    rotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
+        //    pliersrotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
+        //}
+
+        if ((v < 0 && angle > m_AxisMoveAngleLimit) ||
+            (v > 0 && angle < -m_AxisMoveAngleLimit))
         {
-            rotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
+            //rotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
             pliersrotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
         }
+
+
 
         //float angle = armtr.localEulerAngles.x;
         //if (angle > 180.0f)
         //    angle -= 360.0f;
         //print(angle);
-
+        //print("v < 0:" + (v < 0));
+        //print("over :" + (angle > m_AxisMoveAngleLimit));
         //if ((v < 0 && angle > m_AxisMoveAngleLimit) ||
         //    (v > 0 && angle < -m_AxisMoveAngleLimit))
         //{
         //    rotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
         //    pliersrotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
         //}
-        ////{
-        ////    rotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
-        ////    pliersrotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
-        ////}
+
 
 
 

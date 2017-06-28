@@ -25,6 +25,9 @@ public class ArmManager : MonoBehaviour
     private float[] m_PliersPower;
     [SerializeField, Tooltip("アームの角度限界")]
     private float m_ArmAngleMax = 80.0f;
+    [SerializeField, Tooltip("Static掴み時のアームの角度限界")]
+    private float m_StaticCatchArmAngleMax = 85.0f;
+
     [SerializeField, Tooltip("現在選択中のアームID(0～4)")]
     private int m_EnableArmID = 0;
     [SerializeField, Tooltip("ペンチのZ軸回転速度")]
@@ -39,6 +42,8 @@ public class ArmManager : MonoBehaviour
     [SerializeField, Tooltip("アームリセット時、リセットを完了させるまでの秒数")]
     private float m_ResetEndTime = 0.5f;
 
+    public GameObject CutParticlePrefab;
+    public GameObject WarpPartielcPrefab;
 
     /*==内部設定変数==*/
     private PlayerManager m_PlayerManager;
@@ -79,6 +84,9 @@ public class ArmManager : MonoBehaviour
     //アームリセットできるか？
     public bool IsResetAble { get; set; }
 
+    //Static掴み時のアームの角度限界
+    public float StaticCatchingArmAngleMax { get; set; }
+
 
     /*==外部参照変数==*/
 
@@ -92,8 +100,11 @@ public class ArmManager : MonoBehaviour
 
         m_CameraMove = GameObject.Find("CameraMove").GetComponent<CameraMove>();
 
+
         m_TutorialSetting = m_PlayerManager.GetComponent<TutorialSetting>();
         SwitchEnableArm(m_EnableArmID);
+
+
 
         for (int i = 0; i < m_Arms.Length; i++)
         {
@@ -117,6 +128,7 @@ public class ArmManager : MonoBehaviour
             IsArmSelectAble[i] = true;
         }
         IsResetAble = true;
+        StaticCatchingArmAngleMax = m_StaticCatchArmAngleMax;
 
 
         //UIを登録
@@ -134,9 +146,6 @@ public class ArmManager : MonoBehaviour
             m_GaugeUIs[i] = gauge.FindChild(name + "gauge1");
             m_ButtonUIs[i] = gauge.Find(name);
         }
-
-
-
     }
 
     void Start()
