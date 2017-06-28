@@ -78,7 +78,7 @@ public class TutorealIventOutLine : MonoBehaviour {
                     m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                 }
 
-
+            SoundManager.Instance.PlaySe("Answer");
             Destroy(gameObject);
         }
 	}

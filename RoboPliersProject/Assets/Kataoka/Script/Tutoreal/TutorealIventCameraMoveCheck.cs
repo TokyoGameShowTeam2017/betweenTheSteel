@@ -159,6 +159,7 @@ public class TutorealIventCameraMoveCheck : MonoBehaviour {
             if (mInputTime >= m_InputTime)
             {
                 mInputFlags[mInputDir] = true;
+                SoundManager.Instance.PlaySe("Answer");
                 mInputPlates[mInputDir].GetComponent<PlayerCameraMoveCheckUi>().IsDead();
             }
 

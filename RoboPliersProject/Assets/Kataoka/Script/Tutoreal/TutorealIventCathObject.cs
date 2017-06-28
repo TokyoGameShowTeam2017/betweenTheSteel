@@ -83,6 +83,7 @@ public class TutorealIventCathObject : MonoBehaviour
             mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
             mPlayerTutoreal.SetIsResetAble(!m_PlayerClerArmReset);
 
+            SoundManager.Instance.PlaySe("Answer");
             Destroy(gameObject);
         }
     }

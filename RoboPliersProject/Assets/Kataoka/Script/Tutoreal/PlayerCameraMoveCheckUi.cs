@@ -2,29 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class PlayerCameraMoveCheckUi : MonoBehaviour {
-
+public class PlayerCameraMoveCheckUi : MonoBehaviour
+{
+    [SerializeField, Tooltip("点滅スピード")]
+    public float m_TimeSpeed = 1.0f;
     private bool mDeadFlag;
     private float mCount;
+    private Vector2 mStartScale;
     // Use this for initialization
     void Start()
     {
         mDeadFlag = false;
         mCount = 0.0f;
+        mStartScale = GetComponent<RectTransform>().localScale;
     }
 
     // Update is called once per frame
     void Update()
     {
-        mCount += Time.deltaTime;
+        mCount += m_TimeSpeed * Time.deltaTime;
         if (mDeadFlag)
         {
             GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, Mathf.Lerp(1.0f, 0.0f, mCount));
             GetComponent<RectTransform>().localScale =
                 new Vector3(
-                    Mathf.Lerp(0.2f, 0.3f, mCount),
-                    Mathf.Lerp(0.2f, 0.3f, mCount),
-                    Mathf.Lerp(0.2f, 0.3f, mCount));
+                    Mathf.Lerp(mStartScale.x, mStartScale.x + 0.1f, mCount),
+                    Mathf.Lerp(mStartScale.y, mStartScale.y + 0.1f, mCount), 0.0f);
         }
         else
         {
