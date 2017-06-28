@@ -18,6 +18,6 @@ public class TutorealIventLookAtFlag : MonoBehaviour {
 
     public bool GetFlag()
     {
-        return mIsCameraView;
+        return true;
     }
 }

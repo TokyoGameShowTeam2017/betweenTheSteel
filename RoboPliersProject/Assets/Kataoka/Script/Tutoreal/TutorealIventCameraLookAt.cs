@@ -79,7 +79,7 @@ public class TutorealIventCameraLookAt : MonoBehaviour
             }
         }
         //子を全部消したら
-        if (transform.childCount <= 0)
+        if (true)
         {
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
