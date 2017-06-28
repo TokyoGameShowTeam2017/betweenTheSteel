@@ -84,7 +84,15 @@ public class CutRodCollision : MonoBehaviour
         return m_Life;
     }
 
-
+    public void SetStartLife(float life)
+    {
+        m_StartLife = life;
+        m_Life = m_StartLife;
+    }
+    public void SetStartStrength(float strength)
+    {
+        m_Strength = strength;
+    }
     public float GetStartLife()
     {
         return m_StartLife;

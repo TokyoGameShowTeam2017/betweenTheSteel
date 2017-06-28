@@ -6,9 +6,6 @@ using UnityEngine;
 public class ObjectCollision : MonoBehaviour
 {
     private bool mIsCollision = false;
-    void Update()
-    {
-    }
 
     public void OnCollisionStay(Collision collision)
     {
@@ -26,7 +23,7 @@ public class ObjectCollision : MonoBehaviour
 
         if (other.name.Substring(0, 4) != "Plie" &&
             other.GetComponent<CatchObject>() == null &&
-            other.name != "Player")
+            other.tag != "Player")
         {
             if (other.GetComponent<BoxCollider>() == null)
                 mIsCollision = true;
@@ -38,27 +35,14 @@ public class ObjectCollision : MonoBehaviour
         }
     }
 
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.name.Substring(0, 4) != "Plie" &&
-            other.GetComponent<CatchObject>() == null&&
-            other.name!="Player")
-        {
-            if (other.GetComponent<BoxCollider>() == null)
-                mIsCollision = false;
-            else
-            {
-                if (!other.GetComponent<BoxCollider>().isTrigger)
-                    mIsCollision = false;
-            }
-        }
-    }
-
     public bool GetCollisionFlag()
     {
         return mIsCollision;
     }
-
+    public void IsFlagFalse()
+    {
+        mIsCollision = false;
+    }
 
 
 
