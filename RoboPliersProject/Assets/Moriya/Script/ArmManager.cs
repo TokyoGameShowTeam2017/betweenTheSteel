@@ -574,7 +574,8 @@ public class ArmManager : MonoBehaviour
     /// </summary>
     public void SetUIVisible(bool value)
     {
-        RunChildren(m_UI, value);
+        if (m_UI != null) 
+            RunChildren(m_UI, value);
     }
 
     //全ての子の走査用関数

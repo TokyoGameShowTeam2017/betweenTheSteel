@@ -452,7 +452,7 @@ public class PliersMove : MonoBehaviour
 
         //掴んだポイントをセット
         m_ArmManager.GetEnablArmMove().SetStaticCatchPoint(m_PlayerAxisMoveY.transform.position);
-        m_CatchObject.SetCatchPoint(m_PlayerAxisMoveY.transform.position);
+        //m_CatchObject.SetCatchPoint(m_PlayerAxisMoveY.transform.position);
         m_CatchObjPrevPos = m_CatchObject.transform.position;
 
 
