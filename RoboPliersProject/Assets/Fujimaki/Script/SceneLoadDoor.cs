@@ -57,6 +57,9 @@ public class SceneLoadDoor : MonoBehaviour
     [SerializeField, Tooltip("最終シーン用フラグ")]
     private bool endFrag_;
 
+    [SerializeField]
+    private GameObject playerprefab;
+
     public delegate void AnimEndCallback();
     private GameObject playerObject_;
 
@@ -112,36 +115,37 @@ public class SceneLoadDoor : MonoBehaviour
     {
         StartCoroutine(ScanAnim());
 
-
-        SceneLoadInitializer.Instance.continueScene = !endFrag_;
-
     }
 
     private IEnumerator LoadScene()
     {
         Destroy(SceneLoadInitializer.Instance.usedArea);
 
-        yield return SceneManager.LoadSceneAsync("load", LoadSceneMode.Additive);
         Move();
+
+        Vector3 pos = playerObject_.transform.position;
+        Quaternion r = playerObject_.transform.rotation;
 
         yield return SceneManager.UnloadSceneAsync(unloadSceneName_);
 
         GameObject g = Instantiate(loadingCanvasPrefab_);
-         yield return SceneManager.LoadSceneAsync(nextSceneName_, LoadSceneMode.Additive);
+        //yield return SceneManager.LoadSceneAsync(nextSceneName_, LoadSceneMode.Additive);
+        yield return SceneManager.LoadSceneAsync(nextSceneName_);
         //GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>().SceneChange();
-
 
         if (endFrag_)
         {
             Destroy(playerObject_);
         }
 
-         yield return SceneManager.UnloadSceneAsync("load");
+        //yield return SceneManager.UnloadSceneAsync("load");
 
-         Destroy(g);
-         Loaded();
+        Destroy(g);
+        Loaded();
 
-        yield return null;
+        yield return new WaitForSeconds(3);
+
+        //yield return SceneManager.UnloadSceneAsync(unloadSceneName_);
     }
 
     private IEnumerator ScanAnim()

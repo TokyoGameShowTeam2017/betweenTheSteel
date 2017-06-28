@@ -67,6 +67,9 @@ public class ArmManager : MonoBehaviour
 
     private CameraMove m_CameraMove;
 
+    //シーン切り替え時に消すオブジェクト用のゴミ箱
+    private Transform m_DustBox;
+
     /// <summary>
     /// 動かせるか？
     /// trueで動かせるようになり、エイムアシスト等が働く。カメラも動かせる状態ならば、カメラの向いたほうを向く。
@@ -93,13 +96,10 @@ public class ArmManager : MonoBehaviour
     void Awake()
     {
         tr = GetComponent<Transform>();
-
-
-
         m_PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
 
         m_CameraMove = GameObject.Find("CameraMove").GetComponent<CameraMove>();
-
+        m_DustBox = GameObject.FindGameObjectWithTag("DustBox").transform;
 
         m_TutorialSetting = m_PlayerManager.GetComponent<TutorialSetting>();
         SwitchEnableArm(m_EnableArmID);
@@ -150,6 +150,7 @@ public class ArmManager : MonoBehaviour
 
     void Start()
     {
+
 
         //アクティブではないアームのＵＩを変更
         for (int i = 0; i < 4; i++)
@@ -238,6 +239,13 @@ public class ArmManager : MonoBehaviour
 
     void LateUpdate()
     {
+        //if (Input.GetKeyDown(KeyCode.V))
+        //{
+        //    ResetAll();
+        //    DustBoxClear();
+        //}
+
+
         //if (InputManager.GetSelectArm().isDown)
         //{
         //    print("ok");
@@ -574,7 +582,8 @@ public class ArmManager : MonoBehaviour
     /// </summary>
     public void SetUIVisible(bool value)
     {
-        RunChildren(m_UI, value);
+        if (m_UI != null) 
+            RunChildren(m_UI, value);
     }
 
     //全ての子の走査用関数
@@ -711,6 +720,24 @@ public class ArmManager : MonoBehaviour
         }
     }
 
+    //すべてのアームペンチリセット
+    public void ResetAll()
+    {
+        //アームとペンチのリセット
+        for (int i = 0; i < m_Arms.Length; i++)
+        {
+            if (i == m_EnableArmID)
+            {
+                m_Pliers[i].ForceCatchRelease();
+            }
+            else
+            {
+                m_Arms[i].Reset();
+                m_Pliers[i].Reset();
+            }
+        }
+    }
+
     /// <summary>
     /// Static掴み中のカメラ回転処理
     /// </summary>
@@ -746,5 +773,33 @@ public class ArmManager : MonoBehaviour
             yield return null;
         }
         yield break;
+    }
+
+    public void DustBoxAddChild(Transform addObject)
+    {
+        addObject.parent = m_DustBox;
+    }
+
+    public void DustBoxAddChild(GameObject addObject)
+    {
+        addObject.transform.parent = m_DustBox;
+    }
+
+    public void DustBoxClear()
+    {
+        foreach (Transform t in m_DustBox)
+        {
+            GameObject.Destroy(t.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// シーン切り替え時に呼ぶ処理
+    /// 持ってるオブジェクトを削除、前までDontDestroyに入っていたものを削除
+    /// </summary>
+    public void SceneChangeCalc()
+    {
+        ResetAll();
+        DustBoxClear();
     }
 }
