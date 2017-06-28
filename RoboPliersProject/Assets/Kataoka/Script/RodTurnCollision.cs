@@ -147,6 +147,11 @@ public class RodTurnCollision : MonoBehaviour
         //}
         if (mArm.GetEnablArmCatchingObject() == null ||
             mArm.GetEnablArmCatchingObject().GetComponent<RodTurnBone>() == null) return;
+
+        if (mArm.GetEnablArmCatchingObject().
+            GetComponent<RodTurnBone>().GetRod().
+            GetComponent<Rod>().GetHongFlag()) return;
+
         //2本のアームでつかむ処理
         if (mArm.GetEnablArmCatchingObject().GetComponent<CatchObject>().catchType ==
             CatchObject.CatchType.Dynamic)

@@ -18,6 +18,8 @@ public class HungRodCollision : MonoBehaviour {
 	// Update is called once per frame
     void Update()
     {
+
+        mIsCollision=false;
     }
     public void OnTriggerStay(Collider other)
     {
@@ -30,7 +32,7 @@ public class HungRodCollision : MonoBehaviour {
             CatchObject obj = mArmManager.GetEnablArmCatchingObject();
             if (state.armInputY > 0.0f && catchingrod.GetCatchType() == CatchObject.CatchType.Dynamic)
             {
-                mIsCollision = true;
+                other.GetComponent<RodTurnBone>().GetRod().GetComponent<Rod>().IsHong(true);
                 mArmManager.GetEnablPliersMove().ForceCatchReleaseHungRod();
                 catchingrod.SetCatchType(CatchObject.CatchType.Static);
                 mArmManager.GetEnablPliersMove().ForceCatching(obj);
@@ -38,6 +40,7 @@ public class HungRodCollision : MonoBehaviour {
             //else if (InputManager.GetMove().magnitude > 0.0f && state.playerIsGround && catchingrod.GetCatchType() == CatchObject.CatchType.Static)
             else if (state.armInputY < 0.0f && state.playerIsGround && catchingrod.GetCatchType() == CatchObject.CatchType.Static)
             {
+                other.GetComponent<RodTurnBone>().GetRod().GetComponent<Rod>().IsHong(false);
                 mArmManager.GetEnablPliersMove().ForceCatchReleaseHungRod();
                 catchingrod.SetCatchType(CatchObject.CatchType.Dynamic);
                 mArmManager.GetEnablPliersMove().ForceCatching(obj);
