@@ -123,6 +123,7 @@ public class CutRod : MonoBehaviour
                 //パラメーターを設定
                 //prefab.GetComponent<ObjectParameter>().m_Density = GetComponent<ObjectParameter>().m_Density;
                 prefab.GetComponent<ObjectParameter>().m_Strength = GetComponent<ObjectParameter>().m_Strength;
+                prefab.GetComponent<ObjectParameter>().m_Life = GetComponent<ObjectParameter>().m_Life;
                 //prefab.GetComponent<ObjectParameter>().m_BoneMass = GetComponent<ObjectParameter>().m_BoneMass;
                 prefab.GetComponent<ObjectParameter>().SetRodParameter();
 
