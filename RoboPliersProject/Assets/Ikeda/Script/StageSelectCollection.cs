@@ -71,6 +71,7 @@ public class StageSelectCollection : MonoBehaviour
                 {
                     m_Once = true;
                     m_StageNum = m_BeforStageNum;
+                    SoundManager.Instance.PlaySe("select");
                 }
                 break;
 
@@ -81,6 +82,7 @@ public class StageSelectCollection : MonoBehaviour
                     if (m_StageNum == 20) return;
                     m_BeforStageNum = m_StageNum;
                     m_StageNum = 20;
+                    SoundManager.Instance.PlaySe("select");
                 }
                 break;
 
@@ -90,6 +92,7 @@ public class StageSelectCollection : MonoBehaviour
                     m_Once = true;
                     if (m_StageNum == 20) return;
                     m_StageNum += 1;
+                    SoundManager.Instance.PlaySe("select");
                     m_IsLoad = false;
                     if (m_StageNum + 1 > 16)
                     {
@@ -104,6 +107,7 @@ public class StageSelectCollection : MonoBehaviour
                     m_Once = true;
                     if (m_StageNum == 20) return;
                     m_StageNum -= 1;
+                    SoundManager.Instance.PlaySe("select");
                     m_IsLoad = false;
                     if (m_StageNum - 1 < 0)
                     {
@@ -228,6 +232,7 @@ public class StageSelectCollection : MonoBehaviour
         if (InputWrap() || Input.GetKeyDown(KeyCode.Space))
         {
             m_BackMenu = true;
+            SoundManager.Instance.PlaySe("back");
             StageMapUnLoad();
         }
         if (m_BackMenu)
@@ -245,6 +250,8 @@ public class StageSelectCollection : MonoBehaviour
         if (m_StageNum == 20) return;
         if (InputWrap())
         {
+            SoundManager.Instance.StopBgm();
+            SoundManager.Instance.PlaySe("enter");
             GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().StartOtherScene(m_StageNum);
         }
     }

@@ -99,6 +99,7 @@ public class ManualCollection : MonoBehaviour {
 
             if (InputWrap())
             {
+                SoundManager.Instance.PlaySe("back");
                 m_ManualState = ManualState.FeadOutManual;
             }
         }
@@ -115,6 +116,7 @@ public class ManualCollection : MonoBehaviour {
                 {                   
                     m_Once = true;
                     m_ManualNum = 0;
+                    SoundManager.Instance.PlaySe("select");
                 }
                 break;
 
@@ -123,6 +125,7 @@ public class ManualCollection : MonoBehaviour {
                 {
                     m_Once = true;
                     m_ManualNum = 1;
+                    SoundManager.Instance.PlaySe("select");
                 }
                 break;
 
@@ -131,6 +134,7 @@ public class ManualCollection : MonoBehaviour {
                 {
                     m_Once = true;
                     m_ManualNum = 1;
+                    SoundManager.Instance.PlaySe("select");
                 }
                 break;
 
@@ -139,6 +143,7 @@ public class ManualCollection : MonoBehaviour {
                 {
                     m_Once = true;
                     m_ManualNum = 0;
+                    SoundManager.Instance.PlaySe("select");
                 }
                 break;
 

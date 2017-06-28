@@ -30,6 +30,8 @@ public class SceneCollection : MonoBehaviour
 
     private bool m_IsSceneEnd;
 
+    private bool m_One;
+
     //現在のシーン
     private SceneState m_CurrentScene = SceneState.None;
     //次のシーン
@@ -56,6 +58,7 @@ public class SceneCollection : MonoBehaviour
     void Start()
     {
         m_IsSceneEnd = false;
+        m_One = false;
 
         AddScene(SceneState.TitleScene, m_TitlePrefab);
         AddScene(SceneState.MenuScene, m_MenuPrefab);
@@ -65,13 +68,17 @@ public class SceneCollection : MonoBehaviour
         m_CurrentScene = SceneState.None;
         m_NextScene = SceneState.TitleScene;
 
-
         StartCoroutine(MyNameSceneCheck());
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!m_One)
+        {
+            SoundManager.Instance.PlayBgm("Monday1");
+            m_One = true;
+        }
         if (m_IsSceneEnd)
         {
             //現在のシーンを消去
