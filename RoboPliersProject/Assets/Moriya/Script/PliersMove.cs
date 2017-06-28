@@ -309,16 +309,18 @@ public class PliersMove : MonoBehaviour
 
             if (life <= 0.0f)
             {
-                //壊れた場合はnullを入れる
-                m_ReleasedObject = m_CatchObject.gameObject;
-                m_CatchObject = null;
-                m_IsCatch = false;
+                CatchObjectRelease();
+
+                ////壊れた場合はnullを入れる
+                //m_ReleasedObject = m_CatchObject.gameObject;
+                //m_CatchObject = null;
+                //m_IsCatch = false;
                 //エイムアシストによるキャッチをやめる
                 m_ArmManager.GetArmMoveByID(m_ID).CatchingCancel();
 
-                GameObject.Destroy(m_PlayerAxisMoveY);
-                m_PlayerAxisMoveY = null;
-                m_PlayerManager.ReleaseAxisMoveObject();
+                //GameObject.Destroy(m_PlayerAxisMoveY);
+                //m_PlayerAxisMoveY = null;
+                //m_PlayerManager.ReleaseAxisMoveObject();
 
                 //子供にMainRod(Clone)が残っている場合親子関係解除
                 Transform chi;
@@ -330,7 +332,7 @@ public class PliersMove : MonoBehaviour
                 } while (chi != null);
 
 
-                
+                CatchObjectRelease();
             }
 
 
@@ -520,8 +522,10 @@ public class PliersMove : MonoBehaviour
                 bool flag = true;
                 if (m_CatchParent != null)
                 {
+                    print("not null");
                     if (m_CatchParent.name == "MainRod" || m_CatchParent.name == "MainRod(Clone)")
                     {
+                        print("if");
                         for (int i = 0; i <= 3; i++)
                         {
                             GameObject catchObject = m_ArmManager.GetPliersCatchRod(i);
@@ -551,6 +555,7 @@ public class PliersMove : MonoBehaviour
                     }
                     else
                     {
+                        print("else");
                         //親子関係を解除
                         m_CatchParent.parent = null;
                         //自由落下させる
@@ -564,6 +569,7 @@ public class PliersMove : MonoBehaviour
         m_CatchObject = null;
 
         m_ArmManager.GetArmMoveByID(m_ID).CatchingCancel();
+
 
 
         
