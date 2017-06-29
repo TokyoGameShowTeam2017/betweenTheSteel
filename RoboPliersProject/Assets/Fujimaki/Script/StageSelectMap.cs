@@ -196,6 +196,11 @@ public class StageSelectMap : MonoBehaviour
 
     public void StartOtherScene(int num)
     {
+        if (num == 1)
+        {
+            StartFirstScene();
+            return;
+        }
         StartCoroutine(StartOtherSceneAnim(num));
     }
 
@@ -226,7 +231,7 @@ public class StageSelectMap : MonoBehaviour
         string loadedScene = "Stage0" + num;
 
 
-        SceneManager.UnloadSceneAsync("Stage01");
+        yield return SceneManager.UnloadSceneAsync("Stage01");
         yield return SceneManager.LoadSceneAsync(loadedScene, LoadSceneMode.Additive);
         StartCoroutine(StartScene(num, GameObject.FindGameObjectWithTag("ThumbnailCamera")));
     }
