@@ -14,12 +14,14 @@ public class StageSelectCollection : MonoBehaviour
     private RectTransform m_StageSelect;
     private bool m_BackMenu = false;
 
+    private float m_Alpha;
     private bool m_Once;
     private float m_FeadOutRate;
     private StickState m_StickState;
     // Use this for initialization
     void Start()
     {
+        m_Alpha = 1.0f;
         m_FeadOutRate = 1.0f;
         m_Once = false;
         m_IsLoad = false;
@@ -37,6 +39,7 @@ public class StageSelectCollection : MonoBehaviour
         //Aボタンで戻る
         if (Input.GetButtonDown("XBOXArm3"))
         {
+            m_BeforStageNum = m_StageNum;
             m_StageNum = 20;
             m_BackMenu = true;
         }
@@ -255,10 +258,15 @@ public class StageSelectCollection : MonoBehaviour
         }
         if (m_BackMenu)
         {
-            if (m_FeadOutRate >= 0) m_FeadOutRate -= 0.03f;
+            if (m_FeadOutRate >= 0)
+            {
+                m_FeadOutRate -= 0.03f;
+                m_Alpha -= 0.1f;
+                GameObject.Find("Stages").GetComponent<CanvasGroup>().alpha = m_Alpha;
+                GameObject.Find("selectstageback").GetComponent<CanvasGroup>().alpha = m_Alpha;
+                GameObject.Find("backback").transform.localPosition = Vector3.Lerp(new Vector3(-350, -260, 0), new Vector3(-350, -196, 0), m_FeadOutRate);
+            }
             else GameObject.Find("sideFrame").GetComponent<MenuFrame>().BackFrame();
-
-            GameObject.Find("backback").transform.localPosition = Vector3.Lerp(new Vector3(-350, -260, 0), new Vector3(-350, -196, 0), m_FeadOutRate);
         }
     }
 
