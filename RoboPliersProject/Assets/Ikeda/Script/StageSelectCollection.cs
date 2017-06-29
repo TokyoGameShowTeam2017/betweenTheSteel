@@ -15,12 +15,14 @@ public class StageSelectCollection : MonoBehaviour
     private bool m_BackMenu = false;
 
     private float m_Alpha;
+    private float m_Timer;
     private bool m_Once;
     private float m_FeadOutRate;
     private StickState m_StickState;
     // Use this for initialization
     void Start()
     {
+        m_Timer = 0.0f;
         m_Alpha = 1.0f;
         m_FeadOutRate = 1.0f;
         m_Once = false;
@@ -71,7 +73,11 @@ public class StageSelectCollection : MonoBehaviour
     //選択中のインプット関係
     private void StageSelectInput()
     {
-        m_StickState = GetStick();
+        m_Timer -= Time.deltaTime;
+        if (m_Timer <= 0.0f)
+        {
+            m_StickState = GetStick();
+        }
 
         switch (m_StickState)
         {
@@ -100,6 +106,7 @@ public class StageSelectCollection : MonoBehaviour
                 {
                     m_Once = true;
                     if (m_StageNum == 20) return;
+                    m_Timer = 0.65f;
                     m_StageNum += 1;
                     SoundManager.Instance.PlaySe("select");
                     m_IsLoad = false;
@@ -116,6 +123,7 @@ public class StageSelectCollection : MonoBehaviour
                     m_Once = true;
                     if (m_StageNum == 20) return;
                     m_StageNum -= 1;
+                    m_Timer = 0.65f;
                     SoundManager.Instance.PlaySe("select");
                     m_IsLoad = false;
                     if (m_StageNum - 1 < 0)
@@ -260,8 +268,8 @@ public class StageSelectCollection : MonoBehaviour
         {
             if (m_FeadOutRate >= 0)
             {
-                m_FeadOutRate -= 0.03f;
-                m_Alpha -= 0.1f;
+                m_FeadOutRate -= 0.03f * Time.deltaTime * 60;
+                m_Alpha -= 0.1f * Time.deltaTime * 60;
                 GameObject.Find("Stages").GetComponent<CanvasGroup>().alpha = m_Alpha;
                 GameObject.Find("selectstageback").GetComponent<CanvasGroup>().alpha = m_Alpha;
                 GameObject.Find("backback").transform.localPosition = Vector3.Lerp(new Vector3(-350, -260, 0), new Vector3(-350, -196, 0), m_FeadOutRate);

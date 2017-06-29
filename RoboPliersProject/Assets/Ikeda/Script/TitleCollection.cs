@@ -25,10 +25,11 @@ public class TitleCollection : MonoBehaviour
     private float m_WaitTimer2 = 30.0f;
 
     private TitleState m_TitleState = TitleState.None;
-
+    private bool m_One = false;
     // Use this for initialization
     void Start()
     {
+        m_One = false;
         m_IsSceneEnd = false;
         m_RapidDraw = false;
         m_PressStart = false;
@@ -41,8 +42,8 @@ public class TitleCollection : MonoBehaviour
         switch (m_TitleState)
         {
             case TitleState.TitleStart:
-                if (m_WaitTimer >= 0)
-                    m_WaitTimer--;
+                if (m_WaitTimer / 60 >= 0)
+                    m_WaitTimer -= Time.deltaTime;
 
                 else
                 {
@@ -61,8 +62,8 @@ public class TitleCollection : MonoBehaviour
                 break;
 
             case TitleState.TitleWaitState:
-                if (m_WaitTimer2 >= 0)
-                    m_WaitTimer2--;
+                if (m_WaitTimer2 / 60 >= 0)
+                    m_WaitTimer2 -= Time.deltaTime;
                 else
                 {
                     //PressStartの入力
@@ -89,6 +90,21 @@ public class TitleCollection : MonoBehaviour
                 break;
         }
     }
+
+    public void LateUpdate()
+    {
+        //SoundManager l_Sound = GetComponent<SoundManager>();
+
+        //if (l_Sound == null) return;
+
+        if (!m_One)
+        {
+            SoundManager.Instance.PlayBgm("Monday1");
+            m_One = true;
+        }
+    }
+
+
 
 
     /// <summary>

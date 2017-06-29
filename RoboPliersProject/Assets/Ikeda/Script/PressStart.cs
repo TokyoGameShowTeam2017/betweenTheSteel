@@ -51,7 +51,7 @@ public class PressStart : MonoBehaviour
         {
             if (m_Timer >= m_Second * 60)
             {
-                m_Alpha += 0.05f;
+                m_Alpha += 0.08f * Time.deltaTime * 60;
                 GameObject.Find("pressstartback").GetComponent<CanvasGroup>().alpha = m_Alpha;
                 if (m_Alpha >= 1)
                 {
@@ -67,7 +67,7 @@ public class PressStart : MonoBehaviour
     {
         if (!m_Flap)
         {
-            m_Alpha -= m_LowerSpeed;
+            m_Alpha -= m_LowerSpeed * Time.deltaTime * 60;
             GameObject.Find("pressstart").GetComponent<CanvasGroup>().alpha = m_Alpha;
             if (m_Alpha <= 0)
             {
@@ -76,7 +76,7 @@ public class PressStart : MonoBehaviour
         }
         else
         {
-            m_Alpha += m_LowerSpeed;
+            m_Alpha += m_LowerSpeed * Time.deltaTime * 60;
             GameObject.Find("pressstart").GetComponent<CanvasGroup>().alpha = m_Alpha;
             if (m_Alpha >= 1)
             {
@@ -93,7 +93,7 @@ public class PressStart : MonoBehaviour
 
         if (m_Alpha >= 0)
         {
-            m_Alpha -= m_FadeLowerSpeed;
+            m_Alpha -= m_FadeLowerSpeed * Time.deltaTime * 60;
         }
         GameObject.Find("pressstartback").GetComponent<CanvasGroup>().alpha = m_Alpha;
         GameObject.Find("pressstart").GetComponent<CanvasGroup>().alpha = m_Alpha;

@@ -48,7 +48,7 @@ public class MenuFrame : MonoBehaviour
                 GameObject.Find("Canvas menu(Clone)").GetComponent<MenuCollection>().GetMenuState() == 3)
             {
                 if (m_EnterRate > 0)
-                    m_EnterRate -= 0.1f;
+                    m_EnterRate -= 0.07f * Time.deltaTime * 60;
 
                 m_RectLeft.localPosition = Vector3.Lerp(m_StartPositionLeft, new Vector3(-230.0f, 0.0f, 0.0f), m_EnterRate);
                 m_RectRight.localPosition = Vector3.Lerp(m_StartPositionRight, new Vector3(230.0f, 0.0f, 0.0f), m_EnterRate);
@@ -58,7 +58,7 @@ public class MenuFrame : MonoBehaviour
             {
                 if (GameObject.Find("selectMenu").GetComponent<SelectMenuEnter>().GetIsEndOut())
                 {
-                    if (m_EnterRate > 0) m_EnterRate -= 0.1f;
+                    if (m_EnterRate > 0) m_EnterRate -= 0.07f * Time.deltaTime * 60;
                     else
                     {
                         GameObject.Find("SceneCollection").GetComponent<SceneCollection>().SetNextScene(0);
@@ -76,7 +76,7 @@ public class MenuFrame : MonoBehaviour
         if (GameObject.Find("CommonCanvas").GetComponent<MenuCanvas>().GetIsMenuDraw())
         {
             if (m_EnterRate < 1)
-                m_EnterRate += m_FrameSpeed;
+                m_EnterRate += m_FrameSpeed * Time.deltaTime * 60;
 
             m_RectLeft.localPosition = Vector3.Lerp(m_StartPositionLeft, new Vector3(-150.0f, 0.0f, 0.0f), m_EnterRate);
             m_RectRight.localPosition = Vector3.Lerp(m_StartPositionRight, new Vector3(150.0f, 0.0f, 0.0f), m_EnterRate);
@@ -85,7 +85,7 @@ public class MenuFrame : MonoBehaviour
 
     public void SpreadFrame()
     {
-        if (m_SpreadRate <= 1.1f) m_SpreadRate += 0.03f;
+        if (m_SpreadRate <= 1.1f) m_SpreadRate += 0.04f * Time.deltaTime * 60;
         else if (m_SpreadRate >= 1.0f)
         {
             if (GameObject.Find("Canvas menu(Clone)").GetComponent<MenuCollection>().GetMenuState() == 1)
@@ -106,7 +106,7 @@ public class MenuFrame : MonoBehaviour
 
     public void BackFrame()
     {
-        if (m_BackRate >= 0) m_BackRate -= 0.03f;
+        if (m_BackRate >= 0) m_BackRate -= 0.04f * Time.deltaTime * 60;
         else if (m_BackRate <= 0)
         {
             GameObject.Find("SceneCollection").GetComponent<SceneCollection>().SetNextScene(1);

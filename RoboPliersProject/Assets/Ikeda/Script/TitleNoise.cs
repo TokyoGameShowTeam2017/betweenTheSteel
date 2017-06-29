@@ -23,7 +23,7 @@ public class TitleNoise : MonoBehaviour
 
     public void NoiseFeadOut()
     {
-        m_Alpha -= m_LowerSpeed;
+        m_Alpha -= m_LowerSpeed * Time.deltaTime * 60;
         GameObject.Find("Titlenoise").GetComponent<CanvasGroup>().alpha = m_Alpha;
         if (m_Alpha <= 0)
         {

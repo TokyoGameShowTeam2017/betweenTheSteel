@@ -61,7 +61,7 @@ public class PushSwitch : MonoBehaviour
             if (m_KeepPush)
             {
                 //スイッチを動かす
-                m_Ratio += m_Speed;
+                m_Ratio += m_Speed * Time.deltaTime * 60;
                 transform.localPosition = Vector3.Lerp(m_StartPosition, m_GoalPosition, m_Ratio);
 
                 //一定距離動いたら、止まる
@@ -85,7 +85,7 @@ public class PushSwitch : MonoBehaviour
                 //スイッチを動かす状態
                 else if (m_SwitchState == SwitchState.PushSwitchState)
                 {
-                    m_Ratio += m_Speed;
+                    m_Ratio += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, m_GoalPosition, m_Ratio);
 
                     if (m_Ratio >= 1.0f && !m_Repeat)
@@ -108,7 +108,7 @@ public class PushSwitch : MonoBehaviour
                     //プレイヤーがスイッチから離れたとき
                     if (!m_Switch3.GetComponent<ButtonObject>().m_IsTouch)
                     {
-                        m_FTimer++;
+                        m_FTimer += Time.deltaTime;
                         if (m_FTimer >= m_FpsTime)
                         {
                             m_FTimer = 0;

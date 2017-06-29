@@ -32,6 +32,7 @@ public class Title : MonoBehaviour
     private bool m_RapidDraw = false;
 
     private float m_FedeOutRate;
+    private float m_FedeOutAlpha;
     // Use this for initialization
     void Start()
     {
@@ -44,6 +45,7 @@ public class Title : MonoBehaviour
         m_TitleEnd = false;
         m_Rate = 0.0f;
         m_Alpha = 0.0f;
+        m_FedeOutAlpha = 1.0f;
         m_FedeOutRate = 1.0f;
     }
 
@@ -70,7 +72,7 @@ public class Title : MonoBehaviour
         {
             if (m_Rate <= 1)
             {
-                m_Rate += m_FrameSpeed;
+                m_Rate += m_FrameSpeed * Time.deltaTime * 60;
             }
             if (m_Rate >= 1)
             {
@@ -82,7 +84,7 @@ public class Title : MonoBehaviour
 
             if (m_Rate >= 1)
             {
-                if (m_Alpha < 1.0f) m_Alpha += m_HigherSpeed;
+                if (m_Alpha < 1.0f) m_Alpha += m_HigherSpeed * Time.deltaTime * 60;
                 else
                 {
                     m_TitleEnd = true;
@@ -103,14 +105,14 @@ public class Title : MonoBehaviour
     /// </summary>
     public void TitleFadeOut()
     {
-        if (m_Alpha > 0.01f) m_Alpha -= m_LowerSpeed;
+        if (m_FedeOutAlpha > 0.01f) m_FedeOutAlpha -= m_LowerSpeed * Time.deltaTime * 60;
 
 
-        m_FedeOutRate -= 0.1f;
+        m_FedeOutRate -= 0.1f * Time.deltaTime * 60;
         m_Rect1.localPosition = Vector3.Lerp(m_StartPosition1, Vector3.zero, m_FedeOutRate);
         m_Rect2.localPosition = Vector3.Lerp(m_StartPosition2, Vector3.zero, m_FedeOutRate);
-        transform.FindChild("title2").GetComponent<CanvasGroup>().alpha = m_Alpha;
-        transform.FindChild("title3").GetComponent<CanvasGroup>().alpha = m_Alpha;
+        transform.FindChild("title2").GetComponent<CanvasGroup>().alpha = m_FedeOutAlpha;
+        transform.FindChild("title3").GetComponent<CanvasGroup>().alpha = m_FedeOutAlpha;
     }
 
 
