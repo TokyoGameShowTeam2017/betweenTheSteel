@@ -277,7 +277,7 @@ public class ArmManager : MonoBehaviour
             m_EnablePliers = m_Pliers[id];
 
             //ボタンＵＩの色変え
-            ButtonUICalc();
+            SelectingUICalc();
         }
     }
 
@@ -641,6 +641,7 @@ public class ArmManager : MonoBehaviour
     public void SetGaugeUINoActive(int id)
     {
         string name = NameByID(id);
+        m_GaugeUIs[id].GetComponent<RawImage>().color = new Color(255, 255, 255, 0.1f);
         m_GaugeUIs[id].FindChild(name + "gaugearrow").GetComponent<RawImage>().color = new Color(0, 0, 0, 50);
         m_GaugeUIs[id].FindChild(name + "gauge2").GetComponent<RawImage>().color = new Color(0, 0, 0, 50);
         m_ButtonUIs[id].GetComponent<RawImage>().color = new Color(0, 0, 0, 50);
@@ -662,21 +663,21 @@ public class ArmManager : MonoBehaviour
             default: break;
         }
         m_GaugeUIs[id].FindChild(name + "gaugearrow").GetComponent<RawImage>().color = new Color(0, 0, 0, 255);
-        m_GaugeUIs[id].FindChild(name + "gauge2").GetComponent<RawImage>().color = armcolor;
-
+        m_ButtonUIs[id].GetComponent<RawImage>().color = armcolor;
         if(id != m_EnableArmID)
             armcolor = new Color(0, 0, 0, 50);
-        m_ButtonUIs[id].GetComponent<RawImage>().color = armcolor;
+        m_GaugeUIs[id].FindChild(name + "gauge2").GetComponent<RawImage>().color = armcolor;
     }
         
     /// <summary>
-    /// ボタンのＵＩ計算処理
+    /// 選択中アームのみを色付けするＵＩ計算処理
     /// </summary>
-    public void ButtonUICalc()
+    public void SelectingUICalc()
     {
         Color color = Color.white;
-        for (int i = 0; i < m_ButtonUIs.Length;i++ )
+        for (int i = 0; i < m_GaugeUIs.Length; i++)
         {
+            string name = NameByID(i);
             if (i != m_EnableArmID)
                 color = new Color(0, 0, 0, 50);
             else
@@ -691,7 +692,7 @@ public class ArmManager : MonoBehaviour
                 }
             }
 
-            m_ButtonUIs[i].GetComponent<RawImage>().color = color;
+            m_GaugeUIs[i].FindChild(name + "gauge2").GetComponent<RawImage>().color = color;
         }            
     }
 
