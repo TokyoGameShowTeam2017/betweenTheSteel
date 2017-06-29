@@ -32,6 +32,7 @@ public class RodTurnBone : MonoBehaviour
     private bool mHungFlag;
 
     private float mAngleX;
+    private float mAngleY;
     private float mAngleZ;
 
     private float mSeveAngleX;
@@ -80,6 +81,9 @@ public class RodTurnBone : MonoBehaviour
         //x軸変換
         if (mRotatePoint.transform.localRotation.eulerAngles.x > 180) mAngleX = mRotatePoint.transform.localRotation.eulerAngles.x - 360.0f;
         else mAngleX = mRotatePoint.transform.localRotation.eulerAngles.x;
+        //x軸変換
+        if (mRotatePoint.transform.localRotation.eulerAngles.y > 180) mAngleY = mRotatePoint.transform.localRotation.eulerAngles.y - 360.0f;
+        else mAngleY = mRotatePoint.transform.localRotation.eulerAngles.y;
         //Z軸変換
         if (mRotatePoint.transform.localRotation.eulerAngles.z > 180) mAngleZ = mRotatePoint.transform.localRotation.eulerAngles.z - 360.0f;
         else mAngleZ = mRotatePoint.transform.localRotation.eulerAngles.z;
@@ -87,11 +91,13 @@ public class RodTurnBone : MonoBehaviour
 
         //xとzをクランプ
         Vector3 clamp = m_RodTurn.GetComponent<RodTurn>().m_RotateClamp;
-        mAngleX = Mathf.Clamp(mAngleX, -clamp.x, clamp.z);
+        mAngleX = Mathf.Clamp(mAngleX, -clamp.x, clamp.x);
+        mAngleY = Mathf.Clamp(mAngleY, -clamp.z, clamp.z);
         mAngleZ = Mathf.Clamp(mAngleZ, -clamp.z, clamp.z);
 
         //変換
         mAngleX = (mAngleX < 0) ? mAngleX + 360 : mAngleX;
+        mAngleY = (mAngleY < 0) ? mAngleY + 360 : mAngleY;
         mAngleZ = (mAngleZ < 0) ? mAngleZ + 360 : mAngleZ;
         ////これ以上曲がれないよ
         //mIsMaxRotate = false;
@@ -107,7 +113,7 @@ public class RodTurnBone : MonoBehaviour
         //mSeveAngleX = mAngleX;
         //mSeveAngleZ = mAngleZ;
         //オブジェクトの適応
-        mRotatePoint.transform.localRotation = Quaternion.Euler(mAngleX, 0.0f, mAngleZ);
+        mRotatePoint.transform.localRotation = Quaternion.Euler(mAngleX, mAngleY, mAngleZ);
     }
 
     public void LateUpdate()
@@ -226,6 +232,11 @@ public class RodTurnBone : MonoBehaviour
     public List<GameObject> GetBone()
     {
         return mBones;
+    }
+    //自身のrotatePointを返す
+    public GameObject GetRoatePoint()
+    {
+        return transform.parent.gameObject;
     }
     //public void OnDrawGizmos()
     //{

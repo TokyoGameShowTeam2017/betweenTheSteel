@@ -54,6 +54,7 @@ public class ObjectParamterUi : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (mObjectUi == null) return;
         //表示非表示
         if (mDrawUiFlag) mObjectUi.GetComponent<MoveUi>().DrawUi();
 
@@ -106,6 +107,7 @@ public class ObjectParamterUi : MonoBehaviour
     //パラメーター設定
     private void ParameterSet(int strength, int density, string mass)
     {
+        if (mObjectUi == null) return;
         GameObject ui = mObjectUi.transform.FindChild("RodUi").gameObject;
         ui.transform.FindChild("Strength").GetComponent<RodParameterUi>().ParameterSet(strength.ToString());
         //ui.transform.FindChild("Density").GetComponent<RodParameterUi>().ParameterSet(density.ToString());
