@@ -63,21 +63,18 @@ public class TitleCollection : MonoBehaviour
             case TitleState.TitleWaitState:
                 if (m_WaitTimer2 >= 0)
                     m_WaitTimer2--;
-
                 else
                 {
                     //PressStartの入力
                     PressStart();
-
-                    //PressStartの点滅の処理
-                    transform.FindChild("pressstartback").GetComponent<PressStart>().FlashingState();
-
                     //PressStartが押されたらフェードアウトへ
                     if (m_PressStart)
                     {
                         m_TitleState = TitleState.TitleFeadOutState;
                     }
                 }
+                //PressStartの点滅の処理
+                transform.FindChild("pressstartback").GetComponent<PressStart>().FlashingState();
                 break;
 
             case TitleState.TitleFeadOutState:
@@ -133,7 +130,6 @@ public class TitleCollection : MonoBehaviour
         return m_PressStart;
     }
 
-
     private bool InputWrap()
     {
         int id = 0;
@@ -152,7 +148,5 @@ public class TitleCollection : MonoBehaviour
 
         return false;
     }
-
-
 }
 
