@@ -85,7 +85,7 @@ public class MenuCollection : MonoBehaviour
                     StickState l_state = GetStick();
                     print(l_state);
                 }
-
+                if (Input.GetKeyDown(KeyCode.A)) m_MenuNum += 1;
                 //選択されているメニューの色を変える
                 MenuColoring();
                 //選択されているメニューで決定

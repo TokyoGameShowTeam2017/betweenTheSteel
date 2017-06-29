@@ -54,9 +54,6 @@ public class ObjectParamterUi : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mObjectUi == null) return;
-        //表示非表示
-        if (mDrawUiFlag) mObjectUi.GetComponent<MoveUi>().DrawUi();
 
 
         //アウトラインOnOff

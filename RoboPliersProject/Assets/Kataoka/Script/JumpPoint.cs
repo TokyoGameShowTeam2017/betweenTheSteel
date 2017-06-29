@@ -31,13 +31,22 @@ public class JumpPoint : MonoBehaviour
         mPrePosition = transform.position;
         mLeng = 0.0f;
         mFlag = true;
-
+        mNoJumpTime = 0.0f;
         mManager = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!mFlag)
+        {
+            mNoJumpTime += Time.deltaTime;
+            if (mNoJumpTime >= 1.5f)
+            {
+                mFlag = true;
+                mNoJumpTime = 0.0f;
+            }
+        }
     }
 
     public void LateUpdate()
@@ -56,12 +65,6 @@ public class JumpPoint : MonoBehaviour
             other.GetComponent<PlayerMove>().Jump(mVec.normalized,m_JumpPowerZ , m_JumpPowerY);
             mFlag = false;
         }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-            mFlag = true;
     }
 
 }
