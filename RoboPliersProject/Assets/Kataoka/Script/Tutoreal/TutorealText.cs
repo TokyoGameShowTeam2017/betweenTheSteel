@@ -82,7 +82,7 @@ public class TutorealText : MonoBehaviour
 
             if (mDrawTextCount >= m_Text[mTextCreenCount].Length)
             {
-                mPlayerStateText.text = "NEXT:A";
+                mPlayerStateText.text = "NEXT:B";
             }
 
             //全て終わったら表示終わる機能
