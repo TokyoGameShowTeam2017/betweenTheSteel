@@ -30,7 +30,7 @@
 		clip ( alphaRef - 0.01 );
 
 		o.Albedo = tex2D ( _MainTex, IN.uv_MainTex).rgb;
-		o.Normal = tex2D ( _Normal, IN.uv_MainTex );
+		o.Normal = UnpackNormal ( tex2D ( _Normal, IN.uv_MainTex ) ) ;
 	}
 	ENDCG
 	}
