@@ -63,6 +63,9 @@ public class StageSelectMap : MonoBehaviour
     {
         yield return SceneManager.LoadSceneAsync("Stage01", LoadSceneMode.Additive);
 
+        yield return null;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
+
         if (!SceneLoadInitializer.Instance.gameClear)
         {
             float time = 0;
@@ -79,7 +82,6 @@ public class StageSelectMap : MonoBehaviour
         GameObject.FindGameObjectWithTag("MinimapManager").GetComponent<MiniMap>().m_DrawMiniMap = false;
 
         yield return null;
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
     }
 
     public void LoadScene(int num)
@@ -228,7 +230,15 @@ public class StageSelectMap : MonoBehaviour
 
         Destroy(GameObject.FindGameObjectWithTag("Player"));
 
-        string loadedScene = "Stage0" + num;
+        string loadedScene = "";
+
+        if (num < 10)
+        {
+            loadedScene = "Stage0" + num;
+        }else
+        {
+            loadedScene = "Stage" + num;
+        }
 
 
         yield return SceneManager.UnloadSceneAsync("Stage01");
