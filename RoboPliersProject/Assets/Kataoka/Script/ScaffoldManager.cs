@@ -15,10 +15,7 @@ public class ScaffoldManager : MonoBehaviour
         foreach (Transform t in trans)
         {
             //自分自身は入れない
-            if (t.name != name &&
-                t.name.Substring(0, 4) != "AimA" &&
-                t.name.Substring(0, 4) != "Catc" &&
-                t.name.Substring(0, 4) != "Snap")
+            if (t.GetComponent<CatchObject>()!=null)
                 mCollisions.Add(t.gameObject);
         }
         SetNoRigitBodyType(CatchObject.CatchType.Static);
