@@ -26,7 +26,8 @@ public class ObjectSnapInto : MonoBehaviour
         foreach (var i in m_Collision)
         {
             if (i.GetComponent<ObjectCollision>().GetCollisionFlag()&&
-                mArm.GetEnablArmCatchingObject()==null)
+                mArm.GetEnablArmCatchingObject()==null||
+                i.transform.position.y<=-50.0f)
             {
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
                 transform.position = mPosition;
