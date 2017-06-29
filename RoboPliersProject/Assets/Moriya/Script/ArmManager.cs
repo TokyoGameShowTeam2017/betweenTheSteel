@@ -607,6 +607,10 @@ public class ArmManager : MonoBehaviour
         if (r != null)
             r.enabled = value;
 
+        Image i = trans.GetComponent<Image>();
+        if (i != null)
+            i.enabled = value;
+
         //子を走査
         Transform children = trans.GetComponentInChildren<Transform>();
         if (children.childCount == 0)
