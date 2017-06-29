@@ -88,9 +88,15 @@ public class MenuCollection : MonoBehaviour
 
                 //選択されているメニューの色を変える
                 MenuColoring();
-
                 //選択されているメニューで決定
                 MenuDecision();
+
+                //Aボタンで戻る
+                if (Input.GetButtonDown("XBOXArm3"))
+                {
+                    m_MenuNum = 4;
+                    m_State = MenuState.Back;
+                }
                 break;
         }
     }
@@ -372,8 +378,6 @@ public class MenuCollection : MonoBehaviour
             id = 1;
         if (Input.GetButtonDown("XBOXArm2"))
             id = 2;
-        if (Input.GetButtonDown("XBOXArm3"))
-            id = 3;
         if (Input.GetButtonDown("XBOXArm4"))
             id = 4;
 

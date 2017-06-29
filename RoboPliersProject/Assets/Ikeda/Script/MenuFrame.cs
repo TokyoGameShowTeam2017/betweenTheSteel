@@ -78,8 +78,8 @@ public class MenuFrame : MonoBehaviour
             if (m_EnterRate < 1)
                 m_EnterRate += m_FrameSpeed;
 
-            m_RectLeft.localPosition = Vector3.Lerp(m_StartPositionLeft, new Vector3(-230.0f, 0.0f, 0.0f), m_EnterRate);
-            m_RectRight.localPosition = Vector3.Lerp(m_StartPositionRight, new Vector3(230.0f, 0.0f, 0.0f), m_EnterRate);
+            m_RectLeft.localPosition = Vector3.Lerp(m_StartPositionLeft, new Vector3(-150.0f, 0.0f, 0.0f), m_EnterRate);
+            m_RectRight.localPosition = Vector3.Lerp(m_StartPositionRight, new Vector3(150.0f, 0.0f, 0.0f), m_EnterRate);
         }
     }
 
@@ -100,8 +100,8 @@ public class MenuFrame : MonoBehaviour
             }
         }
 
-        m_RectLeft.localPosition = Vector3.Lerp(new Vector3(-230.0f, 0.0f, 0.0f), new Vector3(-270.0f, 0.0f, 0.0f), m_SpreadRate);
-        m_RectRight.localPosition = Vector3.Lerp(new Vector3(230.0f, 0.0f, 0.0f), new Vector3(270.0f, 0.0f, 0.0f), m_SpreadRate);
+        m_RectLeft.localPosition = Vector3.Lerp(new Vector3(-150.0f, 0.0f, 0.0f), new Vector3(-245.0f, 0.0f, 0.0f), m_SpreadRate);
+        m_RectRight.localPosition = Vector3.Lerp(new Vector3(150.0f, 0.0f, 0.0f), new Vector3(245.0f, 0.0f, 0.0f), m_SpreadRate);
     }
 
     public void BackFrame()
@@ -113,8 +113,8 @@ public class MenuFrame : MonoBehaviour
             GameObject.Find("SceneCollection").GetComponent<SceneCollection>().IsEndScene(true);
         }
 
-        m_RectLeft.localPosition = Vector3.Lerp(new Vector3(-230.0f, 0.0f, 0.0f), new Vector3(-270.0f, 0.0f, 0.0f), m_BackRate);
-        m_RectRight.localPosition = Vector3.Lerp(new Vector3(230.0f, 0.0f, 0.0f), new Vector3(270.0f, 0.0f, 0.0f), m_BackRate);
+        m_RectLeft.localPosition = Vector3.Lerp(new Vector3(-150.0f, 0.0f, 0.0f), new Vector3(-245.0f, 0.0f, 0.0f), m_BackRate);
+        m_RectRight.localPosition = Vector3.Lerp(new Vector3(150.0f, 0.0f, 0.0f), new Vector3(245.0f, 0.0f, 0.0f), m_BackRate);
     }
 
     public bool GetFrameIsEnd()
