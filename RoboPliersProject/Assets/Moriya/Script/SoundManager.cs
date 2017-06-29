@@ -24,6 +24,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
     Queue<int> seRequestQueue = new Queue<int>();
     Queue<int> loopSeRequestQueue = new Queue<int>();
 
+    public string lastPlayBGMName = "";
 
     public void Load()
     {
@@ -68,6 +69,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
 
     void Start()
     {
+        lastPlayBGMName = startBgmName;
         PlayBgm(startBgmName);
     }
     
@@ -177,6 +179,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
     
     public void PlayBgm(string name)
     {
+        lastPlayBGMName = name;
         int index = bgmIndexes[name];
         PlayBgm(index);
     }
@@ -184,6 +187,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
     
     public void PlayBgm(int index)
     {
+        lastPlayBGMName = bgmClips[index].name;
         if (0 > index || bgmClips.Length <= index)
         {
             return;
