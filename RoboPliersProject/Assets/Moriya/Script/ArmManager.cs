@@ -904,6 +904,12 @@ public class ArmManager : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
+
+        //ずれないように強制移動
+        m_LeftUI.localPosition = m_LeftUIEnd;
+        m_RightUI.localPosition = m_RightUIEnd;
+        m_UpUI.localPosition = m_UpUIEnd;
+        m_DownUI.localPosition = m_DownUIEnd;
         yield break;
     }
 
@@ -935,6 +941,11 @@ public class ArmManager : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
+
+        m_LeftUI.localPosition = m_LeftUIStart;
+        m_RightUI.localPosition = m_RightUIStart;
+        m_UpUI.localPosition = m_UpUIStart;
+        m_DownUI.localPosition = m_DownUIStart;
 
         yield break;
     }
