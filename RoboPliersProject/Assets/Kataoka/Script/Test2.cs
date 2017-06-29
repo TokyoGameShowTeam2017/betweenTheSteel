@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Test2 : MonoBehaviour {
-    public GameObject te;
 	// Use this for initialization
 	void Start () {
 		
@@ -11,6 +10,6 @@ public class Test2 : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        Debug.Log(transform.rotation.eulerAngles);
 	}
 }

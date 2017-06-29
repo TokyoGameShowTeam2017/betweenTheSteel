@@ -71,7 +71,7 @@ public class TutorealIventCameraLookAt : MonoBehaviour
 
         Ray ray = new Ray(mPlayerCamera.transform.position, mPlayerCamera.transform.forward * 200.0f);
         RaycastHit hit;
-        int layer = ~(1 << 15 | 1 << 17);
+        int layer = 1 << 16;
         if (Physics.SphereCast(ray, m_CollisionSize, out hit, 200.0f, layer))
         {
             if (hit.collider.name == "LookAtObject")
