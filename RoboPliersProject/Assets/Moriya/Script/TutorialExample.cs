@@ -92,10 +92,24 @@ public class TutorialExample : MonoBehaviour
             control.SetIsArmCatchAble(false);
         }
 
-        //"TutorialTarget"という名前のオブジェクトをエイムアシストの対象にしているかを調べる
-        if(Input.GetKeyDown(KeyCode.T))
+        ////"TutorialTarget"という名前のオブジェクトをエイムアシストの対象にしているかを調べる
+        //if(Input.GetKeyDown(KeyCode.T))
+        //{
+        //    print(control.GetIsAimAssistName("TutorialTarget"));
+        //}
+
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            print(control.GetIsAimAssistName("TutorialTarget"));
+            //control.SetIsArmCatchAble(false);
+            control.SetIsArmRelease(false);
+            //control.SetIsResetAble(false);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            //control.SetIsArmCatchAble(true);
+            control.SetIsArmRelease(true);
+            //control.SetIsResetAble(true);
         }
 	}
 

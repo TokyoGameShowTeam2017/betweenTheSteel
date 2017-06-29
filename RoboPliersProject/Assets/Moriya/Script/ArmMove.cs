@@ -206,13 +206,13 @@ public class ArmMove : MonoBehaviour
     private void EasyInput()
     {
         bool input = InputManager.GetCatchingEasyMode();
-        if (input && !m_IsPrevCatchingInput)//トリガー判定
+        if (input && !m_IsPrevCatchingInput )//トリガー判定
         {
-            if(m_ArmManager.GetPliersMoveByID(m_ID).GetIsCatch())
+            if (m_ArmManager.GetPliersMoveByID(m_ID).GetIsCatch() && m_ArmManager.IsRelease)
             {
                 CatchingCancel();
             }
-            else if (m_IsCatching)
+            else if (m_IsCatching && m_ArmManager.IsRelease)
             {
                 CatchingCancel();
             }
@@ -378,6 +378,7 @@ public class ArmMove : MonoBehaviour
                 //伸び縮みできない状態解除中かつ、他のアームが掴んでいなければ伸ばす
                 if (!m_IsStretchKeep && m_ArmManager.GetCountCatchingObjects() <= 1)
                 {
+                    print("called");
                     Stretch();
                 }
 

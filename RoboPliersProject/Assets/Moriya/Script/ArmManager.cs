@@ -179,13 +179,13 @@ public class ArmManager : MonoBehaviour
                 SwitchEnableArm(armid);
                 SoundManager.Instance.PlaySe("xg-2armmove");
 
-                //何も掴んでなければ正面を向く
-                if (GetCountCatchingDynamicObjects() <= 0 && GetCountCatchingObjects() <= 0)
-                    m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
-                else if (GetCountCatchingObjects() >= 1)
-                {
-                    StartCoroutine(CameraRotationCalc(armid, prev));
-                }
+                ////何も掴んでなければ正面を向く
+                //if (GetCountCatchingDynamicObjects() <= 0 && GetCountCatchingObjects() <= 0)
+                //    m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
+                //else if (GetCountCatchingObjects() >= 1)
+                //{
+                //    StartCoroutine(CameraRotationCalc(armid, prev));
+                //}
             }
         }
 
