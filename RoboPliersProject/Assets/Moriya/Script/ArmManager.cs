@@ -126,7 +126,8 @@ public class ArmManager : MonoBehaviour
         m_TutorialSetting = m_PlayerManager.GetComponent<TutorialSetting>();
         SwitchEnableArm(m_EnableArmID);
 
-
+        GetComponent<LineRenderer>().startColor = new Color(1, 0, 0, 0);
+        GetComponent<LineRenderer>().endColor = new Color(1, 0, 0, 0);
 
         for (int i = 0; i < m_Arms.Length; i++)
         {

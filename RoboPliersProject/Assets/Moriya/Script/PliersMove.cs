@@ -121,6 +121,9 @@ public class PliersMove : MonoBehaviour
     //掴んだオブジェクトの1フレ移動量
     private Vector3 m_CatchObjVelocity;
 
+    private bool mKusariCut;
+
+
     /*==外部参照変数==*/
 
 
@@ -140,6 +143,8 @@ public class PliersMove : MonoBehaviour
 
         m_LeftColl = m_PliersLeft.GetComponent<BoxCollider>();
         m_RightColl = m_PliersRight.GetComponent<BoxCollider>();
+
+        mKusariCut = false;
     }
 
     void Start()
@@ -367,6 +372,7 @@ public class PliersMove : MonoBehaviour
         if (m_ArmManager.GetPliersPower(m_ID) > 3.0f && m_HitKusariObject != null && m_Input)
         {
             m_HitKusariObject.m_IsCollision = true;
+            mKusariCut = true;
             SoundManager.Instance.PlaySe("break1");
         }
     }
@@ -1083,5 +1089,10 @@ public class PliersMove : MonoBehaviour
             case 3: m_PliersGaugeArrow = GameObject.Find("Xgaugearrow").GetComponent<RectTransform>(); break;
         }
         
+    }
+
+    public bool GetChainCut()
+    {
+        return mKusariCut;
     }
 }
