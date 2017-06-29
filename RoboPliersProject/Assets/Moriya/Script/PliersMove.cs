@@ -240,7 +240,8 @@ public class PliersMove : MonoBehaviour
 
     //回転（ペンチはＺ軸回転のみ）
     private void Rotation()
-    {
+    {      
+
         float roll = 0.0f;
         if (InputManager.GetArmNegativeTurn())
             roll += m_ArmManager.GetPliersRollSpeed() * Time.deltaTime;
@@ -855,6 +856,12 @@ public class PliersMove : MonoBehaviour
     {
         return m_Roll;
     }
+
+    public void RollValueReset()
+    {
+        m_Roll = 0.0f;
+    }
+
 
     /// <summary>
     /// 回転量をリセットする
