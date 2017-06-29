@@ -15,7 +15,7 @@ public class RodUi : MonoBehaviour
     private bool mNowDrawUiFlag;
     //アウトラインのシェーダーたち
     private List<cakeslice.Outline> mOutLines;
-    
+
     ////材質情報
     //[SerializeField, Tooltip("材質名"),Space(15)]
     //public string m_Material;
@@ -51,9 +51,8 @@ public class RodUi : MonoBehaviour
             mNowDrawUiFlag = mDrawUiFlag;
         }
 
-        if (mRodUi == null) return;
         //表示非表示
-        if (mDrawUiFlag) mRodUi.GetComponent<MoveUi>().DrawUi();
+        if (mDrawUiFlag && mRodUi != null) mRodUi.GetComponent<MoveUi>().DrawUi();
 
 
         //フラグ初期化
@@ -61,24 +60,25 @@ public class RodUi : MonoBehaviour
 
     }
     //パラメーター設定
-    public void ParameterSet(float boneHp,float firstHp)
+    public void ParameterSet(float boneHp, float firstHp)
     {
         ObjectParameter parameter = GetComponent<ObjectParameter>();
         //表示パラメーター設定
-        ParameterSet(parameter.m_Strength,0, "",boneHp,firstHp);
+        ParameterSet(parameter.m_Strength, 0, "", boneHp, firstHp);
     }
     //パラメーター設定
-    private void ParameterSet(int strength, int density, string mass,float boneHp,float firstHp)
+    private void ParameterSet(int strength, int density, string mass, float boneHp, float firstHp)
     {
+        if (GameObject.FindGameObjectWithTag("ParameterUi") == null) return;
         GameObject ui = GameObject.FindGameObjectWithTag("ParameterUi").transform.FindChild("RodUi").gameObject;
         ui.transform.FindChild("Strength").GetComponent<RodParameterUi>().ParameterSet(strength.ToString());
         ui.transform.FindChild("Density").GetComponent<RodParameterUi>().ParameterSet(density.ToString());
-        RectTransform trans=ui.transform.FindChild("MaskGauge").GetComponent<RectTransform>();
-        float lerpCount = boneHp/firstHp;
+        RectTransform trans = ui.transform.FindChild("MaskGauge").GetComponent<RectTransform>();
+        float lerpCount = boneHp / firstHp;
         //118がマックス
-        trans.sizeDelta = new Vector2(Mathf.Lerp(118.0f,0.0f,lerpCount), 6.0f);
-        ui.transform.FindChild("MaskGauge").FindChild("RodGauge").GetComponent<Image>().color = new Color(1.0f, 
-            Mathf.Lerp(0.0f, 1.0f, lerpCount), 
+        trans.sizeDelta = new Vector2(Mathf.Lerp(118.0f, 0.0f, lerpCount), 6.0f);
+        ui.transform.FindChild("MaskGauge").FindChild("RodGauge").GetComponent<Image>().color = new Color(1.0f,
+            Mathf.Lerp(0.0f, 1.0f, lerpCount),
             Mathf.Lerp(0.0f, 1.0f, lerpCount));
 
         //ui.transform.FindChild("Omosa").GetComponent<RodParameterUi>().ParameterSet(mass);

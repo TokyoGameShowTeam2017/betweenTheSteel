@@ -63,6 +63,9 @@ public class StageSelectMap : MonoBehaviour
     {
         yield return SceneManager.LoadSceneAsync("Stage01", LoadSceneMode.Additive);
 
+        yield return null;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
+
         if (!SceneLoadInitializer.Instance.gameClear)
         {
             float time = 0;
@@ -79,7 +82,6 @@ public class StageSelectMap : MonoBehaviour
         GameObject.FindGameObjectWithTag("MinimapManager").GetComponent<MiniMap>().m_DrawMiniMap = false;
 
         yield return null;
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
     }
 
     public void LoadScene(int num)
@@ -196,6 +198,11 @@ public class StageSelectMap : MonoBehaviour
 
     public void StartOtherScene(int num)
     {
+        if (num == 1)
+        {
+            StartFirstScene();
+            return;
+        }
         StartCoroutine(StartOtherSceneAnim(num));
     }
 
@@ -223,10 +230,18 @@ public class StageSelectMap : MonoBehaviour
 
         Destroy(GameObject.FindGameObjectWithTag("Player"));
 
-        string loadedScene = "Stage0" + num;
+        string loadedScene = "";
+
+        if (num < 10)
+        {
+            loadedScene = "Stage0" + num;
+        }else
+        {
+            loadedScene = "Stage" + num;
+        }
 
 
-        SceneManager.UnloadSceneAsync("Stage01");
+        yield return SceneManager.UnloadSceneAsync("Stage01");
         yield return SceneManager.LoadSceneAsync(loadedScene, LoadSceneMode.Additive);
         StartCoroutine(StartScene(num, GameObject.FindGameObjectWithTag("ThumbnailCamera")));
     }
@@ -285,5 +300,7 @@ public class StageSelectMap : MonoBehaviour
     {
         if (GameObject.FindGameObjectWithTag("StartEventObject")!=null)
         GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(enable);
+        GetComponent<LineRenderer>().startColor = new Color(1, 0, 0, 1);
+        GetComponent<LineRenderer>().endColor = new Color(1, 0, 0, 0);
     }
 }

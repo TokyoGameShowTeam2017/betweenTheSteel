@@ -126,7 +126,8 @@ public class ArmManager : MonoBehaviour
         m_TutorialSetting = m_PlayerManager.GetComponent<TutorialSetting>();
         SwitchEnableArm(m_EnableArmID);
 
-
+        GetComponent<LineRenderer>().startColor = new Color(1, 0, 0, 0);
+        GetComponent<LineRenderer>().endColor = new Color(1, 0, 0, 0);
 
         for (int i = 0; i < m_Arms.Length; i++)
         {
@@ -607,6 +608,10 @@ public class ArmManager : MonoBehaviour
         if (r != null)
             r.enabled = value;
 
+        Image i = trans.GetComponent<Image>();
+        if (i != null)
+            i.enabled = value;
+
         //子を走査
         Transform children = trans.GetComponentInChildren<Transform>();
         if (children.childCount == 0)
@@ -900,6 +905,12 @@ public class ArmManager : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
+
+        //ずれないように強制移動
+        m_LeftUI.localPosition = m_LeftUIEnd;
+        m_RightUI.localPosition = m_RightUIEnd;
+        m_UpUI.localPosition = m_UpUIEnd;
+        m_DownUI.localPosition = m_DownUIEnd;
         yield break;
     }
 
@@ -931,6 +942,11 @@ public class ArmManager : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
+
+        m_LeftUI.localPosition = m_LeftUIStart;
+        m_RightUI.localPosition = m_RightUIStart;
+        m_UpUI.localPosition = m_UpUIStart;
+        m_DownUI.localPosition = m_DownUIStart;
 
         yield break;
     }
