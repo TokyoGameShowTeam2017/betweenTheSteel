@@ -26,11 +26,7 @@ public class HungRodCollision : MonoBehaviour {
         //ある程度曲がっていないといけない
          if ("Bone" == other.name.Substring(0, 4) && mArmManager.GetEnablArmCatchingObject() != null)
          {
-             Vector3 angle = other.GetComponent<RodTurnBone>().GetRoatePoint().transform.localEulerAngles;
-             if ((angle.x <= 10.0f || angle.x>=350.0f)&&
-                 (angle.y <= 10.0f||angle.y>=350.0f)&&
-                 (angle.z <= 10.0f || angle.z >= 350.0f)) return;
-
+             if (!other.GetComponent<RodTurnBone>().GetRoatePointFlag()) return;
          }
         if ("Bone" == other.name.Substring(0, 4) && mArmManager.GetEnablArmCatchingObject() != null)
         {

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ManualCollection : MonoBehaviour {
+public class ManualCollection : MonoBehaviour
+{
 
     [SerializeField, Tooltip("α値を上げるスピードの設定")]
     private float m_HigherSpeed = 0.05f;
@@ -12,14 +13,14 @@ public class ManualCollection : MonoBehaviour {
 
     [SerializeField, Tooltip("α値を下げるスピードを設定")]
     private float m_LowerSpeed = 0.04f;
-    
+
     private float m_LowerAlpha = 1.0f;
 
     private StickState m_State;
     private bool m_Once;
 
     private float m_Rate;
-    
+
     private int m_ManualNum;
 
     private float m_FeadOutRate;
@@ -35,7 +36,8 @@ public class ManualCollection : MonoBehaviour {
 
     private ManualState m_ManualState;
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         m_Rate = 0.0f;
         m_Once = false;
         m_ManualNum = 0;
@@ -48,7 +50,8 @@ public class ManualCollection : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         switch (m_ManualState)
         {
             case ManualState.Enter:
@@ -60,8 +63,7 @@ public class ManualCollection : MonoBehaviour {
                 break;
 
             case ManualState.InputStart:
-                ManualSelect();
-                ManualInputStart();
+                ManualBackStart();
                 break;
 
             case ManualState.FeadOutManual:
@@ -81,75 +83,18 @@ public class ManualCollection : MonoBehaviour {
     private void ManualEnter()
     {
         m_HigherAlpha += 0.04f;
-        GameObject.Find("controller").GetComponent<CanvasGroup>().alpha = m_HigherAlpha;
+        GameObject.Find("manualback").GetComponent<CanvasGroup>().alpha = m_HigherAlpha;
     }
 
-    private void ManualInputStart()
+    private void ManualBackStart()
     {
-        if (m_ManualNum == 0)
+        GameObject.Find("backManual").transform.localScale = new Vector3(1.15f, 1.15f, 1.15f);
+        GameObject.Find("backManual").GetComponent<RawImage>().color = new Color(0, 1, 1);
+
+        if (InputWrap())
         {
-            GameObject.Find("backManual").transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-            GameObject.Find("backManual").GetComponent<RawImage>().color = new Color(1, 1, 1);
-        }
-
-        if (m_ManualNum == 1)
-        {
-            GameObject.Find("backManual").transform.localScale = new Vector3(1.15f, 1.15f, 1.15f);
-            GameObject.Find("backManual").GetComponent<RawImage>().color = new Color(0, 1, 1);
-
-            if (InputWrap())
-            {
-                SoundManager.Instance.PlaySe("back");
-                m_ManualState = ManualState.FeadOutManual;
-            }
-        }
-    }
-
-    private void ManualSelect()
-    {
-        m_State = GetStick();
-
-        switch (m_State)
-        {
-            case StickState.Up:
-                if (!m_Once)
-                {                   
-                    m_Once = true;
-                    m_ManualNum = 0;
-                    SoundManager.Instance.PlaySe("select");
-                }
-                break;
-
-            case StickState.Down:
-                if (!m_Once)
-                {
-                    m_Once = true;
-                    m_ManualNum = 1;
-                    SoundManager.Instance.PlaySe("select");
-                }
-                break;
-
-            case StickState.Left:
-                if (!m_Once)
-                {
-                    m_Once = true;
-                    m_ManualNum = 1;
-                    SoundManager.Instance.PlaySe("select");
-                }
-                break;
-
-            case StickState.Right:
-                if (!m_Once)
-                {
-                    m_Once = true;
-                    m_ManualNum = 0;
-                    SoundManager.Instance.PlaySe("select");
-                }
-                break;
-
-            default:
-                m_Once = false;
-                break;
+            SoundManager.Instance.PlaySe("back");
+            m_ManualState = ManualState.FeadOutManual;
         }
     }
 
@@ -164,7 +109,7 @@ public class ManualCollection : MonoBehaviour {
     private void ManualFeadOut()
     {
         m_LowerAlpha -= m_LowerSpeed;
-        GameObject.Find("controller").GetComponent<CanvasGroup>().alpha = m_LowerAlpha;
+        GameObject.Find("manualback").GetComponent<CanvasGroup>().alpha = m_LowerAlpha;
     }
 
     //ボタンの押されたとき
@@ -185,34 +130,5 @@ public class ManualCollection : MonoBehaviour {
             return true;
 
         return false;
-    }
-
-    public static Vector2 GetMove()
-    {
-        float h = Input.GetAxis("XBOXLeftStickH");
-        float v = Input.GetAxis("XBOXLeftStickV");
-
-        Vector2 vec = new Vector2(h, v);
-        if (vec.magnitude <= 0.0f)
-        {
-            h = Input.GetAxis("XBOXLeftStickH");
-            v = Input.GetAxis("XBOXLeftStickV");
-            vec = new Vector2(h, v);
-        }
-
-        return vec;
-    }
-
-    public static StickState GetStick()
-    {
-        float vecX = GetMove().x;
-        float vecY = GetMove().y;
-
-        if (vecX > 0.3f) return StickState.Right;
-        if (vecX < -0.3f) return StickState.Left;
-        if (vecY > 0.3f) return StickState.Up;
-        if (vecY < -0.3f) return StickState.Down;
-
-        return StickState.None;
     }
 }

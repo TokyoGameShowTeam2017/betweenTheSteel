@@ -836,11 +836,12 @@ public class PlayerMove : MonoBehaviour
         //地面との判定
         if (v > 0.0f)
         {
-            Vector3 dir = -tr.up;
-            Ray ray = new Ray(tr.position + tr.up, dir);
-            int mask = LayerMask.NameToLayer("ArmAndPliers");
-            RaycastHit hit;
-            bool ishit = Physics.Raycast(ray, out hit, 1.4f, mask);
+            //Vector3 dir = -tr.up;
+            //Ray ray = new Ray(tr.position + tr.up, dir);
+            //int mask = LayerMask.NameToLayer("ArmAndPliers");
+            //RaycastHit hit;
+            //bool ishit = Physics.Raycast(ray, out hit, 1.4f, mask);
+            bool ishit = IsLegCollisionAnyHit();
             IsGround = ishit;
             if (ishit)
             {//地面と当たっているなら押し返す
