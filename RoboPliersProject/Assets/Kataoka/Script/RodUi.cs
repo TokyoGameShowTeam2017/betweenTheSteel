@@ -43,8 +43,6 @@ public class RodUi : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //表示非表示
-        if (mDrawUiFlag) mRodUi.GetComponent<MoveUi>().DrawUi();
 
         //アウトラインOnOff
         if (mNowDrawUiFlag != mDrawUiFlag)
@@ -52,6 +50,12 @@ public class RodUi : MonoBehaviour
             GetComponent<Rod>().DrawOutLine(mDrawUiFlag);
             mNowDrawUiFlag = mDrawUiFlag;
         }
+
+        if (mRodUi == null) return;
+        //表示非表示
+        if (mDrawUiFlag) mRodUi.GetComponent<MoveUi>().DrawUi();
+
+
         //フラグ初期化
         mDrawUiFlag = false;
 
