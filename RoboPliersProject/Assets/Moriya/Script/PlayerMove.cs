@@ -99,8 +99,12 @@ public class PlayerMove : MonoBehaviour
     //押し出す方向はここへ
     private Vector3 m_PushVec;
 
+
     //初期段差オフセット値
     private float m_StartStepOffset;
+
+    //カプセルに当たった地点
+    public Vector3 HitPosition { get; set; }
 
 
     void Awake()
@@ -183,6 +187,7 @@ public class PlayerMove : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit col)
     {
+        HitPosition = col.point;
         //押し出す方向を決定
         m_PushVec = tr.position - col.point;
         m_PushVec.y = 0;
