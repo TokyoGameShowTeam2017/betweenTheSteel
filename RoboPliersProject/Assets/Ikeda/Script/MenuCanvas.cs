@@ -26,13 +26,13 @@ public class MenuCanvas : MonoBehaviour
         if (m_Alpha >= 1.0f) return;
         if (GameObject.Find("RouteMoveObject").GetComponent<RouteMove>().GetIsGoal())
         {
-            if (m_Timer <= 30.0f)
+            if (m_Timer <= 30.0f / 60.0f)
             {
-                m_Timer++;
+                m_Timer += Time.deltaTime;
             }
             else
             {
-                m_Alpha += m_HigherSpeed;
+                m_Alpha += m_HigherSpeed * Time.deltaTime * 60;
                 GameObject.Find("CommonCanvas").GetComponent<CanvasGroup>().alpha = m_Alpha;
             }
         }

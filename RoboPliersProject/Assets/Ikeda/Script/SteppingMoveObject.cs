@@ -55,13 +55,13 @@ public class SteppingMoveObject : MonoBehaviour
                 {
                     if (m_Speed <= 0) m_Speed *= -1;
 
-                    if (m_Rate <= 1) m_Rate += m_Speed;
+                    if (m_Rate <= 1) m_Rate += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, new Vector3(transform.localPosition.x, m_StartPosition.y + m_MovePosition, transform.localPosition.z), m_Rate);
                 }
                 if (m_Switch.GetComponent<SteppingOnSwitch>().GetIsExit())
                 {
                     if (m_Speed >= 0) m_Speed *= -1;
-                    if (m_Rate >= 0) m_Rate += m_Speed;
+                    if (m_Rate >= 0) m_Rate += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, new Vector3(transform.localPosition.x, m_StartPosition.y + m_MovePosition, transform.localPosition.z), m_Rate);
                 }
                 break;
@@ -71,13 +71,13 @@ public class SteppingMoveObject : MonoBehaviour
                 {
                     if (m_Speed <= 0) m_Speed *= -1;
 
-                    if (m_Rate <= 1) m_Rate += m_Speed;
+                    if (m_Rate <= 1) m_Rate += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, new Vector3(transform.localPosition.x, m_StartPosition.y - m_MovePosition, transform.localPosition.z), m_Rate);
                 }
                 if (m_Switch.GetComponent<SteppingOnSwitch>().GetIsExit())
                 {
                     if (m_Speed >= 0) m_Speed *= -1;
-                    if (m_Rate >= 0) m_Rate += m_Speed;
+                    if (m_Rate >= 0) m_Rate += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, new Vector3(transform.localPosition.x, m_StartPosition.y - m_MovePosition, transform.localPosition.z), m_Rate);
                 }
                 break;
@@ -87,13 +87,13 @@ public class SteppingMoveObject : MonoBehaviour
                 {
                     if (m_Speed <= 0) m_Speed *= -1;
 
-                    if (m_Rate <= 1) m_Rate += m_Speed;
+                    if (m_Rate <= 1) m_Rate += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, new Vector3(m_StartPosition.x + m_MovePosition, transform.localPosition.y , transform.localPosition.z), m_Rate);
                 }
                 if (m_Switch.GetComponent<SteppingOnSwitch>().GetIsExit())
                 {
                     if (m_Speed >= 0) m_Speed *= -1;
-                    if (m_Rate >= 0) m_Rate += m_Speed;
+                    if (m_Rate >= 0) m_Rate += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, new Vector3(m_StartPosition.x + m_MovePosition, transform.localPosition.y, transform.localPosition.z), m_Rate);
                 }
                 break;
@@ -103,13 +103,13 @@ public class SteppingMoveObject : MonoBehaviour
                 {
                     if (m_Speed <= 0) m_Speed *= -1;
 
-                    if (m_Rate <= 1) m_Rate += m_Speed;
+                    if (m_Rate <= 1) m_Rate += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, new Vector3(m_StartPosition.x - m_MovePosition, transform.localPosition.y, transform.localPosition.z), m_Rate);
                 }
                 if (m_Switch.GetComponent<SteppingOnSwitch>().GetIsExit())
                 {
                     if (m_Speed >= 0) m_Speed *= -1;
-                    if (m_Rate >= 0) m_Rate += m_Speed;
+                    if (m_Rate >= 0) m_Rate += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, new Vector3(m_StartPosition.x - m_MovePosition, transform.localPosition.y, transform.localPosition.z), m_Rate);
                 }
                 break;
@@ -119,13 +119,13 @@ public class SteppingMoveObject : MonoBehaviour
                 {
                     if (m_Speed <= 0) m_Speed *= -1;
 
-                    if (m_Rate <= 1) m_Rate += m_Speed;
+                    if (m_Rate <= 1) m_Rate += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, new Vector3(transform.localPosition.x, transform.localPosition.y, m_StartPosition.z + m_MovePosition), m_Rate);
                 }
                 if (m_Switch.GetComponent<SteppingOnSwitch>().GetIsExit())
                 {
                     if (m_Speed >= 0) m_Speed *= -1;
-                    if (m_Rate >= 0) m_Rate += m_Speed;
+                    if (m_Rate >= 0) m_Rate += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, new Vector3(transform.localPosition.x, transform.localPosition.y, m_StartPosition.z + m_MovePosition), m_Rate);
                 }
                 break;
@@ -135,13 +135,13 @@ public class SteppingMoveObject : MonoBehaviour
                 {
                     if (m_Speed <= 0) m_Speed *= -1;
 
-                    if (m_Rate <= 1) m_Rate += m_Speed;
+                    if (m_Rate <= 1) m_Rate += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, new Vector3(transform.localPosition.x, transform.localPosition.y, m_StartPosition.z - m_MovePosition), m_Rate);
                 }
                 if (m_Switch.GetComponent<SteppingOnSwitch>().GetIsExit())
                 {
                     if (m_Speed >= 0) m_Speed *= -1;
-                    if (m_Rate >= 0) m_Rate += m_Speed;
+                    if (m_Rate >= 0) m_Rate += m_Speed * Time.deltaTime * 60;
                     transform.localPosition = Vector3.Lerp(m_StartPosition, new Vector3(transform.localPosition.x, transform.localPosition.y, m_StartPosition.z - m_MovePosition), m_Rate);
                 }
                 break;

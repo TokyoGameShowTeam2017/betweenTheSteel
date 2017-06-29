@@ -92,9 +92,10 @@ public class MenuCollection : MonoBehaviour
                 MenuDecision();
 
                 //Aボタンで戻る
-                if (Input.GetButtonDown("XBOXArm3"))
+                if (Input.GetButtonDown("XBOXArm3") && m_State != MenuState.Back)
                 {
                     m_MenuNum = 4;
+                    SoundManager.Instance.PlaySe("back");
                     m_State = MenuState.Back;
                 }
                 break;
@@ -262,11 +263,11 @@ public class MenuCollection : MonoBehaviour
                 }
                 if (m_State == MenuState.GameStart)
                 {
-                    if (m_LowerAlpha >= 0) m_LowerAlpha -= m_LowerSpeed;
+                    if (m_LowerAlpha >= 0) m_LowerAlpha -= m_LowerSpeed * Time.deltaTime * 60; 
 
                     if (m_ChoiceLowerAlpha >= 0)
                     {
-                        m_ChoiceLowerAlpha -= m_ChoiceLowerSpeed;
+                        m_ChoiceLowerAlpha -= m_ChoiceLowerSpeed * Time.deltaTime * 60;
                         m_Scale += (m_Scale * m_ScaleDouble) / 60;
                     }
 
@@ -286,11 +287,11 @@ public class MenuCollection : MonoBehaviour
                 }
                 if (m_State == MenuState.StageSelect)
                 {
-                    if (m_LowerAlpha >= 0) m_LowerAlpha -= m_LowerSpeed;
+                    if (m_LowerAlpha >= 0) m_LowerAlpha -= m_LowerSpeed * Time.deltaTime * 60;
 
                     if (m_ChoiceLowerAlpha >= 0)
                     {
-                        m_ChoiceLowerAlpha -= m_ChoiceLowerSpeed;
+                        m_ChoiceLowerAlpha -= m_ChoiceLowerSpeed * Time.deltaTime * 60;
                         m_Scale += (m_Scale * m_ScaleDouble) / 60;
                     }
 
@@ -314,11 +315,11 @@ public class MenuCollection : MonoBehaviour
                 }
                 if (m_State == MenuState.Manual)
                 {
-                    if (m_LowerAlpha >= 0) m_LowerAlpha -= m_LowerSpeed;
+                    if (m_LowerAlpha >= 0) m_LowerAlpha -= m_LowerSpeed * Time.deltaTime * 60;
 
                     if (m_ChoiceLowerAlpha >= 0)
                     {
-                        m_ChoiceLowerAlpha -= m_ChoiceLowerSpeed;
+                        m_ChoiceLowerAlpha -= m_ChoiceLowerSpeed * Time.deltaTime * 60;
                         m_Scale += (m_Scale * m_ScaleDouble) / 60;
                     }
 

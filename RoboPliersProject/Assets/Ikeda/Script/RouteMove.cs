@@ -155,7 +155,7 @@ public class RouteMove : MonoBehaviour
             case DroneState.GoalMoveState:
                 if (m_Ratio <= 1.0f)
                 {
-                    m_Ratio += m_GoalSpeed;
+                    m_Ratio += m_GoalSpeed * Time.deltaTime * 60;
                 }
                 else
                 {

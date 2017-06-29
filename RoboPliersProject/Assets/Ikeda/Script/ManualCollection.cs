@@ -75,14 +75,14 @@ public class ManualCollection : MonoBehaviour
 
     private void BackManualEnter()
     {
-        if (m_Rate <= 1) m_Rate += 0.03f;
+        if (m_Rate <= 1) m_Rate += 0.03f * Time.deltaTime * 60;
         else m_ManualState = ManualState.InputStart;
         GameObject.Find("backbackManual").transform.localPosition = Vector3.Lerp(new Vector3(-350, -260, 0), new Vector3(-350, -196, 0), m_Rate);
     }
 
     private void ManualEnter()
     {
-        m_HigherAlpha += 0.04f;
+        m_HigherAlpha += 0.04f * Time.deltaTime * 60;
         GameObject.Find("manualback").GetComponent<CanvasGroup>().alpha = m_HigherAlpha;
     }
 
@@ -100,7 +100,7 @@ public class ManualCollection : MonoBehaviour
 
     private void BackManualFeadOut()
     {
-        if (m_FeadOutRate >= 0) m_FeadOutRate -= 0.03f;
+        if (m_FeadOutRate >= 0) m_FeadOutRate -= 0.03f * Time.deltaTime * 60;
         else GameObject.Find("sideFrame").GetComponent<MenuFrame>().BackFrame();
 
         GameObject.Find("backbackManual").transform.localPosition = Vector3.Lerp(new Vector3(-350, -260, 0), new Vector3(-350, -196, 0), m_FeadOutRate);
@@ -108,7 +108,7 @@ public class ManualCollection : MonoBehaviour
 
     private void ManualFeadOut()
     {
-        m_LowerAlpha -= m_LowerSpeed;
+        m_LowerAlpha -= m_LowerSpeed * Time.deltaTime * 60;
         GameObject.Find("manualback").GetComponent<CanvasGroup>().alpha = m_LowerAlpha;
     }
 

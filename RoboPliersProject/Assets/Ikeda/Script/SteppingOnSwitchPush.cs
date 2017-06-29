@@ -30,13 +30,13 @@ public class SteppingOnSwitchPush : MonoBehaviour {
         if (m_Switch.GetComponent<SteppingOnSwitch>().GetIsEnter())
         {
             //スイッチを動かす
-            if (m_Rate <= 1.0f) m_Rate += 0.04f;
+            if (m_Rate <= 1.0f) m_Rate += 0.04f * Time.deltaTime * 60;
             transform.localPosition = Vector3.Lerp(m_StartPosition, m_GoalPosition, m_Rate);
         }
         if (m_Switch.GetComponent<SteppingOnSwitch>().GetIsExit())
         {
             //スイッチを動かす
-            if (m_Rate >= 0.0f) m_Rate -= 0.04f;
+            if (m_Rate >= 0.0f) m_Rate -= 0.04f * Time.deltaTime * 60;
             transform.localPosition = Vector3.Lerp(m_StartPosition, m_GoalPosition, m_Rate);
         }
     }

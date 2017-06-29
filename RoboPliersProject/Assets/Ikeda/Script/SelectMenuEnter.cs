@@ -53,7 +53,7 @@ public class SelectMenuEnter : MonoBehaviour
             switch (m_State)
             {
                 case MenuState.StartGame:
-                    if (m_StartGameRate <= 1.0f) m_StartGameRate += m_Speed;
+                    if (m_StartGameRate <= 1.0f) m_StartGameRate += m_Speed * Time.deltaTime * 60; 
                     else
                     {
                         m_State = MenuState.StageSelect;
@@ -62,7 +62,7 @@ public class SelectMenuEnter : MonoBehaviour
                     break;
 
                 case MenuState.StageSelect:
-                    if (m_StageSelectRate <= 1.0f) m_StageSelectRate += m_Speed;
+                    if (m_StageSelectRate <= 1.0f) m_StageSelectRate += m_Speed * Time.deltaTime * 60; 
                     else
                     {
                         m_State = MenuState.Manual;
@@ -73,7 +73,7 @@ public class SelectMenuEnter : MonoBehaviour
                     break;
 
                 case MenuState.Manual:
-                    if (m_ManualRate <= 1.0f) m_ManualRate += m_Speed;
+                    if (m_ManualRate <= 1.0f) m_ManualRate += m_Speed * Time.deltaTime * 60;
                     else
                     {
                         m_State = MenuState.Exit;
@@ -83,7 +83,7 @@ public class SelectMenuEnter : MonoBehaviour
                     break;
 
                 case MenuState.Exit:
-                    if (m_ExitRate <= 1.0f) m_ExitRate += m_Speed;
+                    if (m_ExitRate <= 1.0f) m_ExitRate += m_Speed * Time.deltaTime * 60;
                     else
                     {
                         m_State = MenuState.Back;
@@ -93,7 +93,7 @@ public class SelectMenuEnter : MonoBehaviour
                     break;
 
                 case MenuState.Back:
-                    if (m_BackRate <= 1.0f) m_BackRate += m_Speed;
+                    if (m_BackRate <= 1.0f) m_BackRate += m_Speed * Time.deltaTime * 60; 
                     else
                     {
                         GameObject.Find("Canvas menu(Clone)").GetComponent<MenuCollection>().SetSceneState(1);
@@ -115,7 +115,7 @@ public class SelectMenuEnter : MonoBehaviour
         switch (m_State)
         {
             case MenuState.Back:
-                if (m_BackRate >= 0.0f) m_BackRate -= m_Speed;
+                if (m_BackRate >= 0.0f) m_BackRate -= m_Speed * Time.deltaTime * 60;
                 else
                 {
                     m_State = MenuState.Exit;
@@ -124,7 +124,7 @@ public class SelectMenuEnter : MonoBehaviour
                 break;
 
             case MenuState.Exit:
-                if (m_ExitRate >= 0.0f) m_ExitRate -= m_Speed;
+                if (m_ExitRate >= 0.0f) m_ExitRate -= m_Speed * Time.deltaTime * 60;
                 else
                 {
                     m_State = MenuState.Manual;
@@ -133,7 +133,7 @@ public class SelectMenuEnter : MonoBehaviour
                 break;
 
             case MenuState.Manual:
-                if (m_ManualRate >= 0.0f) m_ManualRate -= m_Speed;
+                if (m_ManualRate >= 0.0f) m_ManualRate -= m_Speed * Time.deltaTime * 60;
                 else
                 {
                     m_State = MenuState.StageSelect;
@@ -142,7 +142,7 @@ public class SelectMenuEnter : MonoBehaviour
                 break;
 
             case MenuState.StageSelect:
-                if (m_StageSelectRate >= 0.0f) m_StageSelectRate -= m_Speed;
+                if (m_StageSelectRate >= 0.0f) m_StageSelectRate -= m_Speed * Time.deltaTime * 60;
                 else
                 {
                     m_State = MenuState.StartGame;
@@ -151,7 +151,7 @@ public class SelectMenuEnter : MonoBehaviour
                 break;
 
             case MenuState.StartGame:
-                if (m_StartGameRate >= 0.0f) m_StartGameRate -= m_Speed;
+                if (m_StartGameRate >= 0.0f) m_StartGameRate -= m_Speed * Time.deltaTime * 60;
                 else
                 {
                     m_IsEndOut = true;

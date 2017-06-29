@@ -74,11 +74,6 @@ public class SceneCollection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!m_One)
-        {
-            SoundManager.Instance.PlayBgm("Monday1");
-            m_One = true;
-        }
         if (m_IsSceneEnd)
         {
             //現在のシーンを消去
