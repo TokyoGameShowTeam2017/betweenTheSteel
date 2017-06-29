@@ -378,7 +378,7 @@ public class ArmMove : MonoBehaviour
                 //伸び縮みできない状態解除中かつ、他のアームが掴んでいなければ伸ばす
                 if (!m_IsStretchKeep && m_ArmManager.GetCountCatchingObjects() <= 1)
                 {
-                    print("called");
+                    //print("called");
                     Stretch();
                 }
 

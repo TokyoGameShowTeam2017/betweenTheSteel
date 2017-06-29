@@ -120,6 +120,7 @@ public class SceneLoadDoor : MonoBehaviour
     private IEnumerator LoadScene()
     {
         Destroy(SceneLoadInitializer.Instance.usedArea);
+        SceneLoadInitializer.Instance.continueScene = true;
 
         Move();
 
