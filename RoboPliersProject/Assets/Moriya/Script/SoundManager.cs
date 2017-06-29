@@ -65,6 +65,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
     void Awake()
     {
         Load();
+        DontDestroyOnLoad(gameObject);
     }
 
     void Start()
