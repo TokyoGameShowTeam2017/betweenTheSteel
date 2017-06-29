@@ -234,9 +234,20 @@ public class RodTurnBone : MonoBehaviour
         return mBones;
     }
     //自身のrotatePointを返す
-    public GameObject GetRoatePoint()
+    public bool GetRoatePointFlag()
     {
-        return transform.parent.gameObject;
+        for (int i = -4; i <= 4; i++)
+        {
+            if (i + mBoneNumber < 0 || i + mBoneNumber >= mRotatePoints.Count - 1) continue;
+            Vector3 angle = mRotatePoints[mBoneNumber + i].transform.localEulerAngles;
+            if ((angle.x >= 10.0f && angle.x <= 350.0f) ||
+                (angle.y >= 10.0f && angle.y <= 350.0f) ||
+                (angle.z >= 10.0f && angle.z <= 350.0f))
+            {
+                return true;
+            }
+        }
+        return false;
     }
     //public void OnDrawGizmos()
     //{
