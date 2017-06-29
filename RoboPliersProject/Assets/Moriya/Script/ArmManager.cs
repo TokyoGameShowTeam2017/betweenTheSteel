@@ -45,6 +45,20 @@ public class ArmManager : MonoBehaviour
     public GameObject CutParticlePrefab;
     public GameObject WarpPartielcPrefab;
 
+    //UI移動終了にかける時間
+    public float m_UIStartToEndTime = 1.0f;
+    //ＵＩの移動始点
+    public Vector3 m_LeftUIStart;
+    public Vector3 m_RightUIStart;
+    public Vector3 m_UpUIStart;
+    public Vector3 m_DownUIStart;
+
+    //ＵＩの移動終点
+    public Vector3 m_LeftUIEnd;
+    public Vector3 m_RightUIEnd;
+    public Vector3 m_UpUIEnd;
+    public Vector3 m_DownUIEnd;
+
     /*==内部設定変数==*/
     private PlayerManager m_PlayerManager;
     //現在選択中のアーム本体
@@ -57,10 +71,15 @@ public class ArmManager : MonoBehaviour
     private float m_RotateY = 0.0f;
 
     //ＵＩ(表示／非表示を行う)
-    private Transform m_UI;
+    private RectTransform m_UI;
+    private RectTransform m_LeftUI;
+    private RectTransform m_RightUI;
+    private RectTransform m_DownUI;
+    private RectTransform m_UpUI;
+    private RectTransform m_GaugeUI;
     //アームのUI
-    private Transform[] m_GaugeUIs;
-    private Transform[] m_ButtonUIs;
+    private RectTransform[] m_GaugeUIs;
+    private RectTransform[] m_ButtonUIs;
 
 
     private TutorialSetting m_TutorialSetting;
@@ -95,25 +114,8 @@ public class ArmManager : MonoBehaviour
 
     void Awake()
     {
-
-        //UIを登録
-        m_UI = GameObject.Find("Canvas ingame").transform;
-
-        m_GaugeUIs = new Transform[4];
-        m_ButtonUIs = new Transform[4];
-        Transform gauge = m_UI.FindChild("left").FindChild("gauge");
-
-        string name = "";
-        for (int i = 0; i < 4; i++)
-        {
-            name = NameByID(i);
-
-            m_GaugeUIs[i] = gauge.FindChild(name + "gauge1");
-            m_ButtonUIs[i] = gauge.Find(name);
-        }
-
-
-
+        //UI用のオブジェクト取得
+        UIGet();
 
         tr = GetComponent<Transform>();
         m_PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
@@ -149,14 +151,12 @@ public class ArmManager : MonoBehaviour
         }
         IsResetAble = true;
         StaticCatchingArmAngleMax = m_StaticCatchArmAngleMax;
-
-
-
     }
 
     void Start()
     {
-
+        //UI移動開始
+        StartUIMove();
 
         //アクティブではないアームのＵＩを変更
         for (int i = 0; i < 4; i++)
@@ -641,10 +641,10 @@ public class ArmManager : MonoBehaviour
     public void SetGaugeUINoActive(int id)
     {
         string name = NameByID(id);
-        m_GaugeUIs[id].GetComponent<RawImage>().color = new Color(255, 255, 255, 0.1f);
-        m_GaugeUIs[id].FindChild(name + "gaugearrow").GetComponent<RawImage>().color = new Color(0, 0, 0, 50);
-        m_GaugeUIs[id].FindChild(name + "gauge2").GetComponent<RawImage>().color = new Color(0, 0, 0, 50);
-        m_ButtonUIs[id].GetComponent<RawImage>().color = new Color(0, 0, 0, 50);
+        m_GaugeUIs[id].GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.1f);
+        m_GaugeUIs[id].FindChild(name + "gaugearrow").GetComponent<RawImage>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+        m_GaugeUIs[id].FindChild(name + "gauge2").GetComponent<RawImage>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+        m_ButtonUIs[id].GetComponent<RawImage>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
     }
     /// <summary>
     /// ゲージのＵＩをアクティブに設定する
@@ -656,16 +656,17 @@ public class ArmManager : MonoBehaviour
         switch (id)
         {
             //後から色変更できるように直打ち
-            case 0: armcolor = new Color(255, 255, 0, 255); break;
-            case 1: armcolor = new Color(255, 0, 0, 255); break;
-            case 2: armcolor = new Color(0, 255, 0, 255); break;
-            case 3: armcolor = new Color(0, 0, 255, 255); break;
+            case 0: armcolor = new Color(1.0f, 1.0f, 0.0f, 1.0f); break;
+            case 1: armcolor = new Color(1.0f, 0.0f, 0.0f, 1.0f); break;
+            case 2: armcolor = new Color(0.0f, 1.0f, 0.0f, 1.0f); break;
+            case 3: armcolor = new Color(0.0f, 0.0f, 1.0f, 1.0f); break;
             default: break;
         }
-        m_GaugeUIs[id].FindChild(name + "gaugearrow").GetComponent<RawImage>().color = new Color(0, 0, 0, 255);
+        m_GaugeUIs[id].GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.6f);
+        m_GaugeUIs[id].FindChild(name + "gaugearrow").GetComponent<RawImage>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
         m_ButtonUIs[id].GetComponent<RawImage>().color = armcolor;
         if(id != m_EnableArmID)
-            armcolor = new Color(0, 0, 0, 50);
+            armcolor = new Color(0.0f, 0.0f, 0.0f, 0.2f);
         m_GaugeUIs[id].FindChild(name + "gauge2").GetComponent<RawImage>().color = armcolor;
     }
         
@@ -679,15 +680,15 @@ public class ArmManager : MonoBehaviour
         {
             string name = NameByID(i);
             if (i != m_EnableArmID)
-                color = new Color(0, 0, 0, 50);
+                color = new Color(0, 0, 0, 0.2f);
             else
             {
                 switch (i)
                 {
-                    case 0: color = new Color(255, 255, 0, 255); break;
-                    case 1: color = new Color(255, 0, 0, 255); break;
-                    case 2: color = new Color(0, 255, 0, 255); break;
-                    case 3: color = new Color(0, 0, 255, 255); break;
+                    case 0: color = new Color(1.0f, 1.0f, 0.0f, 1.0f); break;
+                    case 1: color = new Color(1.0f, 0.0f, 0.0f, 1.0f); break;
+                    case 2: color = new Color(0.0f, 1.0f, 0.0f, 1.0f); break;
+                    case 3: color = new Color(0.0f, 0.0f, 1.0f, 1.0f); break;
                     default: break;
                 }
             }
@@ -716,29 +717,37 @@ public class ArmManager : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// シーンが変わった直後に呼ぶ処理
-    /// </summary>
-    public void SceneChange()
+    //UI取得処理
+    public void UIGet()
     {
-        //ＵＩを取得しなおす
         if (GameObject.Find("Canvas ingame") == null) return;
-        m_UI = GameObject.Find("Canvas ingame").transform;
+        m_UI = GameObject.Find("Canvas ingame").GetComponent<RectTransform>();
 
+        m_GaugeUIs = new RectTransform[4];
+        m_ButtonUIs = new RectTransform[4];
 
-        m_GaugeUIs = new Transform[4];
-        m_ButtonUIs = new Transform[4];
-        Transform gauge = m_UI.FindChild("left").FindChild("gauge");
+        m_LeftUI = m_UI.FindChild("left").GetComponent<RectTransform>();
+        m_RightUI = m_UI.FindChild("right").GetComponent<RectTransform>();
+        m_UpUI = m_UI.FindChild("up").GetComponent<RectTransform>();
+        m_DownUI = m_UI.FindChild("down").GetComponent<RectTransform>();
+        m_GaugeUI = m_LeftUI.FindChild("gauge").GetComponent<RectTransform>();
 
         string name = "";
         for (int i = 0; i < 4; i++)
         {
             name = NameByID(i);
-
-            m_GaugeUIs[i] = gauge.FindChild(name + "gauge1");
-            m_ButtonUIs[i] = gauge.Find(name);
+            m_GaugeUIs[i] = m_GaugeUI.FindChild(name + "gauge1").GetComponent<RectTransform>();
+            m_ButtonUIs[i] = m_GaugeUI.Find(name).GetComponent<RectTransform>();
         }
+    }
 
+    /// <summary>
+    /// シーンが変わった直後に呼ぶ処理
+    /// </summary>
+    public void SceneChange()
+    {
+        //UI用のオブジェクト取得
+        UIGet();
 
 
         for (int i = 0; i < 4; i++)
@@ -844,5 +853,85 @@ public class ArmManager : MonoBehaviour
     {
         ResetAll();
         DustBoxClear();
+    }
+
+    /// <summary>
+    /// 画面外からUIが出てくるコルーチン開始
+    /// </summary>
+    /// <returns></returns>
+    public void StartUIMove()
+    {
+        StartCoroutine(StartToEndUIMove());
+    }
+    /// <summary>
+    /// 画面内からUIが出ていくコルーチン開始
+    /// </summary>
+    /// <returns></returns>
+    public void EndUIMove()
+    {
+        StartCoroutine(EndToStartUIMove());
+    }
+
+
+    IEnumerator StartToEndUIMove()
+    {
+        float timer = 0.0f;
+        float max = m_UIStartToEndTime / 2;
+        m_LeftUI.localPosition = m_LeftUIStart;
+        m_RightUI.localPosition = m_RightUIStart;
+        m_UpUI.localPosition = m_UpUIStart;
+        m_DownUI.localPosition = m_DownUIStart;
+
+        while (timer < max)
+        {
+            //先に左右
+            m_LeftUI.localPosition = Vector3.Lerp(m_LeftUIStart, m_LeftUIEnd, timer / max);
+            m_RightUI.localPosition = Vector3.Lerp(m_RightUIStart, m_RightUIEnd, timer / max);
+
+
+            timer += Time.deltaTime;                
+            yield return null;
+        }
+        timer = 0.0f;
+        while (timer < max)
+        {
+            m_UpUI.localPosition = Vector3.Lerp(m_UpUIStart, m_UpUIEnd, timer / max);
+            m_DownUI.localPosition = Vector3.Lerp(m_DownUIStart, m_DownUIEnd, timer / max);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        yield break;
+    }
+
+
+    IEnumerator EndToStartUIMove()
+    {
+        float timer = 0.0f;
+        float max = m_UIStartToEndTime / 2;
+        m_LeftUI.localPosition = m_LeftUIEnd;
+        m_RightUI.localPosition = m_RightUIEnd;
+        m_UpUI.localPosition = m_UpUIEnd;
+        m_DownUI.localPosition = m_DownUIEnd;
+
+
+        while (timer < max)
+        {
+            //先に上下
+            m_UpUI.localPosition = Vector3.Lerp(m_UpUIEnd, m_UpUIStart, timer / max);
+            m_DownUI.localPosition = Vector3.Lerp(m_DownUIEnd, m_DownUIStart, timer / max);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        timer = 0.0f;
+        while (timer < max)
+        {
+            m_LeftUI.localPosition = Vector3.Lerp(m_LeftUIEnd, m_LeftUIStart, timer / max);
+            m_RightUI.localPosition = Vector3.Lerp(m_RightUIEnd, m_RightUIStart, timer / max);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        yield break;
     }
 }
