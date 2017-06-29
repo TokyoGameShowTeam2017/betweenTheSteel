@@ -285,7 +285,7 @@ public class StageSelectMap : MonoBehaviour
     {
         if (GameObject.FindGameObjectWithTag("StartEventObject")!=null)
         GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(enable);
-
-        GameObject.FindGameObjectWithTag("ArmManger").GetComponent<LineRenderer>().enabled = true;
+        GetComponent<LineRenderer>().startColor = new Color(1, 0, 0, 1);
+        GetComponent<LineRenderer>().endColor = new Color(1, 0, 0, 0);
     }
 }
