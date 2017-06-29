@@ -158,6 +158,9 @@ public class TitleCollection : MonoBehaviour
             id = 3;
         if (Input.GetButtonDown("XBOXArm4"))
             id = 4;
+        if (Input.GetButtonDown("XBOXStart"))
+            id = 5;
+
 
         if (id != 0)
             return true;
