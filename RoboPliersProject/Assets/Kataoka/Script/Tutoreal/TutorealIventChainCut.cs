@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TutorealIventChainCut : MonoBehaviour {
-    [SerializeField, Tooltip("掴みたいオブジェクト")]
-    public GameObject m_CathObject;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
 
