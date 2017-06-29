@@ -39,11 +39,10 @@ public class StageSelectCollection : MonoBehaviour
         //選択中のインプット
         StageSelectInput();
         //Aボタンで戻る
-        if (Input.GetButtonDown("XBOXArm3"))
+        if (Input.GetButtonDown("XBOXArm3") && !m_BackMenu)
         {
             m_BeforStageNum = m_StageNum;
             m_StageNum = 20;
-            m_BackMenu = true;
         }
 
         //ステージのマップをロード
@@ -258,7 +257,7 @@ public class StageSelectCollection : MonoBehaviour
     //メニュー画面へ戻る
     private void BackMenu()
     {
-        if (InputWrap() || Input.GetKeyDown(KeyCode.Space))
+        if (InputWrap() && !m_BackMenu)
         {
             m_BackMenu = true;
             SoundManager.Instance.PlaySe("back");

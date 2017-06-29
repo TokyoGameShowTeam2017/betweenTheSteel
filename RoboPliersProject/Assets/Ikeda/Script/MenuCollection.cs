@@ -92,7 +92,7 @@ public class MenuCollection : MonoBehaviour
                 MenuDecision();
 
                 //Aボタンで戻る
-                if (Input.GetButtonDown("XBOXArm3"))
+                if (Input.GetButtonDown("XBOXArm3") && m_State != MenuState.Back)
                 {
                     m_MenuNum = 4;
                     SoundManager.Instance.PlaySe("back");
