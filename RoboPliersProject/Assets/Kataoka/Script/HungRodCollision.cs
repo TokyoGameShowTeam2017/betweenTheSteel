@@ -19,7 +19,6 @@ public class HungRodCollision : MonoBehaviour {
     void Update()
     {
 
-        mIsCollision=false;
     }
     public void OnTriggerStay(Collider other)
     {
@@ -67,12 +66,10 @@ public class HungRodCollision : MonoBehaviour {
 
     public void OnTriggerExit(Collider other)
     {
-        //if ("Bone" == other.name.Substring(0, 4))
-        //{
-        //    mChangeCount = 0.0f;
-        //    other.GetComponent<RodTurnBone>().GetRod().GetComponent<Rod>().SetCatchType(CatchObject.CatchType.Dynamic);
-        //    mIsCollision = false;
-        //}
+        if ("Bone" == other.name.Substring(0, 4))
+        {
+            mIsCollision = false;
+        }
     }
 
 
