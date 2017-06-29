@@ -45,8 +45,11 @@ public class StageSelectMap : MonoBehaviour
     private bool stated;
     private Coroutine loadSceneAnim;
 
+
+
     private void Start()
     {
+        SceneLoadInitializer.Instance.continueScene = false;
         exit = true;
         StartCoroutine(BackGroundLoad());
 
@@ -70,8 +73,6 @@ public class StageSelectMap : MonoBehaviour
                 yield return null;
             }
         }
-
-        SceneLoadInitializer.Instance.continueScene = false;
         SceneLoadInitializer.Instance.gameClear = false;
 
         GameObject.FindGameObjectWithTag("RawCamera").GetComponent<Camera>().enabled = false;
