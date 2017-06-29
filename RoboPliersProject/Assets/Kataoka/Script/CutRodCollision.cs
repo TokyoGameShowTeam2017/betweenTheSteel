@@ -11,13 +11,14 @@ public class CutRodCollision : MonoBehaviour
     [SerializeField, Tooltip("耐久値")]
     private float m_Life = 5.0f;
 
-
+    private GameObject m_Rod;
     private float m_StartLife;
 
     // Use this for initialization
     void Start()
     {
         m_StartLife = m_Life;
+        m_Rod = GetComponent<RodTurnBone>().GetRod();
     }
 
     // Update is called once per frame
@@ -46,6 +47,7 @@ public class CutRodCollision : MonoBehaviour
     /// </summary>
     public bool Damage(float pliersPower)
     {
+        if (m_Rod.GetComponent<Rod>().GetHongFlag()) return false;
         float damage = pliersPower - m_Strength;
         damage = Mathf.Clamp(damage, 0.0f, 10.0f);
         if (damage <= 0) return false;
@@ -69,6 +71,8 @@ public class CutRodCollision : MonoBehaviour
     /// </summary>
     public float DamageAndGetLife(float pliersPower)
     {
+        if (m_Rod.GetComponent<Rod>().GetHongFlag()) return m_StartLife;
+
         float damage = pliersPower - m_Strength;
         damage = Mathf.Clamp(damage, 0.0f, 10.0f);
         if (damage <= 0) return m_Life;

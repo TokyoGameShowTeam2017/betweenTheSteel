@@ -152,6 +152,9 @@ public class RodTurnCollision : MonoBehaviour
             GetComponent<RodTurnBone>().GetRod().
             GetComponent<Rod>().GetHongFlag()) return;
 
+        
+
+
         //2本のアームでつかむ処理
         if (mArm.GetEnablArmCatchingObject().GetComponent<CatchObject>().catchType ==
             CatchObject.CatchType.Dynamic)
@@ -164,8 +167,7 @@ public class RodTurnCollision : MonoBehaviour
                 if (mainRod == mainRod2)
                 {
                     mArm.GetEnablArmCatchingObject().GetComponent<RodTurnBone>().
-                  RotateAxisVelo(GameObject.FindGameObjectWithTag("RawCamera").
-                  transform.forward,
+                  RotateAxisVelo(mArm.GetEnablArm().transform.forward,
                   mArm.GetEnablePliersRollValue());
                 }
             }
@@ -174,8 +176,7 @@ public class RodTurnCollision : MonoBehaviour
         {
 
             mArm.GetEnablArmCatchingObject().GetComponent<RodTurnBone>().
-                RotateAxisVelo(GameObject.FindGameObjectWithTag("RawCamera").
-                transform.forward,
+                RotateAxisVelo(mArm.GetEnablArm().transform.forward,
                 mArm.GetEnablePliersRollValue());
 
             //RodTurnBone rodBone = mArm.GetEnablArmCatchingObject().GetComponent<RodTurnBone>();
