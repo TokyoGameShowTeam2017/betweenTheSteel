@@ -827,6 +827,28 @@ public class PlayerMove : MonoBehaviour
 
         //水平回転
         roty.localEulerAngles += new Vector3(0.0f, h, 0.0f);
+
+        //左右に壁があるなら押し返し
+        if(h != 0.0f)
+        {        
+            Vector3 dir;
+            if (h > 0)
+                dir = -armtr.right;
+            else
+                dir = armtr.right;
+
+            Ray ray = new Ray(tr.position + tr.up, dir);
+            int mask = LayerMask.NameToLayer("ArmAndPliers");
+            RaycastHit hit;
+            bool iswallhit = Physics.Raycast(ray, out hit, 1.0f, mask);
+            if (iswallhit)
+            {
+                roty.localEulerAngles -= new Vector3(0.0f, h, 0.0f);
+                m_CameraMove.Rotation(-h, 0.0f);
+            }
+        }
+
+
         //垂直回転
         //rotx.localEulerAngles += new Vector3(v, 0.0f, 0.0f);
         pliersrotx.localEulerAngles += new Vector3(v, 0.0f, 0.0f);
