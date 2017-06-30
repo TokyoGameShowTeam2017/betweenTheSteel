@@ -42,12 +42,12 @@ public class StageSelectCollection : MonoBehaviour
         {
             //選択中のインプット
             StageSelectInput();
-        }
-        //Aボタンで戻る
-        if (Input.GetButtonDown("XBOXArm3") && !m_BackMenu)
-        {
-            m_BeforStageNum = m_StageNum;
-            m_StageNum = 20;
+            //Aボタンで戻る
+            if (Input.GetButtonDown("XBOXArm3") && !m_BackMenu)
+            {
+                m_BeforStageNum = m_StageNum;
+                m_StageNum = 20;
+            }
         }
 
         //ステージのマップをロード
