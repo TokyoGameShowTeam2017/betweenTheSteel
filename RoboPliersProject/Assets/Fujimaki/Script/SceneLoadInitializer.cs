@@ -13,6 +13,7 @@ public class SceneLoadInitializer
     public GameObject usedArea;
     public bool continueScene;
     public bool gameClear;
+    public bool nonPauseScene;
 
     private SceneLoadInitializer()
     {
