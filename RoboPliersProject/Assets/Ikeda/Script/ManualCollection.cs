@@ -25,6 +25,9 @@ public class ManualCollection : MonoBehaviour
 
     private float m_FeadOutRate;
 
+    [SerializeField]
+    private GameObject m_ManualCanvas;
+    private GameObject m_ManualCanvasInstace;
 
     private enum ManualState
     {
@@ -86,6 +89,11 @@ public class ManualCollection : MonoBehaviour
     {
         m_HigherAlpha += 0.04f * Time.deltaTime * 60;
         GameObject.Find("manualback").GetComponent<CanvasGroup>().alpha = m_HigherAlpha;
+
+        if (m_ManualCanvasInstace == null)
+        {
+            m_ManualCanvasInstace = Instantiate(m_ManualCanvas);
+        }
     }
 
     private void ManualInput()
@@ -139,6 +147,11 @@ public class ManualCollection : MonoBehaviour
             if (InputWrap())
             {
                 SoundManager.Instance.PlaySe("back");
+                if (m_ManualCanvasInstace != null)
+                {
+                    m_ManualCanvasInstace.GetComponent<ManualController>().CanvasDestroy();
+                    m_ManualCanvasInstace = null;
+                }
                 m_ManualState = ManualState.FeadOutManual;
             }
         }
