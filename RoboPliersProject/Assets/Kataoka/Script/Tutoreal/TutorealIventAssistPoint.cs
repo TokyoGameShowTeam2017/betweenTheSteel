@@ -53,11 +53,15 @@ public class TutorealIventAssistPoint : MonoBehaviour {
         mPlayerTutorial.SetIsCamerMove(!m_PlayerCameraMove);
         mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutorial.SetIsArmRelease(!m_PlayerArmNoCath);
+
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
+
         //エイムアシストしてたら
         if (m_AssistObject != null)
         {
             if (mPlayerTutorial.GetIsAimAssistName(m_AssistObject.name.Substring(0, 4)))
             {
+                GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(false);
                 //次のイベントテキスト有効化
                 if (m_IventCollisions.Length != 0)
                     for (int i = 0; m_IventCollisions.Length > i; i++)
@@ -78,6 +82,7 @@ public class TutorealIventAssistPoint : MonoBehaviour {
         {
             if (mPlayerTutorial.GetIsAimAssistAll())
             {
+                GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(false);
                 //次のイベントテキスト有効化
                 if (m_IventCollisions.Length != 0)
                     for (int i = 0; m_IventCollisions.Length > i; i++)

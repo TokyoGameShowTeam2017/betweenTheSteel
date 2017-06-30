@@ -62,8 +62,10 @@ public class TutorealIventOutLine : MonoBehaviour {
         mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutorial.SetIsArmRelease(!m_PlayerArmNoCath);
         mPlayerTutorial.SetIsResetAble(!m_PlayerClerArmReset);
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
         if (mParameterUiRay.GetIsOutLine())
         {
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(false);
             mPlayerTutorial.SetIsArmMove(!m_PlayerClerArmMove);
             mPlayerTutorial.SetIsPlayerMove(!m_PlayerClerMove);
             mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);

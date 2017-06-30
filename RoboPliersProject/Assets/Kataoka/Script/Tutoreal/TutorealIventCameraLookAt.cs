@@ -80,9 +80,13 @@ public class TutorealIventCameraLookAt : MonoBehaviour
                 Destroy(hit.collider.gameObject);
             }
         }
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
+
         //子を全部消したら
         if (transform.childCount <= 0)
         {
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(false);
+
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
                 for (int i = 0; m_IventCollisions.Length > i; i++)
