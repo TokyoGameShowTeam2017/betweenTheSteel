@@ -17,6 +17,9 @@ public class BGMChanger : MonoBehaviour
     public bool m_IsRandom = false;
     public string[] m_RandomBGMNames;
 
+    [SerializeField,Tooltip("ＢＧＭ変更を待機するか？")]
+    public bool m_IsChangeWait = false;
+
     /*==内部設定変数==*/
 
     /*==外部参照変数==*/
@@ -38,7 +41,21 @@ public class BGMChanger : MonoBehaviour
 	
 	void Update ()
 	{
-        SoundManager.Instance.PlayBgm(m_BGMName);
-        Destroy(this.gameObject);
+        if (m_IsChangeWait)
+        {
+            SoundManager.Instance.PlayBgm(m_BGMName);
+            Destroy(this.gameObject);
+        }
+
 	}
+
+
+
+    /// <summary>
+    /// BGMの変更を実行する(IsChangeWaitがtrueのときに使う)
+    /// </summary>
+    public void StartBGMChange()
+    {
+        m_IsChangeWait = true;
+    }
 }

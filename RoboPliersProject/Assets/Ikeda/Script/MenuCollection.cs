@@ -82,22 +82,22 @@ public class MenuCollection : MonoBehaviour
                 {
                     //メニュー選択
                     MenuSelect();
+                    //Aボタンで戻る
+                    if (Input.GetButtonDown("XBOXArm3") && m_State != MenuState.Back)
+                    {
+                        m_MenuNum = 4;
+                        SoundManager.Instance.PlaySe("back");
+                        m_State = MenuState.Back;
+                    }
                     StickState l_state = GetStick();
                     print(l_state);
                 }
-                if (Input.GetKeyDown(KeyCode.A)) m_MenuNum += 1;
+                //if (Input.GetKeyDown(KeyCode.A)) m_MenuNum += 1;
                 //選択されているメニューの色を変える
                 MenuColoring();
+
                 //選択されているメニューで決定
                 MenuDecision();
-
-                //Aボタンで戻る
-                if (Input.GetButtonDown("XBOXArm3") && m_State != MenuState.Back)
-                {
-                    m_MenuNum = 4;
-                    SoundManager.Instance.PlaySe("back");
-                    m_State = MenuState.Back;
-                }
                 break;
         }
     }

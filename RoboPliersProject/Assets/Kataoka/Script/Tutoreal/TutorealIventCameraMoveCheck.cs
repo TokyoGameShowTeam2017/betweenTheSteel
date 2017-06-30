@@ -93,7 +93,7 @@ public class TutorealIventCameraMoveCheck : MonoBehaviour {
         mText.GetDrawTextFlag()) return;
 
         m_UiPrefab.SetActive(true);
-
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
         mPlayerTutoreal.SetIsArmMove(!m_PlayerArmMove);
         mPlayerTutoreal.SetIsPlayerMove(!m_PlayerMove);
         mPlayerTutoreal.SetIsCamerMove(!m_PlayerCameraMove);
@@ -166,7 +166,6 @@ public class TutorealIventCameraMoveCheck : MonoBehaviour {
             mNowInputDir = mInputDir;
         }
 
-        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
         if (mInputFlags[InputDir.INPUT_BACK] &&
             mInputFlags[InputDir.INPUT_FRONT] &&
             mInputFlags[InputDir.INPUT_LEFT] &&

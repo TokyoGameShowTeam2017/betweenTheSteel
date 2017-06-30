@@ -93,6 +93,9 @@ public class TutorealIventPlayerMove : MonoBehaviour
         if (!GetComponent<TutorealIventFlag>().GetIventFlag() ||
         mText.GetDrawTextFlag()) return;
 
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
+
+
         mMoveCheckTrans.gameObject.SetActive(true);
         mMoveCheckTrans.transform.position = mPlayerTutoreal.gameObject.transform.position;
         mMoveCheckTrans.rotation =
@@ -106,6 +109,8 @@ public class TutorealIventPlayerMove : MonoBehaviour
         mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
         mPlayerTutoreal.SetIsResetAble(!m_PlayerArmReset);
+
+
 
         Vector2 inputVec = InputManager.GetMove();
         Vector2 absVec = new Vector2(Mathf.Abs(inputVec.x), Mathf.Abs(inputVec.y));
@@ -172,7 +177,6 @@ public class TutorealIventPlayerMove : MonoBehaviour
             mNowInputDir = mInputDir;
         }
 
-        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
         
         if (mInputFlags[InputDir.INPUT_BACK] &&
             mInputFlags[InputDir.INPUT_FRONT] &&

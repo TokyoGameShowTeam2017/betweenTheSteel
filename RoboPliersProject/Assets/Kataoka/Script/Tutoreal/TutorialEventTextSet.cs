@@ -23,7 +23,7 @@ public class TutorialEventTextSet : MonoBehaviour
         mTime += Time.deltaTime;
         if (mFlag)
         {
-            mAlpha = Mathf.Sin((mTime * 300.0f) * Mathf.Deg2Rad);
+            mAlpha = Mathf.Sin((mTime * 250.0f) * Mathf.Deg2Rad)+0.3f;
         }
         else
         {
