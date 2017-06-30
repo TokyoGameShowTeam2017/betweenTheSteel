@@ -91,18 +91,18 @@ public class TitleCollection : MonoBehaviour
         }
     }
 
-    public void LateUpdate()
-    {
-        //SoundManager l_Sound = GetComponent<SoundManager>();
+    //public void LateUpdate()
+    //{
+    //    //SoundManager l_Sound = GetComponent<SoundManager>();
 
-        //if (l_Sound == null) return;
+    //    //if (l_Sound == null) return;
 
-        if (!m_One)
-        {
-            SoundManager.Instance.PlayBgm("Monday1");
-            m_One = true;
-        }
-    }
+    //    //if (!m_One)
+    //    //{
+    //    //    SoundManager.Instance.PlayBgm("Monday1");
+    //    //    m_One = true;
+    //    //}
+    //}
 
 
 
