@@ -71,7 +71,7 @@ public class StageSelectCollection : MonoBehaviour
         StageMapLoad();
 
         //ステージを始める
-        StartStaeMap();
+        StartStageMap();
 
         //ステージ選択中
         StageSelect();
@@ -308,10 +308,10 @@ public class StageSelectCollection : MonoBehaviour
     //}
 
     //ステージを始める
-    private void StartStaeMap()
+    private void StartStageMap()
     {
         if (m_StageNum == 20) return;
-        if (InputWrap())
+        if (InputWrap() && !m_IsStart)
         {
             m_IsStart = true;
             //SoundChange();
