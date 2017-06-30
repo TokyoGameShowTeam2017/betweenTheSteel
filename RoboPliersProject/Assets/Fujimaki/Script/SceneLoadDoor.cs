@@ -57,6 +57,9 @@ public class SceneLoadDoor : MonoBehaviour
     [SerializeField, Tooltip("最終シーン用フラグ")]
     private bool endFrag_;
 
+    [SerializeField,Tooltip("リザルト用Canvas")]
+    private GameObject resultCanvas;
+
     [SerializeField]
     private GameObject playerprefab;
 
@@ -170,6 +173,12 @@ public class SceneLoadDoor : MonoBehaviour
         }
 
         scanPlane_.SetActive(false);
+
+        GameObject g = Instantiate(resultCanvas, Vector3.zero, Quaternion.identity);
+        yield return new WaitForSeconds(3);
+
+        Destroy(g);
+
         StartCoroutine(LoadScene());
     }
 

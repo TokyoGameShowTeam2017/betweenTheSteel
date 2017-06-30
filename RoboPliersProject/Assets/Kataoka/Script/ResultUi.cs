@@ -19,8 +19,8 @@ public class ResultUi : MonoBehaviour
         mDrawTime = 0.0f;
         mIsDraw = true;
         //サウンドのリソースが実装されたら
-        SoundManager.Instance.PlaySe("ResultVoice");
-        SoundManager.Instance.PlaySe("Fanfare");
+        //SoundManager.Instance.PlaySe("ResultVoice");
+        //SoundManager.Instance.PlaySe("Fanfare");
     }
 
     // Update is called once per frame
