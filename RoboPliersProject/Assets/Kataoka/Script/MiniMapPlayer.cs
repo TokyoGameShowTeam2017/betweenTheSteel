@@ -18,6 +18,7 @@ public class MiniMapPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (mGameObject == null) return;
         Vector3 playerPos = mGameObject.transform.position;
         //動く
         mMiniMapPlayer.transform.position = playerPos;
