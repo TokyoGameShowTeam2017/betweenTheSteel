@@ -37,6 +37,7 @@ public class TutorealIventTextFlag : MonoBehaviour
         //テキストが終わったら全部の移動を解除
         if (!mTutorealText.GetDrawTextFlag())
         {
+
             mTutorealPlayer.SetIsPlayerAndCameraMove(true);
             mTutorealPlayer.SetIsArmMove(true);
             //次のイベントテキスト有効化
