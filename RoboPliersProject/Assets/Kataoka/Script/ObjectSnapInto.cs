@@ -11,6 +11,8 @@ public class ObjectSnapInto : MonoBehaviour
     private Quaternion mQuaternion;
 
     private ArmManager mArm;
+
+    private float mCollisionTime;
     // Use this for initialization
     void Start()
     {
@@ -18,6 +20,8 @@ public class ObjectSnapInto : MonoBehaviour
         mQuaternion = transform.rotation;
 
         mArm = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
+
+        mCollisionTime = 0.0f;
     }
 
     // Update is called once per frame
@@ -32,11 +36,9 @@ public class ObjectSnapInto : MonoBehaviour
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
                 transform.position = mPosition;
                 transform.rotation = mQuaternion;
-
                 break;
             }
         }
-
         //初期化
         foreach (var i in m_Collision)
         {
