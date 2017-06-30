@@ -69,6 +69,7 @@ public class StageSelectMap : MonoBehaviour
 
         yield return null;
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>().SetIsCamerMove(false);
 
         if (!SceneLoadInitializer.Instance.gameClear)
         {
@@ -251,6 +252,11 @@ public class StageSelectMap : MonoBehaviour
 
         yield return SceneManager.UnloadSceneAsync("Stage01");
         yield return SceneManager.LoadSceneAsync(loadedScene, LoadSceneMode.Additive);
+        yield return null;
+
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>().SetIsCamerMove(false);
+
         StartCoroutine(StartScene(num, GameObject.FindGameObjectWithTag("ThumbnailCamera")));
     }
 
@@ -283,8 +289,6 @@ public class StageSelectMap : MonoBehaviour
             yield return null;
         }
 
-        GameObject.FindGameObjectWithTag("MinimapManager").GetComponent<MiniMap>().m_DrawMiniMap = true;
-
         //カメラアニメーション
         time = 0;
         while (time < 1)
@@ -296,11 +300,14 @@ public class StageSelectMap : MonoBehaviour
             yield return null;
         }
 
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(true);
         target.GetComponent<Camera>().enabled = true;
         camera.enabled = false;
 
         SceneManager.UnloadSceneAsync("title");
+
+        GameObject.FindGameObjectWithTag("MinimapManager").GetComponent<MiniMap>().m_DrawMiniMap = true;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(true);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>().SetIsCamerMove(true);
 
         SwitchPlayerText(true);
     }
