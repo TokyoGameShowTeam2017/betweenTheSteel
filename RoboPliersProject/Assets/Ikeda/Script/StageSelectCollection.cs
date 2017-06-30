@@ -20,6 +20,9 @@ public class StageSelectCollection : MonoBehaviour
     private bool m_IsStart = false;
     private float m_FeadOutRate;
     private StickState m_StickState;
+
+    //private Dictionary<int, string> m_SoundCollection;
+    //private int m_SoundNum;
     // Use this for initialization
     void Start()
     {
@@ -33,7 +36,21 @@ public class StageSelectCollection : MonoBehaviour
         m_StageNum = 1;
         m_StickState = StickState.None;
         GameObject.Find("sideFrame").GetComponent<MenuFrame>().InitializeSpreadRate();
+
+        //m_SoundCollection = new Dictionary<int, string>();
+        //AddSound(0, "02-Tuesday");
+        //AddSound(1, "03-Wednesday");
+        //AddSound(2, "04-Thursday");
+        //AddSound(3, "05-Friday");
+        //AddSound(4, "Friday");
+        //AddSound(5, "Tuesday");
+        //AddSound(6, "Wednesday");
     }
+
+    //private void AddSound(int soundNum, string soundName)
+    //{
+    //    m_SoundCollection[soundNum] = soundName;
+    //}
 
     // Update is called once per frame
     void Update()
@@ -281,6 +298,14 @@ public class StageSelectCollection : MonoBehaviour
             else GameObject.Find("sideFrame").GetComponent<MenuFrame>().BackFrame();
         }
     }
+    //private void SoundChange()
+    //{
+      
+    //    m_SoundNum = Random.Range(0, 6);
+    //    print(m_SoundNum);
+    //    SoundManager.Instance.StopBgm();
+    //    SoundManager.Instance.PlayBgm(m_SoundCollection[m_SoundNum]);
+    //}
 
     //ステージを始める
     private void StartStaeMap()
@@ -289,6 +314,7 @@ public class StageSelectCollection : MonoBehaviour
         if (InputWrap())
         {
             m_IsStart = true;
+            //SoundChange();
             if (m_StageNum == 1)
             {
                 SoundManager.Instance.StopBgm();
