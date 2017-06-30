@@ -31,7 +31,7 @@ public class PauseController : MonoBehaviour
 
     private void Update()
     {
-        if (InputManager.GetStick() == StickState.Up) 
+        if ((InputManager.GetStick() == StickState.Up) && !input) 
         {
             input = true;
             select--;
@@ -43,7 +43,7 @@ public class PauseController : MonoBehaviour
             UpdateMenuColor();
         }
 
-        if (InputManager.GetStick() == StickState.Down)
+        if ((InputManager.GetStick() == StickState.Down) && !input)
         {
             input = true;
             select++;
@@ -70,7 +70,11 @@ public class PauseController : MonoBehaviour
             }
         }
 
-        print(SceneManager.GetActiveScene().name);
+        if ((InputManager.GetStick() != StickState.Up) && (InputManager.GetStick() != StickState.Down))
+        {
+            input = false;
+        }
+
     }
 
     private void UpdateMenuColor()
