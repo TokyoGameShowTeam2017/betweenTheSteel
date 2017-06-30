@@ -109,7 +109,7 @@ public class StageSelectCollection : MonoBehaviour
                     m_StageNum += 1;
                     SoundManager.Instance.PlaySe("select");
                     m_IsLoad = false;
-                    if (m_StageNum + 1 > 16)
+                    if (m_StageNum + 1 > 15)
                     {
                         m_StageNum = 1;
                     }
@@ -127,7 +127,7 @@ public class StageSelectCollection : MonoBehaviour
                     m_IsLoad = false;
                     if (m_StageNum - 1 < 0)
                     {
-                        m_StageNum = 15;
+                        m_StageNum = 14;
                     }
                 }
                 break;
@@ -143,15 +143,15 @@ public class StageSelectCollection : MonoBehaviour
     {
         if (m_StageNum == 1)
         {
-            GameObject.Find("Stage015").GetComponent<RectTransform>().localPosition = new Vector3(-180, 145, 0);
-            GameObject.Find("Stage015").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
-            GameObject.Find("Stage015").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+            GameObject.Find("Stage014").GetComponent<RectTransform>().localPosition = new Vector3(-180, 145, 0);
+            GameObject.Find("Stage014").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
+            GameObject.Find("Stage014").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 
             GameObject.Find("Stage02").GetComponent<RectTransform>().localPosition = new Vector3(180, 145, 0);
             GameObject.Find("Stage02").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
             GameObject.Find("Stage02").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 
-            GameObject.Find("Stage014").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
+            GameObject.Find("Stage013").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
             GameObject.Find("Stage03").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
 
             GameObject.Find("backSelect").GetComponent<RawImage>().color = new Color(1, 1, 1);
@@ -172,7 +172,7 @@ public class StageSelectCollection : MonoBehaviour
             GameObject.Find("Stage03").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
             GameObject.Find("Stage03").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 
-            GameObject.Find("Stage015").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
+            GameObject.Find("Stage014").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
             GameObject.Find("Stage04").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
 
             GameObject.Find("backSelect").GetComponent<RawImage>().color = new Color(1, 1, 1);
@@ -188,11 +188,11 @@ public class StageSelectCollection : MonoBehaviour
             GameObject.Find("Stage013").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
             GameObject.Find("Stage013").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 
-            GameObject.Find("Stage015").GetComponent<RectTransform>().localPosition = new Vector3(180, 145, 0);
-            GameObject.Find("Stage015").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
-            GameObject.Find("Stage015").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+            GameObject.Find("Stage01").GetComponent<RectTransform>().localPosition = new Vector3(180, 145, 0);
+            GameObject.Find("Stage01").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
+            GameObject.Find("Stage01").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 
-            GameObject.Find("Stage01").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
+            GameObject.Find("Stage02").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
             GameObject.Find("Stage012").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
 
             GameObject.Find("backSelect").GetComponent<RawImage>().color = new Color(1, 1, 1);
@@ -204,18 +204,18 @@ public class StageSelectCollection : MonoBehaviour
             GameObject.Find("Stage0" + m_StageNum).GetComponent<RectTransform>().localPosition = new Vector3(0, 145, 0);
 
         }
-        else if (m_StageNum == 15)
+        else if (m_StageNum == 13)
         {
-            GameObject.Find("Stage014").GetComponent<RectTransform>().localPosition = new Vector3(-180, 145, 0);
+            GameObject.Find("Stage012").GetComponent<RectTransform>().localPosition = new Vector3(-180, 145, 0);
+            GameObject.Find("Stage012").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
+            GameObject.Find("Stage012").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+
+            GameObject.Find("Stage014").GetComponent<RectTransform>().localPosition = new Vector3(180, 145, 0);
             GameObject.Find("Stage014").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
             GameObject.Find("Stage014").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 
-            GameObject.Find("Stage01").GetComponent<RectTransform>().localPosition = new Vector3(180, 145, 0);
-            GameObject.Find("Stage01").transform.localScale = new Vector3(0.3f, 0.3f, 0f);
-            GameObject.Find("Stage01").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-
-            GameObject.Find("Stage013").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
-            GameObject.Find("Stage02").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
+            GameObject.Find("Stage011").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
+            GameObject.Find("Stage01").GetComponent<RectTransform>().localPosition = new Vector3(0, 250, 0);
 
             GameObject.Find("backSelect").GetComponent<RawImage>().color = new Color(1, 1, 1);
             GameObject.Find("backSelect").transform.localScale = new Vector3(1f, 1f, 1f);
