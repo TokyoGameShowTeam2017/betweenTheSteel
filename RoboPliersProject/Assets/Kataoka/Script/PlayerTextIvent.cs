@@ -8,6 +8,8 @@ public class PlayerTextIvent : MonoBehaviour
     public AudioClip[] m_Voice;
     [SerializeField, Tooltip("流すテキスト"), TextArea(1, 20)]
     public string[] m_Text;
+    [SerializeField, Tooltip("イベント中のテキスト")]
+    public string m_EventText;
     [SerializeField, Tooltip("イベントプレハブ")]
     public GameObject m_IventPrefab;
 
@@ -84,6 +86,9 @@ public class PlayerTextIvent : MonoBehaviour
             mPlayerTurorial.SetIsCamerMove(!m_PlayerCameraMove);
             mPlayerTurorial.SetIsArmCatchAble(!m_PlayerArmCath);
             mPlayerTurorial.SetIsArmRelease(!m_PlayerArmNoCath);
+
+
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetEventText(m_EventText);
 
             if (m_IventPrefab != null)
                 m_IventPrefab.GetComponent<TutorealIventFlag>().PlayIvent();

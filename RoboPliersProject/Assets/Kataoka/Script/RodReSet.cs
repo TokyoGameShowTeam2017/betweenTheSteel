@@ -39,6 +39,10 @@ public class RodReSet : MonoBehaviour
         foreach (var i in mCollisions)
         {
             if (i == null) continue;
+            if (mArm.GetPliersCatchRod(0) == gameObject||
+                mArm.GetPliersCatchRod(1) == gameObject||
+                mArm.GetPliersCatchRod(2) == gameObject||
+                mArm.GetPliersCatchRod(3) == gameObject) return;
             if ((mArm.GetEnablArmCatchingObject() == null &&
                 i.GetComponent<ObjectCollision>().GetCollisionFlag()) ||
                 i.transform.position.y <= -50.0f)

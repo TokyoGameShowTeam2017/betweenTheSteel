@@ -54,12 +54,13 @@ public class TutorealIventRodCut : MonoBehaviour
         mTutorialPlayer.SetIsCamerMove(!m_PlayerCameraMove);
         mTutorialPlayer.SetIsArmCatchAble(!m_PlayerArmCath);
         mTutorialPlayer.SetIsArmRelease(!m_PlayerArmNoCath);
-
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
         foreach (var i in m_Rod)
         {
             //Cutされたら
             if (i.GetComponent<CutRod>().GetCutFlag())
             {
+                GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(false);
                 //次のイベントテキスト有効化
                 if (m_IventCollisions.Length != 0)
                     for (int j = 0; m_IventCollisions.Length > j; j++)
