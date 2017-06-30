@@ -41,7 +41,7 @@ public class BGMChanger : MonoBehaviour
 	
 	void Update ()
 	{
-        if (m_IsChangeWait)
+        if (!m_IsChangeWait)
         {
             SoundManager.Instance.PlayBgm(m_BGMName);
             Destroy(this.gameObject);
@@ -56,6 +56,6 @@ public class BGMChanger : MonoBehaviour
     /// </summary>
     public void StartBGMChange()
     {
-        m_IsChangeWait = true;
+        m_IsChangeWait = false;
     }
 }

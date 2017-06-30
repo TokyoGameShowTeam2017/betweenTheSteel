@@ -50,6 +50,7 @@ public class StageSelectMap : MonoBehaviour
     private void Start()
     {
         SceneLoadInitializer.Instance.continueScene = false;
+        SceneLoadInitializer.Instance.nonPauseScene = true;
         exit = true;
         StartCoroutine(BackGroundLoad());
 
@@ -227,6 +228,10 @@ public class StageSelectMap : MonoBehaviour
 
             yield return null;
         }
+        foreach(var g in SceneLoadInitializer.Instance.usedAreas)
+        {
+            Destroy(g);
+        }
 
         Destroy(GameObject.FindGameObjectWithTag("Player"));
 
@@ -250,6 +255,7 @@ public class StageSelectMap : MonoBehaviour
     private IEnumerator StartScene(int num, GameObject startObj)
     {
         float time = 0;
+        SceneLoadInitializer.Instance.nonPauseScene = false;
 
         //カメラアニメーション準備
         GameObject target = GameObject.FindGameObjectWithTag("RawCamera");
