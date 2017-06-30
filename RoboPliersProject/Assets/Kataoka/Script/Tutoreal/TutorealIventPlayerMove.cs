@@ -172,12 +172,14 @@ public class TutorealIventPlayerMove : MonoBehaviour
             mNowInputDir = mInputDir;
         }
 
-
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
+        
         if (mInputFlags[InputDir.INPUT_BACK] &&
             mInputFlags[InputDir.INPUT_FRONT] &&
             mInputFlags[InputDir.INPUT_LEFT] &&
             mInputFlags[InputDir.INPUT_RIGHT])
         {
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(false);
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
                 for (int i = 0; m_IventCollisions.Length > i; i++)
@@ -192,6 +194,9 @@ public class TutorealIventPlayerMove : MonoBehaviour
             mPlayerTutoreal.SetIsResetAble(!m_PlayerClerArmReset);
             Destroy(gameObject);
         }
+    }
+    public void SetText(string text)
+    {
 
     }
 }

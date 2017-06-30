@@ -62,11 +62,14 @@ public class TutorealIventCathObject : MonoBehaviour
         mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
         mPlayerTutoreal.SetIsResetAble(!m_PlayerArmReset);
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
 
          if (mArm.GetEnablArmCatchingObject() == null) return;
 
         if (mArm.GetEnablArmCatchingObject()!=null)
         {
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(false);
+
             mPlayerTutoreal.SetIsArmMove(true);
             mPlayerTutoreal.SetIsPlayerAndCameraMove(true);
             //次のイベントテキスト有効化

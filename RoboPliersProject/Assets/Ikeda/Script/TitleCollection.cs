@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TitleCollection : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class TitleCollection : MonoBehaviour
         m_RapidDraw = false;
         m_PressStart = false;
         m_TitleState = TitleState.TitleStart;
+
     }
 
     //タイトルの更新
@@ -91,18 +93,28 @@ public class TitleCollection : MonoBehaviour
         }
     }
 
-    //public void LateUpdate()
-    //{
-    //    //SoundManager l_Sound = GetComponent<SoundManager>();
+    private IEnumerator IsPlayerCheck()
+    {
+        while (true)
+        {
+            if (GameObject.FindGameObjectWithTag("Player") != null)
+            {
+                break;
+            }
+            yield return null;
+        }
+        if (!m_One)
+        {
+            SoundManager.Instance.PlayBgm("Monday1");
+            m_One = true;
+        }
+    }
 
-    //    //if (l_Sound == null) return;
 
-    //    //if (!m_One)
-    //    //{
-    //    //    SoundManager.Instance.PlayBgm("Monday1");
-    //    //    m_One = true;
-    //    //}
-    //}
+    public void LateUpdate()
+    {
+        StartCoroutine(IsPlayerCheck());
+    }
 
 
 

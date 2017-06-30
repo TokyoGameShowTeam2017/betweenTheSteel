@@ -254,11 +254,12 @@ public class MenuCollection : MonoBehaviour
         switch (m_MenuNum)
         {
             case 0:
-                if ((InputWrap() || Input.GetKeyDown(KeyCode.Space)) && m_State != MenuState.GameStart)
+                if ((InputWrap() && m_State != MenuState.GameStart))
                 {
                     m_State = MenuState.GameStart;
                     m_Scale = GameObject.Find("startgame").transform.localScale;
                     SoundManager.Instance.StopBgm();
+                    SoundManager.Instance.PlayBgm("03-Wednesday");
                     SoundManager.Instance.PlaySe("enter");
                 }
                 if (m_State == MenuState.GameStart)
@@ -273,6 +274,8 @@ public class MenuCollection : MonoBehaviour
 
                     GameObject.Find("startgame").transform.localScale = new Vector3(m_Scale.x, m_Scale.y, m_Scale.z);
                     GameObject.Find("Canvas menu(Clone)").GetComponent<CanvasGroup>().alpha = m_ChoiceLowerAlpha;
+
+                    GameObject.Find("CommonCanvas").GetComponent<CanvasGroup>().alpha = m_ChoiceLowerAlpha;
 
                     GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().StartFirstScene();
                 }
