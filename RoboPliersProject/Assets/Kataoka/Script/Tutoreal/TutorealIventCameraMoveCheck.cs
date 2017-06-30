@@ -126,10 +126,10 @@ public class TutorealIventCameraMoveCheck : MonoBehaviour {
             else mInputDir = InputDir.INPUT_FRONT;
         }
 
-        if (inputVec.x >= 1.0f) mInputDir = InputDir.INPUT_RIGHT;
-        if (inputVec.x <= -1.0f) mInputDir = InputDir.INPUT_LEFT;
-        if (inputVec.y >= 1.0f) mInputDir = InputDir.INPUT_FRONT;
-        if (inputVec.y <= -1.0f) mInputDir = InputDir.INPUT_BACK;
+        if (inputVec.x > 0.0f) mInputDir = InputDir.INPUT_RIGHT;
+        if (inputVec.x < 0.0f) mInputDir = InputDir.INPUT_LEFT;
+        if (inputVec.y > 0.0f) mInputDir = InputDir.INPUT_FRONT;
+        if (inputVec.y < 0.0f) mInputDir = InputDir.INPUT_BACK;
 
         if (mInputDir == InputDir.INPUT_NO)
         {
