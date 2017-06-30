@@ -227,6 +227,10 @@ public class StageSelectMap : MonoBehaviour
 
             yield return null;
         }
+        foreach(var g in SceneLoadInitializer.Instance.usedAreas)
+        {
+            Destroy(g);
+        }
 
         Destroy(GameObject.FindGameObjectWithTag("Player"));
 
