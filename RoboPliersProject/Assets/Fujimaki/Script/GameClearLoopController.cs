@@ -18,6 +18,9 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
     [SerializeField]
     private GameObject sceneLoadDoor;
 
+    [SerializeField]
+    private GameObject caveResultCanvas;
+
     private GameObject drone;
 
 	void Start ()
@@ -52,6 +55,12 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
         doortrriger.Execute(drone);
     }
 
+    private IEnumerator CanvasCount()
+    {
+        yield return new WaitForSeconds(2);
+        Instantiate(caveResultCanvas, Vector3.zero, Quaternion.identity);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Player")
@@ -71,6 +80,7 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
         else
         {
             StartCoroutine(MoveDroneGoalPoint());
+            StartCoroutine(CanvasCount());
         }
     }
 

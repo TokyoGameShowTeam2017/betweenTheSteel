@@ -175,10 +175,12 @@ public class SceneLoadDoor : MonoBehaviour
 
         scanPlane_.SetActive(false);
 
-        GameObject g = Instantiate(resultCanvas, Vector3.zero, Quaternion.identity);
-        yield return new WaitForSeconds(3);
-
-        Destroy(g);
+        if (resultCanvas != null)
+        {
+            GameObject g = Instantiate(resultCanvas, Vector3.zero, Quaternion.identity);
+            yield return new WaitForSeconds(3);
+            Destroy(g);
+        }
 
         StartCoroutine(LoadScene());
     }
