@@ -13,6 +13,12 @@ public class PausepPocessor : MonoBehaviour {
     {
         if (Input.GetButtonDown("XBOXStart"))
         {
+
+            if (SceneLoadInitializer.Instance.nonPauseScene)
+            {
+                return;
+            }
+
             if (pauseController==null)
             {
                 GameObject g = Instantiate(pausePrefab, Vector3.zero, Quaternion.identity);

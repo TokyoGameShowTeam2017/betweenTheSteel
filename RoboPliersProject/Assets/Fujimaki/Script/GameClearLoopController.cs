@@ -22,6 +22,7 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
 
 	void Start ()
     {
+        SceneLoadInitializer.Instance.nonPauseScene = true;
     }
 
     private IEnumerator SafeMode()
