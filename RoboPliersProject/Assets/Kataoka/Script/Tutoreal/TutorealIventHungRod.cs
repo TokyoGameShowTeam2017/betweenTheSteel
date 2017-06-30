@@ -55,9 +55,10 @@ public class TutorealIventHungRod : MonoBehaviour {
         mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutorial.SetIsArmRelease(!m_PlayerArmNoCath);
         mPlayerTutorial.SetIsResetAble(!m_PlayerArmReset);
-
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
         if (m_HungCollision.GetComponent<HungRodCollision>().GetHungFlag())
         {
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(false);
             mPlayerTutorial.SetIsArmMove(!m_PlayerClerArmMove);
             mPlayerTutorial.SetIsPlayerMove(!m_PlayerClerMove);
             mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
