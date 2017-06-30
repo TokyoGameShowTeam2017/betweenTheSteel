@@ -12,6 +12,9 @@ public class RodReSet : MonoBehaviour
     private Quaternion mFirstQuaternion;
     //アームマネージャー
     private ArmManager mArm;
+
+    //時間
+    private float mCollisionTime;
     // Use this for initialization
     void Start()
     {
@@ -29,6 +32,8 @@ public class RodReSet : MonoBehaviour
         mFirstQuaternion = transform.rotation;
 
         mArm = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
+
+        mCollisionTime = 0.0f;
     }
 
     // Update is called once per frame
@@ -47,12 +52,19 @@ public class RodReSet : MonoBehaviour
                 i.GetComponent<ObjectCollision>().GetCollisionFlag()) ||
                 i.transform.position.y <= -50.0f)
             {
-                transform.position = mFirstPosition;
-                transform.rotation = mFirstQuaternion;
-                GetComponent<Rigidbody>().velocity = Vector3.zero;
+                mCollisionTime += Time.deltaTime;
                 break;
             }
         }
+
+        if (mCollisionTime >= 3.0f)
+        {
+            transform.position = mFirstPosition;
+            transform.rotation = mFirstQuaternion;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            mCollisionTime = 0.0f;
+        }
+
         //初期化
         foreach (var i in mCollisions)
         {
