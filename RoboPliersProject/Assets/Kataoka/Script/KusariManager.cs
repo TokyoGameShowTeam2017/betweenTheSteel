@@ -84,6 +84,7 @@ public class KusariManager : MonoBehaviour
                 {
                     mKusaris.Remove(mKusaris[mKusaris.Count - 1]);
                 }
+                m_PrefabTekkyu.GetComponent<Rigidbody>().AddForce(0.0f, -5.0f, 0.0f);
             }
             count++;
         }
