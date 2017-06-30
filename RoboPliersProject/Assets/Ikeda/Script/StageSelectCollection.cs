@@ -17,6 +17,7 @@ public class StageSelectCollection : MonoBehaviour
     private float m_Alpha;
     private float m_Timer;
     private bool m_Once;
+    private bool m_IsStart = false;
     private float m_FeadOutRate;
     private StickState m_StickState;
     // Use this for initialization
@@ -28,6 +29,7 @@ public class StageSelectCollection : MonoBehaviour
         m_Once = false;
         m_IsLoad = false;
         m_BackMenu = false;
+        m_IsStart = false;
         m_StageNum = 1;
         m_StickState = StickState.None;
         GameObject.Find("sideFrame").GetComponent<MenuFrame>().InitializeSpreadRate();
@@ -36,8 +38,11 @@ public class StageSelectCollection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //選択中のインプット
-        StageSelectInput();
+        if (!m_IsStart)
+        {
+            //選択中のインプット
+            StageSelectInput();
+        }
         //Aボタンで戻る
         if (Input.GetButtonDown("XBOXArm3") && !m_BackMenu)
         {
@@ -283,9 +288,27 @@ public class StageSelectCollection : MonoBehaviour
         if (m_StageNum == 20) return;
         if (InputWrap())
         {
-            SoundManager.Instance.StopBgm();
+            m_IsStart = true;
+            if (m_StageNum == 1)
+            {
+                SoundManager.Instance.StopBgm();
+                SoundManager.Instance.PlayBgm("03-Wednesday");
+            }
+            else
+            {
+                SoundManager.Instance.StopBgm();
+            }
             SoundManager.Instance.PlaySe("enter");
             GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().StartOtherScene(m_StageNum);
+        }
+        if (m_IsStart)
+        {
+            m_Alpha -= 0.1f * Time.deltaTime * 60;
+            m_FeadOutRate -= 0.03f * Time.deltaTime * 60;
+            GameObject.Find("Stages").GetComponent<CanvasGroup>().alpha = m_Alpha;
+            GameObject.Find("selectstageback").GetComponent<CanvasGroup>().alpha = m_Alpha;
+            GameObject.Find("backback").transform.localPosition = Vector3.Lerp(new Vector3(-350, -260, 0), new Vector3(-350, -196, 0), m_FeadOutRate);
+            GameObject.Find("CommonCanvas").GetComponent<CanvasGroup>().alpha = m_Alpha;
         }
     }
 
