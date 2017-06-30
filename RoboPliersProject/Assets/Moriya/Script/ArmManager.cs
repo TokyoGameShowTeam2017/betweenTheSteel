@@ -252,8 +252,9 @@ public class ArmManager : MonoBehaviour
     {
         //if (Input.GetKeyDown(KeyCode.V))
         //{
-        //    ResetAll();
-        //    DustBoxClear();
+        //    m_Pliers[m_EnableArmID].ForceCatchRelease();
+        //    //ResetAll();
+        //    //DustBoxClear();
         //}
 
 
@@ -852,12 +853,12 @@ public class ArmManager : MonoBehaviour
 
     /// <summary>
     /// シーン切り替え時に呼ぶ処理
-    /// 持ってるオブジェクトを削除、前までDontDestroyに入っていたものを削除
+    /// 持ってるオブジェクトを離す
     /// </summary>
     public void SceneChangeCalc()
     {
         ResetAll();
-        DustBoxClear();
+        //DustBoxClear();
     }
 
     /// <summary>
