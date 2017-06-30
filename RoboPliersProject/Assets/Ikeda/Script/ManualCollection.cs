@@ -25,6 +25,7 @@ public class ManualCollection : MonoBehaviour
 
     private float m_FeadOutRate;
 
+
     private enum ManualState
     {
         Enter,
@@ -63,7 +64,8 @@ public class ManualCollection : MonoBehaviour
                 break;
 
             case ManualState.InputStart:
-                ManualBackStart();
+                ManualInput();
+                ManualUpDown();
                 break;
 
             case ManualState.FeadOutManual:
@@ -86,15 +88,59 @@ public class ManualCollection : MonoBehaviour
         GameObject.Find("manualback").GetComponent<CanvasGroup>().alpha = m_HigherAlpha;
     }
 
-    private void ManualBackStart()
+    private void ManualInput()
     {
-        GameObject.Find("backManual").transform.localScale = new Vector3(1.15f, 1.15f, 1.15f);
-        GameObject.Find("backManual").GetComponent<RawImage>().color = new Color(0, 1, 1);
+        m_State = GetStick();
 
-        if (InputWrap())
+        switch (m_State)
         {
-            SoundManager.Instance.PlaySe("back");
-            m_ManualState = ManualState.FeadOutManual;
+            case StickState.Up:
+                if (!m_Once)
+                {
+                    m_Once = true;
+                    if (m_ManualNum == 0)
+                    {
+                        m_ManualNum = 1;
+                    }
+                    else
+                    m_ManualNum = 0;
+                }
+                break;
+            case StickState.Down:
+                if (!m_Once)
+                {
+                    m_Once = true;
+                    if (m_ManualNum == 1)
+                    {
+                        m_ManualNum = 0;
+                    }
+                    else
+                    m_ManualNum = 1;
+                }
+                break;
+
+            default:
+                m_Once = false;
+                break;
+        }
+    }
+
+    private void ManualUpDown()
+    {
+        if (m_ManualNum == 0)
+        {
+            GameObject.Find("backManual").transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            GameObject.Find("backManual").GetComponent<RawImage>().color = new Color(1, 1, 1);
+        }
+        else if (m_ManualNum == 1)
+        {
+            GameObject.Find("backManual").transform.localScale = new Vector3(1.15f, 1.15f, 1.15f);
+            GameObject.Find("backManual").GetComponent<RawImage>().color = new Color(0, 1, 1);
+            if (InputWrap())
+            {
+                SoundManager.Instance.PlaySe("back");
+                m_ManualState = ManualState.FeadOutManual;
+            }
         }
     }
 
@@ -131,4 +177,34 @@ public class ManualCollection : MonoBehaviour
 
         return false;
     }
+
+    public static Vector2 GetMove()
+    {
+        float h = Input.GetAxis("XBOXLeftStickH");
+        float v = Input.GetAxis("XBOXLeftStickV");
+
+        Vector2 vec = new Vector2(h, v);
+        if (vec.magnitude <= 0.0f)
+        {
+            h = Input.GetAxis("XBOXLeftStickH");
+            v = Input.GetAxis("XBOXLeftStickV");
+            vec = new Vector2(h, v);
+        }
+
+        return vec;
+    }
+
+    public static StickState GetStick()
+    {
+        float vecX = GetMove().x;
+        float vecY = GetMove().y;
+
+        if (vecX > 0.3f) return StickState.Right;
+        if (vecX < -0.3f) return StickState.Left;
+        if (vecY > 0.3f) return StickState.Up;
+        if (vecY < -0.3f) return StickState.Down;
+
+        return StickState.None;
+    }
+
 }
