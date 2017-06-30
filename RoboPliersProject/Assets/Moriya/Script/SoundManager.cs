@@ -254,18 +254,21 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
 
     
     //一部のSeを止める
-    //public void StopSe(string stopname)
-    //{
-    //    foreach (AudioSource source in seSources)
-    //    {
-    //        //AudioClipの名前を拾ってこれない・・・
-    //        if (source.clip.name == stopname)
-    //        {
-    //            source.Stop();
-    //            source.clip = null;
-    //        }
-    //    }
-    //}
+    public void StopSeByName(string stopname)
+    {
+        foreach (AudioSource source in seSources)
+        {
+            //AudioClipの名前を拾ってこれない・・・
+            if (source.clip != null)
+            {
+                if (source.clip.name == stopname)
+                {
+                    source.Stop();
+                    source.clip = null;
+                }
+            }
+        }    
+    }
 
     //すべてのLoopSeを止める
     public void StopLoopSe()
