@@ -27,28 +27,18 @@ public class ObjectSnapInto : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int count = 0;
         foreach (var i in m_Collision)
         {
             if (i.GetComponent<ObjectCollision>().GetCollisionFlag()&&
                 mArm.GetEnablArmCatchingObject()==null||
                 i.transform.position.y<=-50.0f)
             {
-                mCollisionTime += Time.deltaTime;
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
+                transform.position = mPosition;
+                transform.rotation = mQuaternion;
                 break;
             }
-            if (m_Collision.Length - 1 == count)
-                mCollisionTime = 0.0f;
-            count++;
         }
-        if (mCollisionTime >= 3.0f)
-        {
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.position = mPosition;
-            transform.rotation = mQuaternion;
-            mCollisionTime = 0.0f;
-        }
-
         //初期化
         foreach (var i in m_Collision)
         {

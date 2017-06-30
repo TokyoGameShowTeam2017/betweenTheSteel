@@ -52,17 +52,11 @@ public class RodReSet : MonoBehaviour
                 i.GetComponent<ObjectCollision>().GetCollisionFlag()) ||
                 i.transform.position.y <= -50.0f)
             {
-                mCollisionTime += Time.deltaTime;
+                transform.position = mFirstPosition;
+                transform.rotation = mFirstQuaternion;
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
                 break;
             }
-        }
-
-        if (mCollisionTime >= 3.0f)
-        {
-            transform.position = mFirstPosition;
-            transform.rotation = mFirstQuaternion;
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
-            mCollisionTime = 0.0f;
         }
 
         //初期化
