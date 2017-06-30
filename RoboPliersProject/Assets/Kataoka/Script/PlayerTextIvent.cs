@@ -39,6 +39,9 @@ public class PlayerTextIvent : MonoBehaviour
     public bool m_PlayerArmEnable3;
     [SerializeField, Tooltip("プレイヤーアーム3")]
     public bool m_PlayerArmEnable4;
+
+    public GameObject mSwitch;
+
     private GameObject mPointObject;
     //プレイヤーテキスト
     private TutorealText mTutorealText;
@@ -92,6 +95,8 @@ public class PlayerTextIvent : MonoBehaviour
 
             if (m_IventPrefab != null)
                 m_IventPrefab.GetComponent<TutorealIventFlag>().PlayIvent();
+
+            if (mSwitch != null) mSwitch.GetComponent<TutorealIventSwitch>().IsCollision(true);
             Destroy(gameObject);
         }
     }
