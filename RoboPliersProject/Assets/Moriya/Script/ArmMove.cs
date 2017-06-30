@@ -378,6 +378,18 @@ public class ArmMove : MonoBehaviour
                 //伸び縮みできない状態解除中かつ、他のアームが掴んでいなければ伸ばす
                 if (!m_IsStretchKeep && m_ArmManager.GetCountCatchingObjects() <= 1)
                 {
+                    //後方にレイを飛ばして、ヒットしている場合はアームを短くする
+                    Transform pli = m_ArmManager.GetEnablPliers().transform;
+                    Vector3 dir = -pli.forward;
+                    Ray ray = new Ray(pli.position, dir);
+                    int mask = LayerMask.NameToLayer("ArmAndPliers");
+                    RaycastHit hit;
+                    bool iswallhit = Physics.Raycast(ray, out hit, 5.0f, mask);
+                    if (iswallhit)
+                    {
+                        m_ArmLengthTargetValue = 0.0f;
+                    }
+
                     //print("called");
                     Stretch();
                 }
