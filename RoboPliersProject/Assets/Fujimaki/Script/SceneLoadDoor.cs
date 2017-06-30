@@ -136,6 +136,7 @@ public class SceneLoadDoor : MonoBehaviour
         //yield return SceneManager.LoadSceneAsync(nextSceneName_, LoadSceneMode.Additive);
         yield return SceneManager.LoadSceneAsync(nextSceneName_);
         //GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>().SceneChange();
+        GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>().SceneChangeCalc();
 
         if (endFrag_)
         {
