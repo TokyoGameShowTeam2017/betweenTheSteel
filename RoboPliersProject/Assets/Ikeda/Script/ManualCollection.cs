@@ -108,6 +108,7 @@ public class ManualCollection : MonoBehaviour
                 if (!m_Once)
                 {
                     m_Once = true;
+                    SoundManager.Instance.PlaySe("select");
                     if (m_ManualNum == 0)
                     {
                         m_ManualNum = 1;
@@ -120,6 +121,7 @@ public class ManualCollection : MonoBehaviour
                 if (!m_Once)
                 {
                     m_Once = true;
+                    SoundManager.Instance.PlaySe("select");
                     if (m_ManualNum == 1)
                     {
                         m_ManualNum = 0;

@@ -49,6 +49,7 @@ public class ManualController : MonoBehaviour {
         {
             input = true;
             selectNum++;
+            SoundManager.Instance.PlaySe("select");
             if (selectNum > images.Length-1)
             {
                 selectNum = 0;
@@ -61,6 +62,7 @@ public class ManualController : MonoBehaviour {
         {
             input = true;
             selectNum--;
+            SoundManager.Instance.PlaySe("select");
             if (selectNum <0)
             {
                 selectNum = images.Length - 1;
