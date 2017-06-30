@@ -18,6 +18,7 @@ public class ManualCollection : MonoBehaviour
 
     private StickState m_State;
     private bool m_Once;
+    private bool m_IsEnd;
 
     private float m_Rate;
 
@@ -44,6 +45,7 @@ public class ManualCollection : MonoBehaviour
     {
         m_Rate = 0.0f;
         m_Once = false;
+        m_IsEnd = false;
         m_ManualNum = 0;
         m_HigherAlpha = 0.0f;
         m_FeadOutRate = 1.0f;
@@ -135,6 +137,13 @@ public class ManualCollection : MonoBehaviour
 
     private void ManualUpDown()
     {
+        //Aボタンで戻る
+        if (Input.GetButtonDown("XBOXArm3") && !m_IsEnd)
+        {
+            m_IsEnd = true;
+            m_ManualNum = 1;
+        }
+
         if (m_ManualNum == 0)
         {
             GameObject.Find("backManual").transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
@@ -144,7 +153,7 @@ public class ManualCollection : MonoBehaviour
         {
             GameObject.Find("backManual").transform.localScale = new Vector3(1.15f, 1.15f, 1.15f);
             GameObject.Find("backManual").GetComponent<RawImage>().color = new Color(0, 1, 1);
-            if (InputWrap())
+            if (InputWrap() || m_IsEnd)
             {
                 SoundManager.Instance.PlaySe("back");
                 if (m_ManualCanvasInstace != null)
