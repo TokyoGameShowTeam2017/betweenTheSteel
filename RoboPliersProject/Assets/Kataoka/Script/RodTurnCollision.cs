@@ -159,18 +159,18 @@ public class RodTurnCollision : MonoBehaviour
         if (mArm.GetEnablArmCatchingObject().GetComponent<CatchObject>().catchType ==
             CatchObject.CatchType.Dynamic)
         {
-            for (int i = 0; i <= 3; i++)
-            {
-                if (mArm.GetEnablPliers() == mArm.GetPliers(i)) continue;
-                GameObject mainRod = mArm.GetPliersCatchRod(i);
-                GameObject mainRod2 = mArm.GetEnablePliersCatchRod();
-                if (mainRod == mainRod2)
-                {
-                    mArm.GetEnablArmCatchingObject().GetComponent<RodTurnBone>().
-                  RotateAxisVelo(mArm.GetEnablArm().transform.forward,
-                  mArm.GetEnablePliersRollValue());
-                }
-            }
+            //for (int i = 0; i <= 3; i++)
+            //{
+            //    if (mArm.GetEnablPliers() == mArm.GetPliers(i)) continue;
+            //    GameObject mainRod = mArm.GetPliersCatchRod(i);
+            //    GameObject mainRod2 = mArm.GetEnablePliersCatchRod();
+            //    if (mainRod == mainRod2)
+            //    {
+            //        mArm.GetEnablArmCatchingObject().GetComponent<RodTurnBone>().
+            //      RotateAxisVelo(mArm.GetEnablArm().transform.forward,
+            //      mArm.GetEnablePliersRollValue());
+            //    }
+            //}
         }
         else
         {
