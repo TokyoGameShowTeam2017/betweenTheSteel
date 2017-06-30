@@ -298,6 +298,7 @@ public class StageSelectCollection : MonoBehaviour
             else GameObject.Find("sideFrame").GetComponent<MenuFrame>().BackFrame();
         }
     }
+
     //private void SoundChange()
     //{
       
