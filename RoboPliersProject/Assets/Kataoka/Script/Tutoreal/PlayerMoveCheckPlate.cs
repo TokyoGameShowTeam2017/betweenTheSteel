@@ -27,9 +27,9 @@ public class PlayerMoveCheckPlate : MonoBehaviour
             GetComponent<MeshRenderer>().materials[0].SetColor("_TintColor", new Color(1.0f, 0.0f, 0.0f, Mathf.Lerp(1.0f, 0.0f, mCount)));
             transform.localScale =
                 new Vector3(
-                    Mathf.Lerp(mStartScale.x, mStartScale.x + 0.3f, mCount),
-                    Mathf.Lerp(mStartScale.y, mStartScale.y + 0.3f, mCount),
-                    Mathf.Lerp(mStartScale.z, mStartScale.z + 0.3f, mCount));
+                    Mathf.Lerp(mStartScale.x, mStartScale.x + 0.1f, mCount),
+                    Mathf.Lerp(mStartScale.y, mStartScale.y + 0.1f, mCount),
+                    Mathf.Lerp(mStartScale.z, mStartScale.z + 0.1f, mCount));
         }
         else
         {

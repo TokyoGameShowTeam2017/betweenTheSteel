@@ -26,8 +26,8 @@ public class PlayerCameraMoveCheckUi : MonoBehaviour
             GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, Mathf.Lerp(1.0f, 0.0f, mCount));
             GetComponent<RectTransform>().localScale =
                 new Vector3(
-                    Mathf.Lerp(mStartScale.x, mStartScale.x + 0.1f, mCount),
-                    Mathf.Lerp(mStartScale.y, mStartScale.y + 0.1f, mCount), 0.0f);
+                    Mathf.Lerp(mStartScale.x, mStartScale.x + 0.3f, mCount),
+                    Mathf.Lerp(mStartScale.y, mStartScale.y + 0.3f, mCount), 0.0f);
         }
         else
         {
