@@ -26,18 +26,13 @@ public class ManualController : MonoBehaviour {
     void Start ()
     {
         selectNum = 0;
-        StartCoroutine(InputCount());
-	}
+        renderImage.texture = images[selectNum];
+        StartCoroutine(Fade(true));
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-
-        if (!enableInput)
-        {
-            return;
-        }
-        print(InputManager.GetStick());
         
 
         if ((InputManager.GetStick() != StickState.Left) && (InputManager.GetStick() != StickState.Right))
@@ -78,13 +73,6 @@ public class ManualController : MonoBehaviour {
     public void CanvasDestroy()
     {
         StartCoroutine(Fade(false));
-    }
-
-    private IEnumerator InputCount()
-    {
-        yield return new WaitForSeconds(3);
-        enableInput = true;
-        StartCoroutine(Fade(true));
     }
 
     private IEnumerator Fade(bool display)
