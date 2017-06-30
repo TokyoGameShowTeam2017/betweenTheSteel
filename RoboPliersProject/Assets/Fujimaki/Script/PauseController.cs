@@ -63,11 +63,16 @@ public class PauseController : MonoBehaviour
                     StartCoroutine(FadeGroup(false));
                     break;
                 case 1:
-                                        StartCoroutine(LoadScene("Title"));
+                    StartCoroutine(LoadScene("Title"));
                     break;
                 case 2:
                     break;
             }
+        }
+
+        if (Input.GetButtonDown("XBOXStart"))
+        {
+            StartCoroutine(FadeGroup(false));
         }
 
         if ((InputManager.GetStick() != StickState.Up) && (InputManager.GetStick() != StickState.Down))

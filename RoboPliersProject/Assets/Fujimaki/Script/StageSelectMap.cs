@@ -49,7 +49,11 @@ public class StageSelectMap : MonoBehaviour
 
     private void Start()
     {
+        Cursor.visible = false;
+
         SceneLoadInitializer.Instance.continueScene = false;
+        SceneLoadInitializer.Instance.nonPauseScene = true;
+
         exit = true;
         StartCoroutine(BackGroundLoad());
 
@@ -254,6 +258,7 @@ public class StageSelectMap : MonoBehaviour
     private IEnumerator StartScene(int num, GameObject startObj)
     {
         float time = 0;
+        SceneLoadInitializer.Instance.nonPauseScene = false;
 
         //カメラアニメーション準備
         GameObject target = GameObject.FindGameObjectWithTag("RawCamera");
