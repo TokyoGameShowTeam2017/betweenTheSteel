@@ -68,7 +68,7 @@ public class TutorealText : MonoBehaviour
             //テキストの改行数を取得
             int returnCount=m_Text[mTextCreenCount].Count(c=>c=='\n')+1;
             //行数によって変える
-            mResY = -300.0f + (30.0f*(returnCount-1));
+            mResY = -300.0f + (34.0f*(returnCount-1));
             //mResY = 
             mDrawTextTime += Time.deltaTime;
             mPlayTextTime += Time.deltaTime;
