@@ -49,8 +49,11 @@ public class StageSelectMap : MonoBehaviour
 
     private void Start()
     {
+        Cursor.visible = false;
+
         SceneLoadInitializer.Instance.continueScene = false;
         SceneLoadInitializer.Instance.nonPauseScene = true;
+
         exit = true;
         StartCoroutine(BackGroundLoad());
 
