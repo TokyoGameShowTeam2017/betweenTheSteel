@@ -18,18 +18,7 @@ public class RodReSet : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Transform[] trans;
-        trans = transform.GetComponentsInChildren<Transform>();
-        mCollisions = new List<GameObject>();
-        foreach (var i in trans)
-        {
-            if (i.name == "SnapIntoCollision")
-            {
-                mCollisions.Add(i.gameObject);
-            }
-        }
-        mFirstPosition = transform.position;
-        mFirstQuaternion = transform.rotation;
+        SetChild();
 
         mArm = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
 
@@ -65,5 +54,21 @@ public class RodReSet : MonoBehaviour
             if (i == null) continue;
             i.GetComponent<ObjectCollision>().IsFlagFalse();
         }
+    }
+
+    public void SetChild()
+    {
+        Transform[] trans;
+        trans = transform.GetComponentsInChildren<Transform>();
+        mCollisions = new List<GameObject>();
+        foreach (var i in trans)
+        {
+            if (i.name == "SnapIntoCollision")
+            {
+                mCollisions.Add(i.gameObject);
+            }
+        }
+        mFirstPosition = transform.position;
+        mFirstQuaternion = transform.rotation;
     }
 }

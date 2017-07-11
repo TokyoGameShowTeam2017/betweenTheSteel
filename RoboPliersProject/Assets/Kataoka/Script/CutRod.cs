@@ -48,8 +48,8 @@ public class CutRod : MonoBehaviour
             //壊れたら
             if (m_Bones[i].GetComponent<CutRodCollision>().m_isBreak)
             {
-                //端は切れない（変える）
-                if (i == m_Bones.Count - 1) return;
+                ////端は切れない（変える）
+                //if (i == m_Bones.Count - 1) return;
                 //切れたよ
                 mIsCutFlag = true;
                 //親情報を初期化
@@ -57,8 +57,18 @@ public class CutRod : MonoBehaviour
                 //新しいオブジェクト生成
                 GameObject prefab = Instantiate(mGravityPrefab);
                 prefab.transform.position = m_RotatePoints[i + 1].transform.position;
-                //子を設定
+
+                bool leftPoint = false;
+                if (GetComponent<Rod>().GetStartPoint() == Rod.StartPoint.LEFT_POINT)
+                {
+                    GetComponent<Rod>().SetRotatePoint(Rod.StartPoint.RIGHT_POINT);
+                    leftPoint = true;
+                }
+
+
                 m_RotatePoints[i + 1].transform.parent = prefab.transform;
+
+
 
                 //メッシュ削除＆アウトライン
                 Destroy(m_Bones[i + 1].transform.parent.gameObject.GetComponent<cakeslice.Outline>());
@@ -89,12 +99,12 @@ public class CutRod : MonoBehaviour
                 if (m_StartRodFlag)
                 {
                     //両端固定だったら生成される一回目のオブジェクトは固定＆回転ポイントが変わる
-                    if (m_FixBothEnds&&!mIsSpawnPrefab)
+                    if (m_FixBothEnds && !mIsSpawnPrefab)
                     {
                         prefab.GetComponent<Rod>().SetRotatePoint(Rod.StartPoint.LEFT_POINT);
                         prefab.GetComponent<Rod>().SetCatchType(CatchObject.CatchType.Static);
                         prefab.GetComponent<CutRod>().m_FixBothEnds = m_FixBothEnds;
-                        
+
                     }
                     //それ以外は非固定
                     else
@@ -126,7 +136,10 @@ public class CutRod : MonoBehaviour
                 prefab.GetComponent<ObjectParameter>().m_Life = GetComponent<ObjectParameter>().m_Life;
                 //prefab.GetComponent<ObjectParameter>().m_BoneMass = GetComponent<ObjectParameter>().m_BoneMass;
                 prefab.GetComponent<ObjectParameter>().SetRodParameter();
-
+                //prefab.GetComponent<RodReSet>().SetChild();
+                GetComponent<RodReSet>().SetChild();
+                if (leftPoint)
+                    GetComponent<Rod>().SetRotatePoint(Rod.StartPoint.LEFT_POINT);
                 //一回生成された
                 mIsSpawnPrefab = true;
             }
