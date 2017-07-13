@@ -4,14 +4,27 @@ using UnityEngine;
 
 public class PlayerTextIvent : MonoBehaviour
 {
+    public enum EventController
+    {
+        NO_BUTTON,
+        RT,
+        RB,
+        //LT,
+        //LB,
+        L_STICK,
+        R_STICK,
+        L_STICK_TRIGGER,
+        R_STICK_TRIGGER
+    }
     [SerializeField, Tooltip("声")]
     public AudioClip[] m_Voice;
     [SerializeField, Tooltip("流すテキスト"), TextArea(1, 20)]
     public string[] m_Text;
-    [SerializeField, Tooltip("イベント中のテキスト")]
-    public string m_EventText;
+    [SerializeField, Tooltip("表示させるコントローラーのボタン")]
+    public EventController m_ControllerButton;
     [SerializeField, Tooltip("イベントプレハブ")]
     public GameObject m_IventPrefab;
+
 
     [SerializeField, Tooltip("表示させたいPointオブジェクト"), Space(15)]
     public GameObject m_DrawPointObject;
@@ -90,8 +103,7 @@ public class PlayerTextIvent : MonoBehaviour
             mPlayerTurorial.SetIsArmCatchAble(!m_PlayerArmCath);
             mPlayerTurorial.SetIsArmRelease(!m_PlayerArmNoCath);
 
-            if (GameObject.FindGameObjectWithTag("TutorialEventText")!=null)
-            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetEventText(m_EventText);
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetController(m_ControllerButton);
 
             if (m_IventPrefab != null)
                 m_IventPrefab.GetComponent<TutorealIventFlag>().PlayIvent();
