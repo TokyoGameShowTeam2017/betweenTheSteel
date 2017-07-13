@@ -208,7 +208,13 @@ public class ArmManager : MonoBehaviour
         //何らかのアームが動かないオブジェクトを掴んでいる時
         if (GetCountCatchingObjects() > 0)
         {
-
+            if (InputManager.GetMove().magnitude <= 0.0f)
+            {
+                Quaternion r = m_Base.rotation;
+                Quaternion target = Quaternion.Euler(new Vector3(0.0f, -90.0f * m_EnableArmID + m_RotateY, 0.0f));
+                //m_Base.rotation = target;
+                m_Base.rotation = Quaternion.Slerp(r, target, m_RotationLerpValue);
+            }
         }
         //通常時
         else
@@ -243,7 +249,7 @@ public class ArmManager : MonoBehaviour
             //アームとペンチのリセット
             ResetOther(m_EnableArmID);
             //ベースを正面に向ける
-            m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
+            BaseLookCameraFront();
         }
     }
 
@@ -878,6 +884,11 @@ public class ArmManager : MonoBehaviour
         StartCoroutine(EndToStartUIMove());
     }
 
+
+    public void BaseLookCameraFront()
+    {
+        m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
+    }
 
     IEnumerator StartToEndUIMove()
     {

@@ -803,6 +803,12 @@ public class PlayerMove : MonoBehaviour
             //回転計算
             tr.eulerAngles += euler - m_PrevRotYEuler;
             m_PrevRotYEuler = euler;
+
+            //Vector3 e = GameObject.Find("PlayerCamera").transform.eulerAngles;
+            //e.x = e.z = 0.0f;
+            //tr.eulerAngles = e;
+            //m_ArmManager.BaseLookCameraFront();
+
         }
         //右スティックの場合
         else
@@ -822,8 +828,6 @@ public class PlayerMove : MonoBehaviour
             }
             m_PrevRotYEuler = euler;
         }
-
-
 
         //水平回転
         roty.localEulerAngles += new Vector3(0.0f, h, 0.0f);
