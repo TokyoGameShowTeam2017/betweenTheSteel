@@ -103,6 +103,7 @@ public class PlayerTextIvent : MonoBehaviour
             mPlayerTurorial.SetIsArmCatchAble(!m_PlayerArmCath);
             mPlayerTurorial.SetIsArmRelease(!m_PlayerArmNoCath);
 
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(false);
             GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetController(m_ControllerButton);
 
             if (m_IventPrefab != null)
