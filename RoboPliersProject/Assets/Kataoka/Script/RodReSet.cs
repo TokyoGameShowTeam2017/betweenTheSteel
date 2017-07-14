@@ -12,7 +12,7 @@ public class RodReSet : MonoBehaviour
     private Quaternion mFirstQuaternion;
     //アームマネージャー
     private ArmManager mArm;
-
+    public GameObject m_ResetParticle;
     //時間
     private float mCollisionTime;
     // Use this for initialization
@@ -29,25 +29,31 @@ public class RodReSet : MonoBehaviour
     void Update()
     {
         //スタティックだったらリターン
-        if (GetComponent<Rod>().GetCatchType() == CatchObject.CatchType.Static) return;
-        foreach (var i in mCollisions)
+        if (GetComponent<Rod>().GetCatchType() != CatchObject.CatchType.Static)
         {
-            if (i == null) continue;
-            if (mArm.GetPliersCatchRod(0) == gameObject||
-                mArm.GetPliersCatchRod(1) == gameObject||
-                mArm.GetPliersCatchRod(2) == gameObject||
-                mArm.GetPliersCatchRod(3) == gameObject) return;
-            if ((mArm.GetEnablArmCatchingObject() == null &&
-                i.GetComponent<ObjectCollision>().GetCollisionFlag()) ||
-                i.transform.position.y <= -50.0f)
+            foreach (var i in mCollisions)
             {
-                transform.position = mFirstPosition;
-                transform.rotation = mFirstQuaternion;
-                GetComponent<Rigidbody>().velocity = Vector3.zero;
-                break;
+                if (i == null) continue;
+                if (mArm.GetPliersCatchRod(0) == gameObject ||
+                    mArm.GetPliersCatchRod(1) == gameObject ||
+                    mArm.GetPliersCatchRod(2) == gameObject ||
+                    mArm.GetPliersCatchRod(3) == gameObject) break;
+
+
+                bool aaa = i.GetComponent<ObjectCollision>().GetCollisionFlag();
+                if ((mArm.GetEnablArmCatchingObject() == null &&
+                    i.GetComponent<ObjectCollision>().GetCollisionFlag()) ||
+                    i.transform.position.y <= -50.0f)
+                {
+                    transform.position = mFirstPosition;
+                    transform.rotation = mFirstQuaternion;
+                    GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+                    Instantiate(m_ResetParticle, mArm.GetEnablPliersMove().transform.position, Quaternion.Euler(0, 0, 0));
+                    break;
+                }
             }
         }
-
         //初期化
         foreach (var i in mCollisions)
         {

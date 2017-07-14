@@ -93,7 +93,7 @@ public class TutorealIventPlayerMove : MonoBehaviour
         if (!GetComponent<TutorealIventFlag>().GetIventFlag() ||
         mText.GetDrawTextFlag()) return;
 
-        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(true);
 
 
         mMoveCheckTrans.gameObject.SetActive(true);
@@ -183,7 +183,7 @@ public class TutorealIventPlayerMove : MonoBehaviour
             mInputFlags[InputDir.INPUT_LEFT] &&
             mInputFlags[InputDir.INPUT_RIGHT])
         {
-            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(false);
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(false);
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
                 for (int i = 0; m_IventCollisions.Length > i; i++)

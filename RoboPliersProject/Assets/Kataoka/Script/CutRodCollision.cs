@@ -18,6 +18,7 @@ public class CutRodCollision : MonoBehaviour
     void Start()
     {
         m_StartLife = m_Life;
+        if (GetComponent<RodTurnBone>()!=null)
         m_Rod = GetComponent<RodTurnBone>().GetRod();
     }
 
@@ -47,7 +48,10 @@ public class CutRodCollision : MonoBehaviour
     /// </summary>
     public bool Damage(float pliersPower)
     {
-        if (m_Rod.GetComponent<Rod>().GetHongFlag()) return false;
+        if (m_Rod.GetComponent<Rod>() != null)
+        {
+            if (m_Rod.GetComponent<Rod>().GetHongFlag()) return false;
+        }
         float damage = pliersPower - m_Strength;
         damage = Mathf.Clamp(damage, 0.0f, 10.0f);
         if (damage <= 0) return false;
@@ -71,8 +75,10 @@ public class CutRodCollision : MonoBehaviour
     /// </summary>
     public float DamageAndGetLife(float pliersPower)
     {
-        if (m_Rod.GetComponent<Rod>().GetHongFlag()) return m_StartLife;
-
+        if (m_Rod.GetComponent<Rod>() != null)
+        {
+            if (m_Rod.GetComponent<Rod>().GetHongFlag()) return m_StartLife;
+        }
         float damage = pliersPower - m_Strength;
         damage = Mathf.Clamp(damage, 0.0f, 10.0f);
         if (damage <= 0) return m_Life;
