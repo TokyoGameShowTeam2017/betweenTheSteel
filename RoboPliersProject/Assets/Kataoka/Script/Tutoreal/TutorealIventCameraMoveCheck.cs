@@ -42,11 +42,6 @@ public class TutorealIventCameraMoveCheck : MonoBehaviour {
     public bool m_PlayerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerArmReset;
-    struct PlateState
-    {
-        GameObject plate;
-        float colorRed;
-    }
 
     enum InputDir
     {
@@ -56,15 +51,16 @@ public class TutorealIventCameraMoveCheck : MonoBehaviour {
         INPUT_BACK,
         INPUT_NO
     }
+    //どのInputが押されているか
     private InputDir mInputDir;
     private InputDir mNowInputDir;
+    //押されている時間
     private float mInputTime;
     // Use this for initialization
     void Start()
     {
         mText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
         mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
-
         mPlayerCamera = GameObject.FindGameObjectWithTag("RawCamera").gameObject;
 
         mInputTime = 0.0f;
@@ -91,7 +87,6 @@ public class TutorealIventCameraMoveCheck : MonoBehaviour {
     {
         if (!GetComponent<TutorealIventFlag>().GetIventFlag() ||
         mText.GetDrawTextFlag()) return;
-
         m_UiPrefab.SetActive(true);
         GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(true);
         mPlayerTutoreal.SetIsArmMove(!m_PlayerArmMove);
@@ -125,7 +120,7 @@ public class TutorealIventCameraMoveCheck : MonoBehaviour {
             if (absVec.x > absVec.y) mInputDir = InputDir.INPUT_RIGHT;
             else mInputDir = InputDir.INPUT_FRONT;
         }
-
+        //真横に押されていたら
         if (inputVec.x > 0.0f) mInputDir = InputDir.INPUT_RIGHT;
         if (inputVec.x < 0.0f) mInputDir = InputDir.INPUT_LEFT;
         if (inputVec.y > 0.0f) mInputDir = InputDir.INPUT_FRONT;
@@ -165,7 +160,7 @@ public class TutorealIventCameraMoveCheck : MonoBehaviour {
 
             mNowInputDir = mInputDir;
         }
-
+        //全てのInputが押されていたら
         if (mInputFlags[InputDir.INPUT_BACK] &&
             mInputFlags[InputDir.INPUT_FRONT] &&
             mInputFlags[InputDir.INPUT_LEFT] &&
