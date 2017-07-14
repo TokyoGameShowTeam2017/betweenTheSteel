@@ -105,7 +105,7 @@ public class PlayerMove : MonoBehaviour
 
     //カプセルに当たった地点
     public Vector3 HitPosition { get; set; }
-
+    public bool IsHit { get; set; }
 
     void Awake()
     {
@@ -114,6 +114,9 @@ public class PlayerMove : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         cc = GetComponent<CharacterController>();
         m_Manager = GetComponent<PlayerManager>();
+
+        HitPosition = Vector3.zero;
+        IsHit = false;
 
     }
 
@@ -157,7 +160,8 @@ public class PlayerMove : MonoBehaviour
                 break;
         }
 
-
+        if (tr.position.y <= -40.0f)
+            tr.position = Vector3.zero;
     }
 
 
@@ -187,6 +191,8 @@ public class PlayerMove : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit col)
     {
+        print("hit!");
+        IsHit = true;
         HitPosition = col.point;
         //押し出す方向を決定
         m_PushVec = tr.position - col.point;
@@ -333,8 +339,8 @@ public class PlayerMove : MonoBehaviour
     private void CatchMove()
     {
         m_GravityMoveValue = 0.0f;
-        //CharacterControllerを使った前後左右移動は行わない
-        m_LastVelocity = Vector3.zero;
+        //CharacterControllerを使った前後左右移動は行わない(あたり判定を行わせるために動かす)
+        m_LastVelocity = new Vector3(0.0f, -0.5f, 0.0f);
 
         //2本以上のアームが動かないオブジェクトを掴んでいるとき
         if (m_ArmManager.GetCountCatchingObjects() >= 2)
@@ -431,6 +437,8 @@ public class PlayerMove : MonoBehaviour
         //CharacterControllerを通して移動する
 
         cc.Move(m_LastVelocity * Time.deltaTime);
+
+        IsHit = false;
     }
 
 
@@ -833,24 +841,65 @@ public class PlayerMove : MonoBehaviour
         roty.localEulerAngles += new Vector3(0.0f, h, 0.0f);
 
         //左右に壁があるなら押し返し
-        if(h != 0.0f)
-        {        
+        //if(h != 0.0f)
+        //{
+        //    if (IsHit)
+        //    {
+        //        //ヒットした地点への方向
+        //        Vector3 dir = Vector3.Normalize(HitPosition - tr.position);
+        //        //左右判定
+        //        float cos = Vector3.Cross(tr.forward, dir).y;
+
+        //        print("cos:" + cos);
+
+        //        if ((h > 0 && cos > 0) ||
+        //            (h < 0 && cos < 0))
+        //        {
+        //            roty.localEulerAngles -= new Vector3(0.0f, h, 0.0f);
+        //            m_CameraMove.Rotation(-h, 0.0f);
+        //            print("called");
+        //        }
+        //    }
+        //}
+
+        //if (h != 0.0f)
+        //{
+        //    Vector3 dir;
+        //    if (h > 0)
+        //        dir = -armtr.right;
+        //    else
+        //        dir = armtr.right;
+
+        //    Ray ray = new Ray(tr.position + tr.up, dir);
+        //    int mask = LayerMask.NameToLayer("ArmAndPliers");
+        //    RaycastHit hit;
+        //    bool iswallhit = Physics.Raycast(ray, out hit, 1.0f, mask);
+        //    if (iswallhit)
+        //    {
+        //        roty.localEulerAngles -= new Vector3(0.0f, h, 0.0f);
+        //        m_CameraMove.Rotation(-h, 0.0f);
+        //    }
+        //}
+
+        if (h != 0.0f)
+        {
             Vector3 dir;
             if (h > 0)
                 dir = -armtr.right;
             else
                 dir = armtr.right;
 
-            Ray ray = new Ray(tr.position + tr.up, dir);
+            Ray ray = new Ray(tr.position - dir, dir);
             int mask = LayerMask.NameToLayer("ArmAndPliers");
             RaycastHit hit;
-            bool iswallhit = Physics.Raycast(ray, out hit, 1.0f, mask);
+            bool iswallhit = Physics.Raycast(ray, out hit, 3.0f, mask);
             if (iswallhit)
             {
                 roty.localEulerAngles -= new Vector3(0.0f, h, 0.0f);
                 m_CameraMove.Rotation(-h, 0.0f);
             }
         }
+
 
 
         //垂直回転

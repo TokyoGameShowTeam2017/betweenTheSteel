@@ -152,21 +152,21 @@ public class ArmManager : MonoBehaviour
         }
         IsResetAble = true;
         StaticCatchingArmAngleMax = m_StaticCatchArmAngleMax;
+
+
+        //元々Start()に書いてた
+
+        //アクティブではないアームのＵＩを半透明に変更
+        NotActiveArmUIStealth();
+        //元々Start()に書いてた
     }
 
     void Start()
     {
+
         //UI移動開始
         StartUIMove();
 
-        //アクティブではないアームのＵＩを変更
-        for (int i = 0; i < 4; i++)
-        {
-            if (!m_TutorialSetting.GetIsActiveArm(i))
-            {
-                SetGaugeUINoActive(i);
-            }
-        }
     }
 
     void Update()
@@ -884,6 +884,20 @@ public class ArmManager : MonoBehaviour
         StartCoroutine(EndToStartUIMove());
     }
 
+    /// <summary>
+    /// アクティブではないアームのＵＩを半透明にする
+    /// </summary>
+    public void NotActiveArmUIStealth()
+    {
+        
+        for (int i = 0; i < 4; i++)
+        {
+            if (!m_TutorialSetting.GetIsActiveArm(i))
+            {
+                SetGaugeUINoActive(i);
+            }
+        }
+    }
 
     public void BaseLookCameraFront()
     {
