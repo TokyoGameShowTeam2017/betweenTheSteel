@@ -46,5 +46,6 @@ public class PlayerCameraMoveCheckUi : MonoBehaviour
     public void IsDead()
     {
         mDeadFlag = true;
+        mCount = 0.0f;
     }
 }

@@ -9,6 +9,7 @@ public class Kusari : MonoBehaviour
     void Start()
     {
         m_IsCollision = false;
+        GetComponent<CatchObject>().SetNoRigidBody(CatchObject.CatchType.Static);
     }
 
     public bool GetIsDead()
