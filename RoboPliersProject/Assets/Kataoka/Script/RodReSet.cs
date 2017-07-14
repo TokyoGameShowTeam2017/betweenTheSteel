@@ -12,7 +12,7 @@ public class RodReSet : MonoBehaviour
     private Quaternion mFirstQuaternion;
     //アームマネージャー
     private ArmManager mArm;
-
+    public GameObject m_ResetParticle;
     //時間
     private float mCollisionTime;
     // Use this for initialization
@@ -48,6 +48,8 @@ public class RodReSet : MonoBehaviour
                     transform.position = mFirstPosition;
                     transform.rotation = mFirstQuaternion;
                     GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+                    Instantiate(m_ResetParticle, mArm.GetEnablPliersMove().transform.position, Quaternion.Euler(0, 0, 0));
                     break;
                 }
             }
