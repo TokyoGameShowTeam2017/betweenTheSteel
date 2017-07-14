@@ -31,6 +31,7 @@ public class TutorialEventImageSet : MonoBehaviour
         mButtonTexture.Add(PlayerTextIvent.EventController.R_STICK_TRIGGER, transform.FindChild("RightAnalogTrigger").gameObject);
         mButtonTexture.Add(PlayerTextIvent.EventController.RT, transform.FindChild("RT").gameObject);
         mButtonTexture.Add(PlayerTextIvent.EventController.RB, transform.FindChild("RB").gameObject);
+        mButtonTexture.Add(PlayerTextIvent.EventController.ARM_BUTTON, transform.FindChild("ArmButton").gameObject);
     }
 
     // Update is called once per frame
@@ -59,7 +60,8 @@ public class TutorialEventImageSet : MonoBehaviour
         mAlpha = 0.0f;
         mTime = 0.0f;
         if (controller == PlayerTextIvent.EventController.RT ||
-            controller == PlayerTextIvent.EventController.RB)
+            controller == PlayerTextIvent.EventController.RB||
+            controller==PlayerTextIvent.EventController.ARM_BUTTON)
             GetComponent<Image>().sprite = m_ControllerTextureUp;
         else
             GetComponent<Image>().sprite = m_ControllerTextureFront;

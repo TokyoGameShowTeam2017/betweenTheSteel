@@ -14,7 +14,8 @@ public class PlayerTextIvent : MonoBehaviour
         L_STICK,
         R_STICK,
         L_STICK_TRIGGER,
-        R_STICK_TRIGGER
+        R_STICK_TRIGGER,
+        ARM_BUTTON
     }
     [SerializeField, Tooltip("声")]
     public AudioClip[] m_Voice;
@@ -103,6 +104,7 @@ public class PlayerTextIvent : MonoBehaviour
             mPlayerTurorial.SetIsArmCatchAble(!m_PlayerArmCath);
             mPlayerTurorial.SetIsArmRelease(!m_PlayerArmNoCath);
 
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(false);
             GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetController(m_ControllerButton);
 
             if (m_IventPrefab != null)
