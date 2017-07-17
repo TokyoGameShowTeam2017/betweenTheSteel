@@ -32,6 +32,10 @@ public class TutorialEventImageSet : MonoBehaviour
         mButtonTexture.Add(PlayerTextIvent.EventController.RT, transform.FindChild("RT").gameObject);
         mButtonTexture.Add(PlayerTextIvent.EventController.RB, transform.FindChild("RB").gameObject);
         mButtonTexture.Add(PlayerTextIvent.EventController.ARM_BUTTON, transform.FindChild("ArmButton").gameObject);
+        mButtonTexture.Add(PlayerTextIvent.EventController.X, transform.FindChild("X").gameObject);
+        mButtonTexture.Add(PlayerTextIvent.EventController.Y, transform.FindChild("Y").gameObject);
+        mButtonTexture.Add(PlayerTextIvent.EventController.A, transform.FindChild("A").gameObject);
+        mButtonTexture.Add(PlayerTextIvent.EventController.B, transform.FindChild("B").gameObject);
     }
 
     // Update is called once per frame
