@@ -15,7 +15,11 @@ public class PlayerTextIvent : MonoBehaviour
         R_STICK,
         L_STICK_TRIGGER,
         R_STICK_TRIGGER,
-        ARM_BUTTON
+        ARM_BUTTON,
+        A,
+        B,
+        X,
+        Y
     }
     [SerializeField, Tooltip("声")]
     public AudioClip[] m_Voice;
