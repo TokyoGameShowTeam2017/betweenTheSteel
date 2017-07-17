@@ -8,7 +8,7 @@ public class TutorealIventCameraLookAt : MonoBehaviour
     private PlayerTutorialControl mPlayerTutoreal;
     private TutorealText mText;
     private Transform[] mTransforms;
-
+    private GameObject mPlayer;
     //プレイヤーカメラ
     private GameObject mPlayerCamera;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
@@ -48,6 +48,7 @@ public class TutorealIventCameraLookAt : MonoBehaviour
         mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         mPlayerCamera = GameObject.FindGameObjectWithTag("RawCamera");
         mTransforms = transform.GetComponentsInChildren<Transform>();
+        mPlayer = GameObject.FindGameObjectWithTag("Player");
         LookAtActiveObject(false);
     }
 
@@ -76,8 +77,13 @@ public class TutorealIventCameraLookAt : MonoBehaviour
         {
             if (hit.collider.name == "LookAtObject")
             {
-                SoundManager.Instance.PlaySe("Answer");
-                Destroy(hit.collider.gameObject);
+                float cameraToPoint = Vector3.Distance(GameObject.FindGameObjectWithTag("RawCamera").transform.position,hit.collider.transform.position);
+                float playerToPoint = Vector3.Distance(mPlayer.transform.position, hit.collider.transform.position);
+                if (cameraToPoint >= playerToPoint)
+                {
+                    SoundManager.Instance.PlaySe("Answer");
+                    Destroy(hit.collider.gameObject);
+                }
             }
         }
         GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(true);
