@@ -94,12 +94,12 @@ public class PlayerTextIvent : MonoBehaviour
             if (m_DrawPointObject != null) m_DrawPointObject.SetActive(true);
             if (m_NoDrawPointObject != null) m_NoDrawPointObject.SetActive(false);
             if (m_Text.Length > 0)
-                mTutorealText.SetText(m_Text,mVoiceName);
+                mTutorealText.SetText(m_Text, mVoiceName);
 
-            if (m_PlayerArmEnable1 || m_PlayerArmEnable2||
+            if (m_PlayerArmEnable1 || m_PlayerArmEnable2 ||
                 m_PlayerArmEnable3 || m_PlayerArmEnable4)
             {
-                mArmSetBar.IsLoading(m_PlayerArmEnable1,m_PlayerArmEnable2,m_PlayerArmEnable3,m_PlayerArmEnable4);
+                mArmSetBar.IsLoading(m_PlayerArmEnable1, m_PlayerArmEnable2, m_PlayerArmEnable3, m_PlayerArmEnable4);
             }
 
             mPlayerTurorial.SetIsArmMove(!m_PlayerArmMove);
@@ -107,8 +107,8 @@ public class PlayerTextIvent : MonoBehaviour
             mPlayerTurorial.SetIsCamerMove(!m_PlayerCameraMove);
             mPlayerTurorial.SetIsArmCatchAble(!m_PlayerArmCath);
             mPlayerTurorial.SetIsArmRelease(!m_PlayerArmNoCath);
-
-            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(false);
+            if (mTutorealText.GetDrawTextFlag())
+                GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(false);
             GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetController(m_ControllerButton);
 
             if (m_IventPrefab != null)
