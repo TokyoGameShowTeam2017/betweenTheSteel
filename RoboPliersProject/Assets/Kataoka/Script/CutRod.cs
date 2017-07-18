@@ -48,8 +48,8 @@ public class CutRod : MonoBehaviour
             //壊れたら
             if (m_Bones[i].GetComponent<CutRodCollision>().m_isBreak)
             {
-                ////端は切れない（変える）
-                //if (i == m_Bones.Count - 1) return;
+                //端は切れない（変える）
+                if (i == m_Bones.Count - 1) return;
                 //切れたよ
                 mIsCutFlag = true;
                 //親情報を初期化
