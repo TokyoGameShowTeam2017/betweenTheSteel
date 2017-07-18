@@ -16,7 +16,8 @@ public class ObjectCollision : MonoBehaviour
         if (other.name.Substring(0, 4) != "Plie" &&
             other.GetComponent<CatchObject>() == null &&
             other.tag != "Player" &&
-            other.tag != "Tekkyu")
+            other.tag != "Tekkyu"&&
+            other.name != "SnapIntoCollision")
         {
             if (other.GetComponent<BoxCollider>() == null)
                 mIsCollision = true;

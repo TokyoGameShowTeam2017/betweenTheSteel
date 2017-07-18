@@ -152,11 +152,11 @@ public class PliersMove : MonoBehaviour
         m_ArmManager = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
 
 
-        switch(m_ID)
+        switch (m_ID)
         {
             case 0: m_PliersGaugeArrow = GameObject.Find("Ygaugearrow").GetComponent<RectTransform>(); break;
-            case 1: m_PliersGaugeArrow = GameObject.Find("Agaugearrow").GetComponent<RectTransform>(); break;
-            case 2: m_PliersGaugeArrow = GameObject.Find("Bgaugearrow").GetComponent<RectTransform>(); break;
+            case 1: m_PliersGaugeArrow = GameObject.Find("Bgaugearrow").GetComponent<RectTransform>(); break;
+            case 2: m_PliersGaugeArrow = GameObject.Find("Agaugearrow").GetComponent<RectTransform>(); break;
             case 3: m_PliersGaugeArrow = GameObject.Find("Xgaugearrow").GetComponent<RectTransform>(); break;
         }
         
@@ -191,6 +191,12 @@ public class PliersMove : MonoBehaviour
             CutRodCollision c = other.gameObject.GetComponent<CutRodCollision>();
             if (c != null)
                 m_HitCutObject = c;
+
+            Kusari k = other.gameObject.GetComponent<Kusari>();
+            if (k != null)
+            {
+                m_HitKusariObject = k;
+            }
         }
 
         if (other.tag == "RodCollision")
@@ -198,10 +204,7 @@ public class PliersMove : MonoBehaviour
 
         }
 
-        if (other.tag == "Kusari")
-        {
-            m_HitKusariObject = other.gameObject.GetComponent<Kusari>();
-        }
+
     }
 
     void OnTriggerExit(Collider other)
@@ -368,13 +371,29 @@ public class PliersMove : MonoBehaviour
     //鉄球の鎖切断処理
     private void KusariCut()
     {
-        //鉄球の鎖を壊す
-        if (m_ArmManager.GetPliersPower(m_ID) > 3.0f && m_HitKusariObject != null && m_Input)
+        ////鉄球の鎖を壊す
+        //if (m_ArmManager.GetPliersPower(m_ID) > 3.0f && m_HitKusariObject != null && m_Input)
+        //{
+        //    m_HitKusariObject.m_IsCollision = true;
+        //    mKusariCut = true;
+        //    SoundManager.Instance.PlaySe("break1");
+        //}
+
+        if (m_HitKusariObject != null && m_Input)
         {
-            m_HitKusariObject.m_IsCollision = true;
-            mKusariCut = true;
-            SoundManager.Instance.PlaySe("break1");
+            Kusari k = m_HitKusariObject.GetComponent<Kusari>();
+            float life = k.DamageAndGetLife(m_ArmManager.GetPliersPower(m_ID));
+
+            m_GaugeArrowTargetValue = life / k.GetStartLife();
+            if (life <= 0.0f)
+            {
+                k.Break();
+                SoundManager.Instance.PlaySe("break1");
+                mKusariCut = true;
+                ForceCatchRelease();
+            }
         }
+
     }
 
     //動かないオブジェクトを掴んだ時の処理
@@ -604,7 +623,7 @@ public class PliersMove : MonoBehaviour
 
         ////オブジェクトを切断する
         //Cut();
-        KusariCut();
+        //KusariCut();
 
 
         //前フレームと同じ入力ならここで終了　これ以降の行はボタンを入力した瞬間or離した瞬間のみ呼ばれる
@@ -730,6 +749,7 @@ public class PliersMove : MonoBehaviour
     void LateUpdate()
     {
         Cut();
+        KusariCut();
 
         if (!m_ArmManager.IsMove)
         {
@@ -765,7 +785,7 @@ public class PliersMove : MonoBehaviour
             SetPliersCollider(true);
 
             //カットできるオブジェクト以外を掴んでいる場合はＵＩの矢印を移動させる
-            if (m_HitCutObject == null)
+            if (m_HitCutObject == null && m_HitKusariObject == null)
                 m_GaugeArrowTargetValue = 1.0f;
 
 
@@ -1084,8 +1104,8 @@ public class PliersMove : MonoBehaviour
         switch (m_ID)
         {
             case 0: m_PliersGaugeArrow = GameObject.Find("Ygaugearrow").GetComponent<RectTransform>(); break;
-            case 1: m_PliersGaugeArrow = GameObject.Find("Agaugearrow").GetComponent<RectTransform>(); break;
-            case 2: m_PliersGaugeArrow = GameObject.Find("Bgaugearrow").GetComponent<RectTransform>(); break;
+            case 1: m_PliersGaugeArrow = GameObject.Find("Bgaugearrow").GetComponent<RectTransform>(); break;
+            case 2: m_PliersGaugeArrow = GameObject.Find("Agaugearrow").GetComponent<RectTransform>(); break;
             case 3: m_PliersGaugeArrow = GameObject.Find("Xgaugearrow").GetComponent<RectTransform>(); break;
         }
         

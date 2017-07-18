@@ -4,14 +4,32 @@ using UnityEngine;
 
 public class PlayerTextIvent : MonoBehaviour
 {
+    public enum EventController
+    {
+        NO_BUTTON,
+        RT,
+        RB,
+        //LT,
+        //LB,
+        L_STICK,
+        R_STICK,
+        L_STICK_TRIGGER,
+        R_STICK_TRIGGER,
+        ARM_BUTTON,
+        A,
+        B,
+        X,
+        Y
+    }
     [SerializeField, Tooltip("声")]
     public AudioClip[] m_Voice;
     [SerializeField, Tooltip("流すテキスト"), TextArea(1, 20)]
     public string[] m_Text;
-    [SerializeField, Tooltip("イベント中のテキスト")]
-    public string m_EventText;
+    [SerializeField, Tooltip("表示させるコントローラーのボタン")]
+    public EventController m_ControllerButton;
     [SerializeField, Tooltip("イベントプレハブ")]
     public GameObject m_IventPrefab;
+
 
     [SerializeField, Tooltip("表示させたいPointオブジェクト"), Space(15)]
     public GameObject m_DrawPointObject;
@@ -76,12 +94,12 @@ public class PlayerTextIvent : MonoBehaviour
             if (m_DrawPointObject != null) m_DrawPointObject.SetActive(true);
             if (m_NoDrawPointObject != null) m_NoDrawPointObject.SetActive(false);
             if (m_Text.Length > 0)
-                mTutorealText.SetText(m_Text,mVoiceName);
+                mTutorealText.SetText(m_Text, mVoiceName);
 
-            if (m_PlayerArmEnable1 || m_PlayerArmEnable2||
+            if (m_PlayerArmEnable1 || m_PlayerArmEnable2 ||
                 m_PlayerArmEnable3 || m_PlayerArmEnable4)
             {
-                mArmSetBar.IsLoading(m_PlayerArmEnable1,m_PlayerArmEnable2,m_PlayerArmEnable3,m_PlayerArmEnable4);
+                mArmSetBar.IsLoading(m_PlayerArmEnable1, m_PlayerArmEnable2, m_PlayerArmEnable3, m_PlayerArmEnable4);
             }
 
             mPlayerTurorial.SetIsArmMove(!m_PlayerArmMove);
@@ -89,9 +107,9 @@ public class PlayerTextIvent : MonoBehaviour
             mPlayerTurorial.SetIsCamerMove(!m_PlayerCameraMove);
             mPlayerTurorial.SetIsArmCatchAble(!m_PlayerArmCath);
             mPlayerTurorial.SetIsArmRelease(!m_PlayerArmNoCath);
-
-            if (GameObject.FindGameObjectWithTag("TutorialEventText")!=null)
-            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetEventText(m_EventText);
+            if (mTutorealText.GetDrawTextFlag())
+                GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(false);
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetController(m_ControllerButton);
 
             if (m_IventPrefab != null)
                 m_IventPrefab.GetComponent<TutorealIventFlag>().PlayIvent();

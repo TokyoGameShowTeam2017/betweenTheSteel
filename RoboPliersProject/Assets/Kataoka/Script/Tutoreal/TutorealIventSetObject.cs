@@ -92,7 +92,7 @@ public class TutorealIventSetObject : MonoBehaviour {
         mPlayerTutorial.SetIsResetAble(!m_PlayerArmReset);
         if(!m_PlayerArmNoCath)
         mPlayerTutorial.SetIsArmRelease(true);
-        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(true);
 
         int flagCount = 0;
         int childCount = 2;
@@ -113,8 +113,8 @@ public class TutorealIventSetObject : MonoBehaviour {
         //クリアー処理
         if (flagCount >= childCount&&mArmManager.GetEnablArmCatchingObject()==null)
         {
-            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(false);
-
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(false);
+            
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
                 for (int i = 0; m_IventCollisions.Length > i; i++)

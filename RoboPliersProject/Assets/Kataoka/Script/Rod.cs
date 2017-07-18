@@ -198,7 +198,8 @@ public class Rod : MonoBehaviour
             Destroy(mRotatePoints[rotatePoints.Count - 1].GetComponent<cakeslice.Outline>());
             Destroy(mRotatePoints[rotatePoints.Count - 1].GetComponent<MeshRenderer>());
             //mRotatePoints[0].AddComponent<cakeslice.Outline>();
-            rotatePoints[0].GetComponent<MeshRenderer>().material = m_Material;
+            if (rotatePoints[0].GetComponent<MeshRenderer>() != null)
+                rotatePoints[0].GetComponent<MeshRenderer>().material = m_Material;
 
             mNowPoint = StartPoint.LEFT_POINT;
         }
@@ -454,5 +455,9 @@ public class Rod : MonoBehaviour
     public CatchObject.CatchType GetCatchType()
     {
         return m_CatchType;
+    }
+    public StartPoint GetStartPoint()
+    {
+        return mNowPoint;
     }
 }

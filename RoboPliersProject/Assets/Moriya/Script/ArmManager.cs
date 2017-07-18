@@ -152,21 +152,21 @@ public class ArmManager : MonoBehaviour
         }
         IsResetAble = true;
         StaticCatchingArmAngleMax = m_StaticCatchArmAngleMax;
+
+
+        //元々Start()に書いてた
+
+        //アクティブではないアームのＵＩを半透明に変更
+        NotActiveArmUIStealth();
+        //元々Start()に書いてた
     }
 
     void Start()
     {
+
         //UI移動開始
         StartUIMove();
 
-        //アクティブではないアームのＵＩを変更
-        for (int i = 0; i < 4; i++)
-        {
-            if (!m_TutorialSetting.GetIsActiveArm(i))
-            {
-                SetGaugeUINoActive(i);
-            }
-        }
     }
 
     void Update()
@@ -208,7 +208,13 @@ public class ArmManager : MonoBehaviour
         //何らかのアームが動かないオブジェクトを掴んでいる時
         if (GetCountCatchingObjects() > 0)
         {
-
+            if (InputManager.GetMove().magnitude <= 0.0f)
+            {
+                Quaternion r = m_Base.rotation;
+                Quaternion target = Quaternion.Euler(new Vector3(0.0f, -90.0f * m_EnableArmID + m_RotateY, 0.0f));
+                //m_Base.rotation = target;
+                m_Base.rotation = Quaternion.Slerp(r, target, m_RotationLerpValue);
+            }
         }
         //通常時
         else
@@ -243,7 +249,7 @@ public class ArmManager : MonoBehaviour
             //アームとペンチのリセット
             ResetOther(m_EnableArmID);
             //ベースを正面に向ける
-            m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
+            BaseLookCameraFront();
         }
     }
 
@@ -878,6 +884,25 @@ public class ArmManager : MonoBehaviour
         StartCoroutine(EndToStartUIMove());
     }
 
+    /// <summary>
+    /// アクティブではないアームのＵＩを半透明にする
+    /// </summary>
+    public void NotActiveArmUIStealth()
+    {
+        
+        for (int i = 0; i < 4; i++)
+        {
+            if (!m_TutorialSetting.GetIsActiveArm(i))
+            {
+                SetGaugeUINoActive(i);
+            }
+        }
+    }
+
+    public void BaseLookCameraFront()
+    {
+        m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
+    }
 
     IEnumerator StartToEndUIMove()
     {

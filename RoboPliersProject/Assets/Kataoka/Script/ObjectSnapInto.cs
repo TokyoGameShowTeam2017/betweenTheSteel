@@ -6,7 +6,7 @@ public class ObjectSnapInto : MonoBehaviour
 {
 
     public GameObject[] m_Collision;
-
+    public GameObject m_ResetParticle;
     private Vector3 mPosition;
     private Quaternion mQuaternion;
 
@@ -33,7 +33,9 @@ public class ObjectSnapInto : MonoBehaviour
                 mArm.GetEnablArmCatchingObject()==null||
                 i.transform.position.y<=-50.0f)
             {
+                Instantiate(m_ResetParticle, transform.position, Quaternion.Euler(0, 0, 0));
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
+                GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                 transform.position = mPosition;
                 transform.rotation = mQuaternion;
                 break;

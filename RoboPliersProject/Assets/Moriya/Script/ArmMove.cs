@@ -352,23 +352,24 @@ public class ArmMove : MonoBehaviour
             m_AimAssistRockon.SetSpriteDraw(false);
 
 
-            //アームの伸ばし入力があったら、伸び縮みできない状態解除
-            if (m_IsInputStretch)
-            {
-                m_IsStretchKeep = false;
-            }
-            if (!m_IsStretchKeep)
-            {
-                //伸びる量を変化
-                if (m_IsNonTargetStretch)
-                    m_ArmLengthTargetValue = 1.0f;
-                else
-                    m_ArmLengthTargetValue = 0.0f;
-            }
 
             //動かないオブジェクトを掴んでいるとき
             if (catchobj.catchType == CatchObject.CatchType.Static)
             {
+                //アームの伸ばし入力があったら、伸び縮みできない状態解除
+                if (m_IsInputStretch)
+                {
+                    m_IsStretchKeep = false;
+                }
+                if (!m_IsStretchKeep)
+                {
+                    //伸びる量を変化
+                    if (m_IsNonTargetStretch)
+                        m_ArmLengthTargetValue = 1.0f;
+                    else
+                        m_ArmLengthTargetValue = 0.0f;
+                }
+
                 //掴んだ地点を向く
                 //m_LookPosition = m_StaticCatchPoint;
                 m_LookPosition = m_ArmManager.GetPliersMoveByID(m_ID).GetPlayerAxisMoveObject().transform.position;
@@ -425,6 +426,11 @@ public class ArmMove : MonoBehaviour
             //動かせるオブジェクトを掴んでいるとき
             else if (catchobj.catchType == CatchObject.CatchType.Dynamic)
             {
+                //伸びる量を変化
+                if (m_IsNonTargetStretch)
+                    m_ArmLengthTargetValue = 1.0f;
+                else
+                    m_ArmLengthTargetValue = 0.0f;
                 //伸ばす
                 Stretch();
 

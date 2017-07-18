@@ -155,6 +155,8 @@ public class TutorealIventCamera : MonoBehaviour
         //役目が終わったら消す
         if (mLertTime >= 1.0f && mIsEnd)
         {
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(true);
+
             //次のイベントテキスト有効化
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)

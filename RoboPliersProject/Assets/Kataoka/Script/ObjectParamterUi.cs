@@ -44,7 +44,8 @@ public class ObjectParamterUi : MonoBehaviour
         foreach (Transform trans in mTransforms)
         {
             if (trans.name != name &&
-                trans.GetComponent<CatchObject>() != null)
+                trans.GetComponent<CatchObject>() != null||
+                trans.name=="Chain")
             {
                 mChild.Add(trans.gameObject);
             }
