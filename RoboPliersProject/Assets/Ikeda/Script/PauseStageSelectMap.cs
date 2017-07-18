@@ -252,6 +252,7 @@ public class PauseStageSelectMap : MonoBehaviour
         {
             print("asdfasdfasdfasdfa");
         }
+        //yield return SceneManager.LoadSceneAsync("load", LoadSceneMode.Additive);
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);        
         yield return SceneManager.LoadSceneAsync(loadedScene, LoadSceneMode.Additive);
         yield return null;
@@ -309,7 +310,7 @@ public class PauseStageSelectMap : MonoBehaviour
         }
 
         target.GetComponent<Camera>().enabled = true;
-        camera.enabled = false;
+        //camera.enabled = false;
 
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
 
