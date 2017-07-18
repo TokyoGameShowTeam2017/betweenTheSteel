@@ -57,6 +57,7 @@ public class CutRod : MonoBehaviour
                 //新しいオブジェクト生成
                 GameObject prefab = Instantiate(mGravityPrefab);
                 prefab.transform.position = m_RotatePoints[i + 1].transform.position;
+                prefab.transform.rotation = transform.rotation;
 
                 bool leftPoint = false;
                 if (GetComponent<Rod>().GetStartPoint() == Rod.StartPoint.LEFT_POINT)
