@@ -14,18 +14,19 @@ public class CutRodCollision : MonoBehaviour
     private GameObject m_Rod;
     private float m_StartLife;
 
+    private GameObject mAssistPoint;
     // Use this for initialization
     void Start()
     {
         m_StartLife = m_Life;
         if (GetComponent<RodTurnBone>()!=null)
         m_Rod = GetComponent<RodTurnBone>().GetRod();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
     //壊す
     public void IsBreak()
@@ -75,6 +76,9 @@ public class CutRodCollision : MonoBehaviour
     /// </summary>
     public float DamageAndGetLife(float pliersPower)
     {
+        int number=GetComponent<RodTurnBone>().GetBoneNumber();
+        int maxNumber=GetComponent<RodTurnBone>().GetBone().Count-1;
+        if (number <= 0 || number >= maxNumber) return m_StartLife;
         if (m_Rod.GetComponent<Rod>() != null)
         {
             if (m_Rod.GetComponent<Rod>().GetHongFlag()) return m_StartLife;
