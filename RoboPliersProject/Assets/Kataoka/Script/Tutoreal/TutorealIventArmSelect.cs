@@ -62,10 +62,10 @@ public class TutorealIventArmSelect : MonoBehaviour
 
         mPlayerTutorial.SetAllIsArmSelectAble(false);
         mPlayerTutorial.SetIsArmSelectAble(m_ArmId, true);
-        ////GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(true);
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(true);
         if (mArmManager.GetEnablArmID() == m_ArmId)
         {
-            ////GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventTextSet>().SetDrawFlag(false);
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(false);
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
             {
