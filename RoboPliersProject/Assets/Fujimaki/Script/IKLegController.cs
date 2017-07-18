@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Generics.Dynamics;
 
-public class IKLegController : MonoBehaviour {
+public class IKLegController : MonoBehaviour
+{
 
     private Animator _animator;
     private CharacterController _characterController;
@@ -34,7 +35,7 @@ public class IKLegController : MonoBehaviour {
         _rayDefaultObject = new GameObject[_ikLegTargets.Length];
 
         _defaultNailRotation = new Quaternion[_nails.Length];
-        for (int i = 0; i < _defaultNailRotation.Length; i++) 
+        for (int i = 0; i < _defaultNailRotation.Length; i++)
         {
             _defaultNailRotation[i] = _nails[i].transform.localRotation;
         }
@@ -42,8 +43,8 @@ public class IKLegController : MonoBehaviour {
         beforeRotation = transform.rotation;
 
     }
-	
-	void Update ()
+
+    void Update()
     {
         Vector3 _input = InputManager.GetMove();
         _input = Quaternion.Euler(0, 0, _cameraMove.transform.eulerAngles.y - transform.eulerAngles.y) * _input;
@@ -73,14 +74,14 @@ public class IKLegController : MonoBehaviour {
     private void LateUpdate()
     {
         //それぞれの足からレイを飛ばしてIK補正位置を計算
-        foreach(var i in _ikLegTargets)
+        foreach (var i in _ikLegTargets)
         {
             Vector3 _offset = Vector3.up * 3;
-            float _legYOffset = i.ikTargetBone.transform.position.y-i.defaultObject.transform.position.y;
+            float _legYOffset = i.ikTargetBone.transform.position.y - i.defaultObject.transform.position.y;
             RaycastHit hit;
-            int mask = LayerMask.NameToLayer("ArmAndPliers");
+            int mask = ~(1 << 15 | 1 << 21);
 
-            if (Physics.Raycast(i.ikTargetBone.transform.position + _offset, -Vector3.up, out hit, _offset.magnitude*10,mask))
+            if (Physics.Raycast(i.ikTargetBone.transform.position + _offset, -Vector3.up, out hit, _offset.magnitude * 10, mask))
             {
                 i.TranslateLeg(hit.point + new Vector3(0, _legYOffset, 0));
             }
