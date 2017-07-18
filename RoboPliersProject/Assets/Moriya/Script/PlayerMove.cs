@@ -191,7 +191,6 @@ public class PlayerMove : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit col)
     {
-        print("hit!");
         IsHit = true;
         HitPosition = col.point;
         //押し出す方向を決定
