@@ -101,14 +101,15 @@ public class TutorialExample : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             //control.SetIsArmCatchAble(false);
-            control.SetIsArmRelease(false);
+            //control.SetIsArmRelease(false);
+            control.SetIsArmStretch(false);
             //control.SetIsResetAble(false);
 
         }
         if (Input.GetKeyDown(KeyCode.Y))
         {
             //control.SetIsArmCatchAble(true);
-            control.SetIsArmRelease(true);
+            control.SetIsArmStretch(true);
             //control.SetIsResetAble(true);
         }
 	}

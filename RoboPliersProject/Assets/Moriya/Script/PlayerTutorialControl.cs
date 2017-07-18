@@ -188,4 +188,13 @@ public class PlayerTutorialControl : MonoBehaviour
     {
         m_ArmManager.IsResetAble = value;
     }
+
+    /// <summary>
+    /// アームの伸び縮み操作の操作制限(false)／解除(true)を行う
+    /// 大元であるアームの操作制限がかかっているとtrueにしても意味がありません
+    /// </summary>
+    public void SetIsArmStretch(bool value)
+    {
+        m_ArmManager.IsStretch = value;
+    }
 }
