@@ -152,7 +152,7 @@ public class PliersMove : MonoBehaviour
         m_ArmManager = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
 
 
-        switch(m_ID)
+        switch (m_ID)
         {
             case 0: m_PliersGaugeArrow = GameObject.Find("Ygaugearrow").GetComponent<RectTransform>(); break;
             case 1: m_PliersGaugeArrow = GameObject.Find("Bgaugearrow").GetComponent<RectTransform>(); break;
@@ -1104,8 +1104,8 @@ public class PliersMove : MonoBehaviour
         switch (m_ID)
         {
             case 0: m_PliersGaugeArrow = GameObject.Find("Ygaugearrow").GetComponent<RectTransform>(); break;
-            case 1: m_PliersGaugeArrow = GameObject.Find("Agaugearrow").GetComponent<RectTransform>(); break;
-            case 2: m_PliersGaugeArrow = GameObject.Find("Bgaugearrow").GetComponent<RectTransform>(); break;
+            case 1: m_PliersGaugeArrow = GameObject.Find("Bgaugearrow").GetComponent<RectTransform>(); break;
+            case 2: m_PliersGaugeArrow = GameObject.Find("Agaugearrow").GetComponent<RectTransform>(); break;
             case 3: m_PliersGaugeArrow = GameObject.Find("Xgaugearrow").GetComponent<RectTransform>(); break;
         }
         
