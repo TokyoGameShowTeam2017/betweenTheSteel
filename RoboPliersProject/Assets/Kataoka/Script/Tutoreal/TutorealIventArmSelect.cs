@@ -22,6 +22,10 @@ public class TutorealIventArmSelect : MonoBehaviour
     public bool m_PlayerClerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerClerArmReset;
+    [SerializeField, Tooltip("プレイヤーアームセレクトフラグ")]
+    public bool m_PlayerClerArmSelect;
+    [SerializeField, Tooltip("プレイヤーアーム伸びフラグ")]
+    public bool m_PlayerClerArmExtend;
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("テキストが終わった時のプレイヤーの状態")]
     public bool m_PlayerMove;
@@ -35,6 +39,8 @@ public class TutorealIventArmSelect : MonoBehaviour
     public bool m_PlayerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerArmReset;
+    [SerializeField, Tooltip("プレイヤーアーム伸びフラグ")]
+    public bool m_PlayerArmExtend;
     //プレイヤーチュートリアル
     private PlayerTutorialControl mPlayerTutorial;
     //プレイヤーテキスト
@@ -59,6 +65,8 @@ public class TutorealIventArmSelect : MonoBehaviour
         mPlayerTutorial.SetIsCamerMove(!m_PlayerCameraMove);
         mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutorial.SetIsArmRelease(!m_PlayerArmNoCath);
+        mPlayerTutorial.SetIsArmStretch(!m_PlayerArmExtend);
+
 
         mPlayerTutorial.SetAllIsArmSelectAble(false);
         mPlayerTutorial.SetIsArmSelectAble(m_ArmId, true);
@@ -82,6 +90,8 @@ public class TutorealIventArmSelect : MonoBehaviour
             mPlayerTutorial.SetIsArmRelease(!m_PlayerClerArmNoCath);
             mPlayerTutorial.SetIsResetAble(!m_PlayerArmReset);
             mPlayerTutorial.SetAllIsArmSelectAble(true);
+            mPlayerTutorial.SetIsArmStretch(!m_PlayerClerArmExtend);
+
             Destroy(gameObject);
         }
     }

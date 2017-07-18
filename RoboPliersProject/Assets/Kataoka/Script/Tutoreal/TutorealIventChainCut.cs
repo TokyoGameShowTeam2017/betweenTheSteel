@@ -18,6 +18,10 @@ public class TutorealIventChainCut : MonoBehaviour {
     public bool m_PlayerClerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerClerArmReset;
+    [SerializeField, Tooltip("プレイヤーアームセレクトフラグ")]
+    public bool m_PlayerClerArmSelect;
+    [SerializeField, Tooltip("プレイヤーアーム伸びフラグ")]
+    public bool m_PlayerClerArmExtend;
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("テキストが終わった時のプレイヤーの状態")]
     public bool m_PlayerMove;
@@ -31,7 +35,10 @@ public class TutorealIventChainCut : MonoBehaviour {
     public bool m_PlayerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerArmReset;
-
+    [SerializeField, Tooltip("プレイヤーアームセレクトフラグ")]
+    public bool m_PlayerArmSelect;
+    [SerializeField, Tooltip("プレイヤーアーム伸びフラグ")]
+    public bool m_PlayerArmExtend;
     //アームマネージャー
     private ArmManager mArm;
     //プレイヤーチュートリアル
