@@ -33,11 +33,11 @@ public class ObjectSnapInto : MonoBehaviour
                 mArm.GetEnablArmCatchingObject()==null||
                 i.transform.position.y<=-50.0f)
             {
+                Instantiate(m_ResetParticle, transform.position, Quaternion.Euler(0, 0, 0));
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
                 GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                 transform.position = mPosition;
                 transform.rotation = mQuaternion;
-                Instantiate(m_ResetParticle, mArm.GetEnablPliersMove().transform.position,Quaternion.Euler(0,0,0));
                 break;
             }
         }

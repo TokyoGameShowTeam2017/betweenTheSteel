@@ -57,6 +57,7 @@ public class TutorealIventRodCut : MonoBehaviour
         GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(true);
         foreach (var i in m_Rod)
         {
+            if (i == null) continue;
             //Cutされたら
             if (i.GetComponent<CutRod>().GetCutFlag())
             {
