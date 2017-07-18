@@ -13,6 +13,8 @@ public class RodReSet : MonoBehaviour
     //アームマネージャー
     private ArmManager mArm;
     public GameObject m_ResetParticle;
+    //プレイヤー
+    private GameObject mPlayer;
     //時間
     private float mCollisionTime;
     // Use this for initialization
@@ -21,7 +23,7 @@ public class RodReSet : MonoBehaviour
         SetChild();
 
         mArm = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
-
+        mPlayer = GameObject.FindGameObjectWithTag("Player");
         mCollisionTime = 0.0f;
     }
 
@@ -46,7 +48,12 @@ public class RodReSet : MonoBehaviour
                     i.transform.position.y <= -50.0f)
                 {
                     Instantiate(m_ResetParticle, transform.position, Quaternion.Euler(0, 0, 0));
-                    transform.position = mFirstPosition;
+
+                    Vector3 pos = transform.position;
+                    if (!GetComponent<CutRod>().m_StartRodFlag)
+                        pos = mPlayer.transform.position + new Vector3(0, 5, 0);
+
+                    transform.position = pos;
                     transform.rotation = mFirstQuaternion;
                     GetComponent<Rigidbody>().velocity = Vector3.zero;
                     GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
