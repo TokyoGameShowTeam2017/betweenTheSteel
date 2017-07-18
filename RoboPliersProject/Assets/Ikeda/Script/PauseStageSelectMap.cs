@@ -12,8 +12,8 @@ public class PauseStageSelectMap : MonoBehaviour
     //[SerializeField]
     //private Camera sceneCamera;
 
-    [SerializeField]
-    private Camera camera;
+    //[SerializeField]
+    //private Camera camera;
 
     [SerializeField]
     private GameObject canvas;
@@ -252,8 +252,9 @@ public class PauseStageSelectMap : MonoBehaviour
         {
             print("asdfasdfasdfasdfa");
         }
+
         //yield return SceneManager.LoadSceneAsync("load", LoadSceneMode.Additive);
-        yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);        
+        yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
         yield return SceneManager.LoadSceneAsync(loadedScene, LoadSceneMode.Additive);
         yield return null;
 
