@@ -44,6 +44,7 @@ public class PauseController : MonoBehaviour
             StartCoroutine(FadeGroup(false));
         }
 
+        if (GameObject.Find("PausePerformanceCanvas(Clone)") != null)
         if (GameObject.Find("PausePerformanceCanvas(Clone)").GetComponent<PausePerformance>().GetPauseState() == PausePerformance.PauseState.DecisionWait)
         {
             PauseInput();

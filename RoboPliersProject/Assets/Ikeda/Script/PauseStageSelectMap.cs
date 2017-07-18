@@ -9,12 +9,6 @@ public class PauseStageSelectMap : MonoBehaviour
 
     private Camera playerCamera;
 
-    //[SerializeField]
-    //private Camera sceneCamera;
-
-    //[SerializeField]
-    //private Camera camera;
-
     [SerializeField]
     private GameObject canvas;
 
@@ -30,11 +24,6 @@ public class PauseStageSelectMap : MonoBehaviour
     [SerializeField]
     private Image fadeImage;
 
-    //[SerializeField]
-    //private GameObject titleDroneCamera;
-
-    //[SerializeField]
-    //private Transform playerSpawnPoint;
 
     [SerializeField]
     private GameObject playerPrefab;
@@ -182,17 +171,17 @@ public class PauseStageSelectMap : MonoBehaviour
     }
 
     //ステージ１を開始
-    public void StartFirstScene()
-    {
-        if (stated)
-        {
-            return;
-        }
+    //public void StartFirstScene()
+    //{
+    //    if (stated)
+    //    {
+    //        return;
+    //    }
 
-        stated = true;
-        GameObject.FindGameObjectWithTag("RawCamera").GetComponent<Camera>().enabled = true;
-        //StartCoroutine(StartScene(1, titleDroneCamera));
-    }
+    //    stated = true;
+    //    GameObject.FindGameObjectWithTag("RawCamera").GetComponent<Camera>().enabled = true;
+    //    //StartCoroutine(StartScene(1, titleDroneCamera));
+    //}
 
     private IEnumerator StartFirstSceneAnim()
     {
@@ -201,11 +190,6 @@ public class PauseStageSelectMap : MonoBehaviour
 
     public void StartOtherScene(int num)
     {
-        if (num == 1)
-        {
-            StartFirstScene();
-            return;
-        }
         StartCoroutine(StartOtherSceneAnim(num));
     }
 
@@ -253,12 +237,12 @@ public class PauseStageSelectMap : MonoBehaviour
             print("asdfasdfasdfasdfa");
         }
 
-        //yield return SceneManager.LoadSceneAsync("load", LoadSceneMode.Additive);
+        yield return SceneManager.LoadSceneAsync("load", LoadSceneMode.Additive);
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
         yield return SceneManager.LoadSceneAsync(loadedScene, LoadSceneMode.Additive);
+        yield return SceneManager.UnloadSceneAsync("load");
         yield return null;
 
-        yield return null;
 
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>().SetIsCamerMove(false);
@@ -280,12 +264,6 @@ public class PauseStageSelectMap : MonoBehaviour
 
         Quaternion defaultRotation = startObj.transform.rotation;
         Quaternion targetRotation = target.transform.rotation;
-
-        //if (sceneCamera != null)
-        //{
-        //    sceneCamera.enabled = false;
-        //}
-
 
         //フェードアウト
         time = 0;
@@ -313,13 +291,17 @@ public class PauseStageSelectMap : MonoBehaviour
         target.GetComponent<Camera>().enabled = true;
         //camera.enabled = false;
 
-        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
+        //SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
 
         GameObject.FindGameObjectWithTag("MinimapManager").GetComponent<MiniMap>().m_DrawMiniMap = true;
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(true);
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>().SetIsCamerMove(true);
 
         SwitchPlayerText(true);
+
+        Destroy(gameObject);
+        Destroy(GameObject.Find("SelectStageCanvas(Clone)"));
+        Destroy(GameObject.Find("Canvas"));
     }
 
     private void SwitchPlayerText(bool enable)

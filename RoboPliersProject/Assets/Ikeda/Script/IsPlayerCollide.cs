@@ -18,18 +18,18 @@ public class IsPlayerCollide : MonoBehaviour
     {
         //Vector3 l_LossyScale = GameObject.FindGameObjectWithTag("Player").transform.lossyScale;
         //Vector3 l_LocalScale = GameObject.FindGameObjectWithTag("Player").transform.localScale;
-
+        if (GameObject.FindGameObjectWithTag("Player") != null)
         GameObject.FindGameObjectWithTag("Player").transform.localScale = m_DefaultScale;
 
         if (m_PlayerStay)
         {
 
             GameObject.FindGameObjectWithTag("Player").transform.parent = transform.parent.transform;
-        }
-    
+        }    
         else
         {
-            GameObject.FindGameObjectWithTag("Player").transform.parent = null;
+            if (GameObject.FindGameObjectWithTag("Player") != null)
+                GameObject.FindGameObjectWithTag("Player").transform.parent = null;
         }
     }
 

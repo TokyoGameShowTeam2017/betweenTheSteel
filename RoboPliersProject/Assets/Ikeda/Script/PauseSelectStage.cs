@@ -51,6 +51,9 @@ public class PauseSelectStage : MonoBehaviour
         m_StageNum = 1;
         m_StickState = StickState.None;
         m_SelectState = SelectState.SelectEnter;
+        DontDestroyOnLoad(GameObject.Find("RotationOrigin"));
+        DontDestroyOnLoad(GameObject.Find("Canvas"));
+        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame
@@ -63,6 +66,12 @@ public class PauseSelectStage : MonoBehaviour
                 if (GameObject.Find("sideFrame").GetComponent<PauseFrame>().GetSpreadIsEnd())
                 {
                     EnterBack();
+                }
+                //スタートボタンを押したら消える
+                if (Input.GetButtonDown("XBOXStart"))
+                {
+                    GameObject.Find("RawImage").GetComponent<RawImage>().color = new Color(1, 1, 1, 0);
+                    Destroy(gameObject);
                 }
                 break;
 
@@ -109,7 +118,7 @@ public class PauseSelectStage : MonoBehaviour
         //{
         if (m_EnterBackRate < 1) m_EnterBackRate += 3.5f * Time.deltaTime;
         else m_SelectState = SelectState.Selecting;
-            GameObject.Find("backback").transform.localPosition = Vector3.Lerp(new Vector3(-540, -430, 0), new Vector3(-540, -315, 0), m_EnterBackRate);
+        GameObject.Find("backback").transform.localPosition = Vector3.Lerp(new Vector3(-540, -430, 0), new Vector3(-540, -315, 0), m_EnterBackRate);
         //}
     }
 
@@ -364,13 +373,7 @@ public class PauseSelectStage : MonoBehaviour
             m_FeadOutRate -= 0.03f * Time.deltaTime * 60;
             GameObject.Find("Stages").GetComponent<CanvasGroup>().alpha = m_Alpha;
             GameObject.Find("selectback").GetComponent<CanvasGroup>().alpha = m_Alpha;
-            GameObject.Find("backback").transform.localPosition = Vector3.Lerp(new Vector3(-350, -260, 0), new Vector3(-350, -196, 0), m_FeadOutRate);
-            if (m_Alpha <= 0 && m_FeadOutRate <= 0)
-            {
-                Destroy(GameObject.Find("PauseCanvas(Clone)"));
-                Destroy(GameObject.Find("PausePerformanceCanvas(Clone)"));
-            }
-            //GameObject.Find("CommonCanvas").GetComponent<CanvasGroup>().alpha = m_Alpha;
+            GameObject.Find("backback").GetComponent<CanvasGroup>().alpha = m_Alpha;
         }
     }
 

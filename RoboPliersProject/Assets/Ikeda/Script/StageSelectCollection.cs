@@ -20,6 +20,7 @@ public class StageSelectCollection : MonoBehaviour
     private bool m_IsStart = false;
     private float m_FeadOutRate;
     private StickState m_StickState;
+    private float m_EnterRate;
 
     //private Dictionary<int, string> m_SoundCollection;
     //private int m_SoundNum;
@@ -36,7 +37,7 @@ public class StageSelectCollection : MonoBehaviour
         m_StageNum = 1;
         m_StickState = StickState.None;
         GameObject.Find("sideFrame").GetComponent<MenuFrame>().InitializeSpreadRate();
-
+        m_EnterRate = 0.0f;
     }
 
     //private void AddSound(int soundNum, string soundName)
@@ -47,6 +48,8 @@ public class StageSelectCollection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!m_BackMenu) EnterBack();
+
         if (!m_IsStart)
         {
             //選択中のインプット
@@ -67,6 +70,13 @@ public class StageSelectCollection : MonoBehaviour
 
         //ステージ選択中
         StageSelect();
+    }
+
+    private void EnterBack()
+    {
+        if (m_EnterRate <= 1) m_EnterRate += 3.5f * Time.deltaTime;
+
+        transform.FindChild("backback").localPosition = Vector3.Lerp(new Vector3(-350, -260, 0), new Vector3(-350, -200, 0), m_EnterRate);
     }
 
     private void StageMapLoad()

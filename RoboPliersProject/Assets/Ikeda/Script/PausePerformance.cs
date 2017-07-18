@@ -97,6 +97,7 @@ public class PausePerformance : MonoBehaviour {
         {
             if (InputWrap())
             {
+                SoundManager.Instance.PlaySe("enter");
                 m_Decision = true;
             }
         }
