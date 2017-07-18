@@ -27,6 +27,10 @@ public class TutorealIventCameraLookAt : MonoBehaviour
     public bool m_PlayerClerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerClerArmReset;
+    [SerializeField, Tooltip("プレイヤーアームセレクトフラグ")]
+    public bool m_PlayerClerArmSelect;
+    [SerializeField, Tooltip("プレイヤーアーム伸びフラグ")]
+    public bool m_PlayerClerArmExtend;
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("テキストが終わった時のプレイヤーの状態")]
     public bool m_PlayerMove;
@@ -40,6 +44,10 @@ public class TutorealIventCameraLookAt : MonoBehaviour
     public bool m_PlayerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerArmReset;
+    [SerializeField, Tooltip("プレイヤーアームセレクトフラグ")]
+    public bool m_PlayerArmSelect;
+    [SerializeField, Tooltip("プレイヤーアーム伸びフラグ")]
+    public bool m_PlayerArmExtend;
 
     // Use this for initialization
     void Start()
@@ -68,7 +76,8 @@ public class TutorealIventCameraLookAt : MonoBehaviour
         mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
         mPlayerTutoreal.SetIsResetAble(!m_PlayerArmReset);
-
+        mPlayerTutoreal.SetAllIsArmSelectAble(!m_PlayerArmSelect);
+        mPlayerTutoreal.SetIsArmStretch(!m_PlayerArmExtend);
 
         Ray ray = new Ray(mPlayerCamera.transform.position, mPlayerCamera.transform.forward * 200.0f);
         RaycastHit hit;
@@ -105,6 +114,8 @@ public class TutorealIventCameraLookAt : MonoBehaviour
             mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerClerArmCath);
             mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
             mPlayerTutoreal.SetIsResetAble(!m_PlayerClerArmReset);
+            mPlayerTutoreal.SetAllIsArmSelectAble(!m_PlayerClerArmSelect);
+            mPlayerTutoreal.SetIsArmStretch(!m_PlayerClerArmExtend);
             Destroy(gameObject);
         }
     }

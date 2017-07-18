@@ -48,7 +48,10 @@ public class PlayerTextIvent : MonoBehaviour
     public bool m_PlayerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerArmReset;
-
+    [SerializeField, Tooltip("プレイヤーアームセレクトフラグ")]
+    public bool m_PlayerArmSelect;
+    [SerializeField, Tooltip("プレイヤーアーム伸びフラグ")]
+    public bool m_PlayerArmExtend;
     [SerializeField, Tooltip("プレイヤーアーム1"), HeaderAttribute("プレイヤーが当たった時どのアームを展開するか")]
     public bool m_PlayerArmEnable1;
     [SerializeField, Tooltip("プレイヤーアーム2")]
@@ -107,6 +110,8 @@ public class PlayerTextIvent : MonoBehaviour
             mPlayerTurorial.SetIsCamerMove(!m_PlayerCameraMove);
             mPlayerTurorial.SetIsArmCatchAble(!m_PlayerArmCath);
             mPlayerTurorial.SetIsArmRelease(!m_PlayerArmNoCath);
+            mPlayerTurorial.SetAllIsArmSelectAble(!m_PlayerArmSelect);
+            mPlayerTurorial.SetIsArmStretch(!m_PlayerArmExtend);
             if (mTutorealText.GetDrawTextFlag())
                 GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(false);
             GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetController(m_ControllerButton);

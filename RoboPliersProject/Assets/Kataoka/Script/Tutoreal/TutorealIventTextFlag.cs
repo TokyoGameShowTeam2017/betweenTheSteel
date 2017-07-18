@@ -21,6 +21,10 @@ public class TutorealIventTextFlag : MonoBehaviour
     public bool m_PlayerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerArmReset;
+    [SerializeField, Tooltip("プレイヤーアームセレクトフラグ")]
+    public bool m_PlayerArmSelect;
+    [SerializeField, Tooltip("プレイヤーアーム伸びフラグ")]
+    public bool m_PlayerArmExtend;
 
     // Use this for initialization
     void Start()
@@ -54,6 +58,8 @@ public class TutorealIventTextFlag : MonoBehaviour
             mTutorealPlayer.SetIsArmCatchAble(!m_PlayerArmCath);
             mTutorealPlayer.SetIsArmRelease(!m_PlayerArmNoCath);
             mTutorealPlayer.SetIsResetAble(!m_PlayerArmReset);
+            mTutorealPlayer.SetAllIsArmSelectAble(!m_PlayerArmSelect);
+            mTutorealPlayer.SetIsArmStretch(!m_PlayerArmExtend);
             Destroy(gameObject);
         }
     }

@@ -29,6 +29,10 @@ public class TutorealIventSetObject : MonoBehaviour {
     public bool m_PlayerClerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerClerArmReset;
+    [SerializeField, Tooltip("プレイヤーアームセレクトフラグ")]
+    public bool m_PlayerClerArmSelect;
+    [SerializeField, Tooltip("プレイヤーアーム伸びフラグ")]
+    public bool m_PlayerClerArmExtend;
 
 
     [SerializeField, Tooltip("プレイヤー移動させるか"), Space(15), HeaderAttribute("テキストが終わった時のプレイヤーの状態")]
@@ -43,6 +47,10 @@ public class TutorealIventSetObject : MonoBehaviour {
     public bool m_PlayerArmNoCath;
     [SerializeField, Tooltip("プレイヤーアームリセットフラグ")]
     public bool m_PlayerArmReset;
+    [SerializeField, Tooltip("プレイヤーアームセレクトフラグ")]
+    public bool m_PlayerArmSelect;
+    [SerializeField, Tooltip("プレイヤーアーム伸びフラグ")]
+    public bool m_PlayerArmExtend;
     //子のトランスフォーム
     List<Transform> mTransorms;
 
@@ -90,6 +98,8 @@ public class TutorealIventSetObject : MonoBehaviour {
         mPlayerTutorial.SetIsCamerMove(!m_PlayerCameraMove);
         mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
         mPlayerTutorial.SetIsResetAble(!m_PlayerArmReset);
+        mPlayerTutorial.SetAllIsArmSelectAble(!m_PlayerArmSelect);
+        mPlayerTutorial.SetIsArmStretch(!m_PlayerArmExtend);
         if(!m_PlayerArmNoCath)
         mPlayerTutorial.SetIsArmRelease(true);
         GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(true);
@@ -129,6 +139,8 @@ public class TutorealIventSetObject : MonoBehaviour {
             mPlayerTutorial.SetIsArmCatchAble(!m_PlayerClerArmCath);
             mPlayerTutorial.SetIsArmRelease(!m_PlayerClerArmNoCath);
             mPlayerTutorial.SetIsResetAble(!m_PlayerClerArmReset);
+            mPlayerTutorial.SetAllIsArmSelectAble(!m_PlayerClerArmSelect);
+            mPlayerTutorial.SetIsArmStretch(!m_PlayerClerArmExtend);
             Destroy(gameObject);
         }
     }
