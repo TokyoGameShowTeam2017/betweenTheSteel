@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StageSelectCollection : MonoBehaviour
+
+public class PauseSelectStage : MonoBehaviour
 {
 
     [SerializeField]
@@ -20,6 +21,18 @@ public class StageSelectCollection : MonoBehaviour
     private bool m_IsStart = false;
     private float m_FeadOutRate;
     private StickState m_StickState;
+    private float m_EnterBackRate;
+
+    private enum SelectState
+    {
+        SelectEnter,
+        Selecting,
+        SelectOut,
+
+        None
+    }
+
+    private SelectState m_SelectState;
 
     //private Dictionary<int, string> m_SoundCollection;
     //private int m_SoundNum;
@@ -33,54 +46,85 @@ public class StageSelectCollection : MonoBehaviour
         m_IsLoad = false;
         m_BackMenu = false;
         m_IsStart = false;
+        m_EnterBackRate = 0.0f;
+        //m_EnterEnd = false;
         m_StageNum = 1;
         m_StickState = StickState.None;
-        GameObject.Find("sideFrame").GetComponent<MenuFrame>().InitializeSpreadRate();
-
+        m_SelectState = SelectState.SelectEnter;
     }
-
-    //private void AddSound(int soundNum, string soundName)
-    //{
-    //    m_SoundCollection[soundNum] = soundName;
-    //}
 
     // Update is called once per frame
     void Update()
     {
-        if (!m_IsStart)
+
+        switch (m_SelectState)
         {
-            //選択中のインプット
-            StageSelectInput();
-            //Aボタンで戻る
-            if (Input.GetButtonDown("XBOXArm3") && !m_BackMenu)
-            {
-                m_BeforStageNum = m_StageNum;
-                m_StageNum = 20;
-            }
+            case SelectState.SelectEnter:
+                if (GameObject.Find("sideFrame").GetComponent<PauseFrame>().GetSpreadIsEnd())
+                {
+                    EnterBack();
+                }
+                break;
+
+            case SelectState.Selecting:
+                if (!m_IsStart)
+                {
+                    //選択中のインプット
+                    StageSelectInput();
+
+                    //Aボタンで戻る
+                    if (Input.GetButtonDown("XBOXArm3") && !m_BackMenu)
+                    {
+                        m_BeforStageNum = m_StageNum;
+                        m_StageNum = 20;
+                    }
+                    //スタートボタンを押したら消える
+                    if (Input.GetButtonDown("XBOXStart"))
+                    {
+                        GameObject.Find("RawImage").GetComponent<RawImage>().color = new Color(1, 1, 1, 0);
+                        Destroy(gameObject);
+                    }
+                }
+                //ステージのマップをロード
+                StageMapLoad();
+
+                //ステージを始める
+                StartStageMap();
+
+                //ステージ選択中
+                StageSelect();
+
+                break;
+
+            case SelectState.SelectOut:
+                GameObject.Find("PausePerformanceCanvas(Clone)").GetComponent<PausePerformance>().SetPauseState(PausePerformance.PauseState.BackPauseMenu);
+                Destroy(gameObject);
+                break;
         }
+    }
 
-        //ステージのマップをロード
-        StageMapLoad();
-
-        //ステージを始める
-        StartStageMap();
-
-        //ステージ選択中
-        StageSelect();
+    private void EnterBack()
+    {
+        //if (!m_EnterEnd)
+        //{
+        if (m_EnterBackRate < 1) m_EnterBackRate += 3.5f * Time.deltaTime;
+        else m_SelectState = SelectState.Selecting;
+            GameObject.Find("backback").transform.localPosition = Vector3.Lerp(new Vector3(-540, -430, 0), new Vector3(-540, -315, 0), m_EnterBackRate);
+        //}
     }
 
     private void StageMapLoad()
     {
         if (!m_IsLoad)
         {
-            GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().LoadScene(m_StageNum);
+            GameObject.Find("RotationOrigin").GetComponent<PauseStageSelectMap>().LoadScene(m_StageNum);
             m_IsLoad = true;
         }
     }
 
     private void StageMapUnLoad()
     {
-        GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().LoadScene(-1);
+        GameObject.Find("RotationOrigin").GetComponent<PauseStageSelectMap>().LoadScene(-1);
     }
 
     //選択中のインプット関係
@@ -281,24 +325,19 @@ public class StageSelectCollection : MonoBehaviour
         {
             if (m_FeadOutRate >= 0)
             {
-                m_FeadOutRate -= 0.03f * Time.deltaTime * 60;
+                m_FeadOutRate -= 3.5f * Time.deltaTime;
                 m_Alpha -= 0.1f * Time.deltaTime * 60;
                 GameObject.Find("Stages").GetComponent<CanvasGroup>().alpha = m_Alpha;
-                GameObject.Find("selectstageback").GetComponent<CanvasGroup>().alpha = m_Alpha;
-                GameObject.Find("backback").transform.localPosition = Vector3.Lerp(new Vector3(-350, -260, 0), new Vector3(-350, -196, 0), m_FeadOutRate);
+                GameObject.Find("selectback").GetComponent<CanvasGroup>().alpha = m_Alpha;
+                GameObject.Find("backback").transform.localPosition = Vector3.Lerp(new Vector3(-540, -430, 0), new Vector3(-540, -315, 0), m_FeadOutRate);
             }
-            else GameObject.Find("sideFrame").GetComponent<MenuFrame>().BackFrame();
+            else
+            {
+                m_SelectState = SelectState.SelectOut;
+            }
         }
     }
 
-    //private void SoundChange()
-    //{
-      
-    //    m_SoundNum = Random.Range(0, 6);
-    //    print(m_SoundNum);
-    //    SoundManager.Instance.StopBgm();
-    //    SoundManager.Instance.PlayBgm(m_SoundCollection[m_SoundNum]);
-    //}
 
     //ステージを始める
     private void StartStageMap()
@@ -307,7 +346,6 @@ public class StageSelectCollection : MonoBehaviour
         if (InputWrap() && !m_IsStart)
         {
             m_IsStart = true;
-            //SoundChange();
             if (m_StageNum == 1)
             {
                 SoundManager.Instance.StopBgm();
@@ -318,16 +356,21 @@ public class StageSelectCollection : MonoBehaviour
                 SoundManager.Instance.StopBgm();
             }
             SoundManager.Instance.PlaySe("enter");
-            GameObject.Find("RotationOrigin").GetComponent<StageSelectMap>().StartOtherScene(m_StageNum);
+            GameObject.Find("RotationOrigin").GetComponent<PauseStageSelectMap>().StartOtherScene(m_StageNum);
         }
         if (m_IsStart)
         {
             m_Alpha -= 0.1f * Time.deltaTime * 60;
             m_FeadOutRate -= 0.03f * Time.deltaTime * 60;
             GameObject.Find("Stages").GetComponent<CanvasGroup>().alpha = m_Alpha;
-            GameObject.Find("selectstageback").GetComponent<CanvasGroup>().alpha = m_Alpha;
+            GameObject.Find("selectback").GetComponent<CanvasGroup>().alpha = m_Alpha;
             GameObject.Find("backback").transform.localPosition = Vector3.Lerp(new Vector3(-350, -260, 0), new Vector3(-350, -196, 0), m_FeadOutRate);
-            GameObject.Find("CommonCanvas").GetComponent<CanvasGroup>().alpha = m_Alpha;
+            if (m_Alpha <= 0 && m_FeadOutRate <= 0)
+            {
+                Destroy(GameObject.Find("PauseCanvas(Clone)"));
+                Destroy(GameObject.Find("PausePerformanceCanvas(Clone)"));
+            }
+            //GameObject.Find("CommonCanvas").GetComponent<CanvasGroup>().alpha = m_Alpha;
         }
     }
 

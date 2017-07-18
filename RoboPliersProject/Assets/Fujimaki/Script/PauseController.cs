@@ -15,6 +15,13 @@ public class PauseController : MonoBehaviour
     [SerializeField]
     private RawImage[] texts;
 
+    [SerializeField]
+    private GameObject manualPrefab;
+    [SerializeField]
+    private GameObject selectStagePrefab;
+    //[SerializeField]
+    //private Canvas selectCanvas;
+
     private int select;
 
     private Coroutine fade;
@@ -26,12 +33,64 @@ public class PauseController : MonoBehaviour
         fade = StartCoroutine(FadeGroup(true));
         select = 0;
         UpdateMenuColor();
+
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
     }
 
     private void Update()
     {
-        if ((InputManager.GetStick() == StickState.Up) && !input) 
+        if (Input.GetButtonDown("XBOXStart"))
+        {
+            StartCoroutine(FadeGroup(false));
+        }
+
+        if (GameObject.Find("PausePerformanceCanvas(Clone)").GetComponent<PausePerformance>().GetPauseState() == PausePerformance.PauseState.DecisionWait)
+        {
+            PauseInput();
+
+            if (Input.GetButtonDown("XBOXArm3"))
+            {
+                select = 4;
+                UpdateMenuColor();
+                StartCoroutine(FadeGroup(false));
+                DestroyPausePerformancePrefab();
+            }
+
+            if (InputWrap())
+            {
+                switch (select)
+                {
+                    case 0:
+                        StartCoroutine(FadeGroup(false));
+                        DestroyPausePerformancePrefab();
+                        break;
+
+                    case 1:
+                        Instantiate(selectStagePrefab);
+                        //GameObject.Find("RotationOrigin").GetComponent<PauseStageSelectMap>().enabled = true;
+                        break;
+
+                    case 2:
+                        Instantiate(manualPrefab);
+                        break;
+
+                    case 3:
+                        StartCoroutine(LoadScene("Title"));
+                        DestroyPausePerformancePrefab();
+                        break;
+
+                    case 4:
+                        StartCoroutine(FadeGroup(false));
+                        DestroyPausePerformancePrefab();
+                        break;
+                }
+            }
+        }
+    }
+
+    private void PauseInput()
+    {
+        if ((InputManager.GetStick() == StickState.Up) && !input)
         {
             input = true;
             select--;
@@ -39,6 +98,7 @@ public class PauseController : MonoBehaviour
             {
                 select = texts.Length - 1;
             }
+            SoundManager.Instance.PlaySe("select");
 
             UpdateMenuColor();
         }
@@ -51,43 +111,34 @@ public class PauseController : MonoBehaviour
             {
                 select = 0;
             }
+            SoundManager.Instance.PlaySe("select");
 
             UpdateMenuColor();
         }
 
-        if (InputManager.GetSelectArm().isDown)
-        {
-            switch (select)
-            {
-                case 0:
-                    StartCoroutine(FadeGroup(false));
-                    break;
-                case 1:
-                    StartCoroutine(LoadScene("Title"));
-                    break;
-                case 2:
-                    break;
-            }
-        }
-
-        if (Input.GetButtonDown("XBOXStart"))
-        {
-            StartCoroutine(FadeGroup(false));
-        }
 
         if ((InputManager.GetStick() != StickState.Up) && (InputManager.GetStick() != StickState.Down))
         {
             input = false;
         }
-
     }
 
     private void UpdateMenuColor()
     {
-        for(int i = 0; i < texts.Length; i++)
+        for (int i = 0; i < texts.Length; i++)
         {
             texts[i].color = i == select ? new Color(0, 1, 1, 1) : new Color(1, 1, 1, 1);
         }
+    }
+
+    private void DestroyPausePerformancePrefab()
+    {
+        Destroy(GameObject.Find("PausePerformanceCanvas(Clone)"));
+    }
+
+    public int GetSelectNum()
+    {
+        return select;
     }
 
     public void DestroyCanvas()
@@ -131,7 +182,7 @@ public class PauseController : MonoBehaviour
             {
                 canvasGroup.alpha = 1 - time;
             }
-            time += Time.deltaTime * 10;
+            time += Time.deltaTime * 3;
 
             yield return null;
         }
@@ -142,4 +193,25 @@ public class PauseController : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    //ボタンの押されたとき
+    private bool InputWrap()
+    {
+        int id = 0;
+
+        //if (Input.GetButtonDown("XBOXArm1"))
+        //    id = 1;
+        if (Input.GetButtonDown("XBOXArm2"))
+            id = 2;
+        //if (Input.GetButtonDown("XBOXArm3"))
+        //    id = 3;
+        //if (Input.GetButtonDown("XBOXArm4"))
+        //    id = 4;
+
+        if (id != 0)
+            return true;
+
+        return false;
+    }
+
 }

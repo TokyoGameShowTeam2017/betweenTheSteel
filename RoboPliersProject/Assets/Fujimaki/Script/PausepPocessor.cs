@@ -6,6 +6,8 @@ public class PausepPocessor : MonoBehaviour {
 
     [SerializeField]
     private GameObject pausePrefab;
+    [SerializeField]
+    private GameObject pauseFramePrefab;
 
     private PauseController pauseController;
 
@@ -13,6 +15,7 @@ public class PausepPocessor : MonoBehaviour {
     {
         if (Input.GetButtonDown("XBOXStart"))
         {
+            SoundManager.Instance.PlaySe("enter");
 
             if (SceneLoadInitializer.Instance.nonPauseScene)
             {
@@ -23,6 +26,7 @@ public class PausepPocessor : MonoBehaviour {
             {
                 GameObject g = Instantiate(pausePrefab, Vector3.zero, Quaternion.identity);
                 pauseController = g.GetComponent<PauseController>();
+                Instantiate(pauseFramePrefab);
             }
         }
 	}
