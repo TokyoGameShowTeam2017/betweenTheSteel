@@ -51,7 +51,7 @@ public class PauseSelectStage : MonoBehaviour
         m_StageNum = 1;
         m_StickState = StickState.None;
         m_SelectState = SelectState.SelectEnter;
-        DontDestroyOnLoad(GameObject.Find("RotationOrigin"));
+        DontDestroyOnLoad(GameObject.Find("PauseRotationOrigin"));
         DontDestroyOnLoad(GameObject.Find("Canvas"));
         DontDestroyOnLoad(gameObject);
     }
@@ -126,14 +126,14 @@ public class PauseSelectStage : MonoBehaviour
     {
         if (!m_IsLoad)
         {
-            GameObject.Find("RotationOrigin").GetComponent<PauseStageSelectMap>().LoadScene(m_StageNum);
+            GameObject.Find("PauseRotationOrigin").GetComponent<PauseStageSelectMap>().LoadScene(m_StageNum);
             m_IsLoad = true;
         }
     }
 
     private void StageMapUnLoad()
     {
-        GameObject.Find("RotationOrigin").GetComponent<PauseStageSelectMap>().LoadScene(-1);
+        GameObject.Find("PauseRotationOrigin").GetComponent<PauseStageSelectMap>().LoadScene(-1);
     }
 
     //選択中のインプット関係
@@ -365,7 +365,7 @@ public class PauseSelectStage : MonoBehaviour
                 SoundManager.Instance.StopBgm();
             }
             SoundManager.Instance.PlaySe("enter");
-            GameObject.Find("RotationOrigin").GetComponent<PauseStageSelectMap>().StartOtherScene(m_StageNum);
+            GameObject.Find("PauseRotationOrigin").GetComponent<PauseStageSelectMap>().StartOtherScene(m_StageNum);
         }
         if (m_IsStart)
         {
