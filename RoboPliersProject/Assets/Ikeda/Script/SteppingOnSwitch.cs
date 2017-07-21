@@ -23,11 +23,14 @@ public class SteppingOnSwitch : MonoBehaviour
     //プレイヤーが触れたら
     public void OnTriggerEnter(Collider other)
     {
-        m_IsExit = false;
-        if (!m_IsEnter)
-        {
-            m_IsEnter = true;
-        }
+        //if (other.gameObject.name == "Tekkyuu" || other.tag == "Player")
+        //{
+            m_IsExit = false;
+            if (!m_IsEnter)
+            {
+                m_IsEnter = true;
+            }
+        //}
     }
 
     public void OnTriggerExit(Collider other)
