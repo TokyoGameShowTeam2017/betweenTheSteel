@@ -66,6 +66,7 @@ public class PauseSelectStage : MonoBehaviour
                 if (GameObject.Find("sideFrame").GetComponent<PauseFrame>().GetSpreadIsEnd())
                 {
                     EnterBack();
+                    GameObject.Find("selectback").GetComponent<CanvasGroup>().alpha = 1.0f;
                 }
                 //スタートボタンを押したら消える
                 if (Input.GetButtonDown("XBOXStart"))

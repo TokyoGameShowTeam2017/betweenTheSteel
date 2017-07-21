@@ -755,19 +755,23 @@ public class PliersMove : MonoBehaviour
         {
             m_LeftRB.velocity = Vector3.zero;
             m_RightRB.velocity = Vector3.zero;
-            return;
+            //return;
+        }
+        else
+        {
+            m_LeftRB.velocity = m_PliersLeft.right * m_Power;
+            m_RightRB.velocity = m_PliersRight.right * -m_Power;
+
         }
 
-
-
         //左
-        m_LeftRB.velocity = m_PliersLeft.right * m_Power;
+        //m_LeftRB.velocity = m_PliersLeft.right * m_Power;
         Vector3 clampPosition = m_LeftStartPosition;
         clampPosition.x = Mathf.Clamp(m_PliersLeft.localPosition.x, m_LeftStartPosition.x, m_LeftEndPosition.x);
         m_PliersLeft.localPosition = clampPosition;
 
         //右
-        m_RightRB.velocity = m_PliersRight.right * -m_Power;
+        //m_RightRB.velocity = m_PliersRight.right * -m_Power;
         Vector3 clampPosition2 = m_RightStartPosition;
         clampPosition2.x = Mathf.Clamp(m_PliersRight.localPosition.x, m_RightEndPosition.x, m_RightStartPosition.x);
         m_PliersRight.localPosition = clampPosition2;

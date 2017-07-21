@@ -19,6 +19,6 @@ public class NextButton : MonoBehaviour
 
     public void OnClick()
     {
-        transform.parent.GetComponent<Result>().m_IsEnd = true;
+        //transform.parent.GetComponent<Result>().m_IsEnd = true;
     }
 }
