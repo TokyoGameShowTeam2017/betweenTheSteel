@@ -80,7 +80,8 @@ public class ParameterUiRay : MonoBehaviour
         {
             if (mHit.collider.tag == "CatchObject" ||
                 mHit.collider.tag == "Tekkyu" ||
-                mHit.collider.tag == "UiObject")
+                mHit.collider.tag == "UiObject"||
+                mHit.collider.name=="Chain")
             {
                 GetObjectParameterCheck(mHit.collider.gameObject);
             }
