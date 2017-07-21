@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class TutorealArmSetGaugeUi : MonoBehaviour
+public class TutorialArmSetGaugeUi : MonoBehaviour
 {
     private bool mLoadingFlag;
     private RectTransform mRect;

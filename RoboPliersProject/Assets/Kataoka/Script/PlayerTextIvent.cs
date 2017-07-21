@@ -69,7 +69,7 @@ public class PlayerTextIvent : MonoBehaviour
     //プレイヤーのチュートリアル
     private PlayerTutorialControl mPlayerTurorial;
     //ダウンロードバー
-    private TutorealArmSetGaugeUi mArmSetBar;
+    private TutorialArmSetGaugeUi mArmSetBar;
     [SerializeField, Tooltip("当たるかどうか"), Space(15)]
     public bool m_IsCollision;
     //声の名前
@@ -82,7 +82,7 @@ public class PlayerTextIvent : MonoBehaviour
     {
         mTutorialText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorialText>();
         mPlayerTurorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
-        mArmSetBar = GameObject.FindGameObjectWithTag("LoadingBar").GetComponent<TutorealArmSetGaugeUi>();
+        mArmSetBar = GameObject.FindGameObjectWithTag("LoadingBar").GetComponent<TutorialArmSetGaugeUi>();
         mVoiceName = new List<string>();
         foreach (var i in m_Voice)
         {
