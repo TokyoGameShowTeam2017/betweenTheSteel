@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TutorialEventCameraMoveCheck : MonoBehaviour {
-    private PlayerTutorialControl mPlayerTutoreal;
+    private PlayerTutorialControl mPlayerTutorial;
     private TutorialText mText;
     private GameObject mPlayerCamera;
 
@@ -69,7 +69,7 @@ public class TutorialEventCameraMoveCheck : MonoBehaviour {
     void Start()
     {
         mText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorialText>();
-        mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
+        mPlayerTutorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         mPlayerCamera = GameObject.FindGameObjectWithTag("RawCamera").gameObject;
 
         mInputTime = 0.0f;
@@ -98,14 +98,14 @@ public class TutorialEventCameraMoveCheck : MonoBehaviour {
         mText.GetDrawTextFlag()) return;
         m_UiPrefab.SetActive(true);
         GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(true);
-        mPlayerTutoreal.SetIsArmMove(!m_PlayerArmMove);
-        mPlayerTutoreal.SetIsPlayerMove(!m_PlayerMove);
-        mPlayerTutoreal.SetIsCamerMove(!m_PlayerCameraMove);
-        mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
-        mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
-        mPlayerTutoreal.SetIsResetAble(!m_PlayerArmReset);
-        mPlayerTutoreal.SetAllIsArmSelectAble(!m_PlayerArmSelect);
-        mPlayerTutoreal.SetIsArmStretch(!m_PlayerArmExtend);
+        mPlayerTutorial.SetIsArmMove(!m_PlayerArmMove);
+        mPlayerTutorial.SetIsPlayerMove(!m_PlayerMove);
+        mPlayerTutorial.SetIsCamerMove(!m_PlayerCameraMove);
+        mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
+        mPlayerTutorial.SetIsArmRelease(!m_PlayerArmNoCath);
+        mPlayerTutorial.SetIsResetAble(!m_PlayerArmReset);
+        mPlayerTutorial.SetAllIsArmSelectAble(!m_PlayerArmSelect);
+        mPlayerTutorial.SetIsArmStretch(!m_PlayerArmExtend);
         Vector2 inputVec = InputManager.GetCameraMove();
         Vector2 absVec = new Vector2(Mathf.Abs(inputVec.x), Mathf.Abs(inputVec.y));
         mInputDir = InputDir.INPUT_NO;
@@ -183,14 +183,14 @@ public class TutorialEventCameraMoveCheck : MonoBehaviour {
                 {
                     m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                 }
-            mPlayerTutoreal.SetIsArmMove(!m_PlayerClerArmMove);
-            mPlayerTutoreal.SetIsPlayerMove(!m_PlayerClerMove);
-            mPlayerTutoreal.SetIsCamerMove(!m_PlayerClerCameraMove);
-            mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerClerArmCath);
-            mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
-            mPlayerTutoreal.SetIsResetAble(!m_PlayerClerArmReset);
-            mPlayerTutoreal.SetAllIsArmSelectAble(!m_PlayerClerArmSelect);
-            mPlayerTutoreal.SetIsArmStretch(!m_PlayerClerArmExtend);
+            mPlayerTutorial.SetIsArmMove(!m_PlayerClerArmMove);
+            mPlayerTutorial.SetIsPlayerMove(!m_PlayerClerMove);
+            mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
+            mPlayerTutorial.SetIsArmCatchAble(!m_PlayerClerArmCath);
+            mPlayerTutorial.SetIsArmRelease(!m_PlayerClerArmNoCath);
+            mPlayerTutorial.SetIsResetAble(!m_PlayerClerArmReset);
+            mPlayerTutorial.SetAllIsArmSelectAble(!m_PlayerClerArmSelect);
+            mPlayerTutorial.SetIsArmStretch(!m_PlayerClerArmExtend);
 
             Destroy(gameObject);
         }

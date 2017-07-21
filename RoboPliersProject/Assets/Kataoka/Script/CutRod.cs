@@ -12,6 +12,8 @@ public class CutRod : MonoBehaviour
     private GameObject mGravityPrefab;
     //一回生成したかどうか
     private bool mIsSpawnPrefab;
+    //何かアクションを起こしたら
+    private bool mIsActionFlag;
     //重力を適応させるか
     private bool mIsPrefabGravity;
     //カットされたか
@@ -30,6 +32,8 @@ public class CutRod : MonoBehaviour
         mIsSpawnPrefab = false;
         mIsPrefabGravity = m_FixBothEnds;
         mIsCutFlag = false;
+
+        //mIsActionFlag = false;
         //取得
         m_Bones = GetComponent<Rod>().GetBone();
         m_RotatePoints = GetComponent<Rod>().GetRotatePoint();
@@ -105,7 +109,6 @@ public class CutRod : MonoBehaviour
                         prefab.GetComponent<Rod>().SetRotatePoint(Rod.StartPoint.LEFT_POINT);
                         prefab.GetComponent<Rod>().SetCatchType(CatchObject.CatchType.Static);
                         prefab.GetComponent<CutRod>().m_FixBothEnds = m_FixBothEnds;
-
                     }
                     //それ以外は非固定
                     else
@@ -141,8 +144,12 @@ public class CutRod : MonoBehaviour
                 GetComponent<RodReSet>().SetChild();
                 if (leftPoint)
                     GetComponent<Rod>().SetRotatePoint(Rod.StartPoint.LEFT_POINT);
+
+                prefab.GetComponent<CutRod>().SetActionFlag(true);
+
                 //一回生成された
                 mIsSpawnPrefab = true;
+                mIsActionFlag = true;
             }
         }
     }
@@ -150,4 +157,21 @@ public class CutRod : MonoBehaviour
     {
         return mIsCutFlag;
     }
+    public bool GetSpawnFlag()
+    {
+        return mIsSpawnPrefab;
+    }
+    public bool GetFixBothEndsFlag()
+    {
+        return m_FixBothEnds;
+    }
+    public void SetActionFlag(bool flag)
+    {
+        mIsActionFlag = flag;
+    }
+    public bool GetActionFlag()
+    {
+        return mIsActionFlag;
+    }
+
 }

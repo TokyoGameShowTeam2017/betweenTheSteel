@@ -29,6 +29,7 @@ public class MiniMap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (mCamera == null) return;
         //UIフェード処理
         if (m_DrawMiniMap)
             m_MiniMapUI.GetComponent<CanvasGroup>().alpha += 1.0f * Time.deltaTime;

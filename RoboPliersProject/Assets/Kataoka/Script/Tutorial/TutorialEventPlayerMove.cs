@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TutorialEventPlayerMove : MonoBehaviour
 {
-    private PlayerTutorialControl mPlayerTutoreal;
+    private PlayerTutorialControl mPlayerTutorial;
     private TutorialText mText;
     private GameObject mPlayerCamera;
 
@@ -72,7 +72,7 @@ public class TutorialEventPlayerMove : MonoBehaviour
     void Start()
     {
         mText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorialText>();
-        mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
+        mPlayerTutorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
 
         mPlayerCamera = GameObject.FindGameObjectWithTag("RawCamera").gameObject;
 
@@ -106,20 +106,20 @@ public class TutorialEventPlayerMove : MonoBehaviour
 
 
         mMoveCheckTrans.gameObject.SetActive(true);
-        mMoveCheckTrans.transform.position = mPlayerTutoreal.gameObject.transform.position;
+        mMoveCheckTrans.transform.position = mPlayerTutorial.gameObject.transform.position;
         mMoveCheckTrans.rotation =
             Quaternion.Euler(mMoveCheckTrans.rotation.eulerAngles.x,
             mPlayerCamera.transform.rotation.eulerAngles.y,
             mMoveCheckTrans.rotation.eulerAngles.z);
 
-        mPlayerTutoreal.SetIsArmMove(!m_PlayerArmMove);
-        mPlayerTutoreal.SetIsPlayerMove(!m_PlayerMove);
-        mPlayerTutoreal.SetIsCamerMove(!m_PlayerCameraMove);
-        mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
-        mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
-        mPlayerTutoreal.SetIsResetAble(!m_PlayerArmReset);
-        mPlayerTutoreal.SetAllIsArmSelectAble(!m_PlayerArmSelect);
-        mPlayerTutoreal.SetIsArmStretch(!m_PlayerArmExtend);
+        mPlayerTutorial.SetIsArmMove(!m_PlayerArmMove);
+        mPlayerTutorial.SetIsPlayerMove(!m_PlayerMove);
+        mPlayerTutorial.SetIsCamerMove(!m_PlayerCameraMove);
+        mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
+        mPlayerTutorial.SetIsArmRelease(!m_PlayerArmNoCath);
+        mPlayerTutorial.SetIsResetAble(!m_PlayerArmReset);
+        mPlayerTutorial.SetAllIsArmSelectAble(!m_PlayerArmSelect);
+        mPlayerTutorial.SetIsArmStretch(!m_PlayerArmExtend);
 
 
 
@@ -201,14 +201,14 @@ public class TutorialEventPlayerMove : MonoBehaviour
                 {
                     m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                 }
-            mPlayerTutoreal.SetIsArmMove(!m_PlayerClerArmMove);
-            mPlayerTutoreal.SetIsPlayerMove(!m_PlayerClerMove);
-            mPlayerTutoreal.SetIsCamerMove(!m_PlayerClerCameraMove);
-            mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerClerArmCath);
-            mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
-            mPlayerTutoreal.SetIsResetAble(!m_PlayerClerArmReset);
-            mPlayerTutoreal.SetAllIsArmSelectAble(!m_PlayerClerArmSelect);
-            mPlayerTutoreal.SetIsArmStretch(!m_PlayerClerArmExtend);
+            mPlayerTutorial.SetIsArmMove(!m_PlayerClerArmMove);
+            mPlayerTutorial.SetIsPlayerMove(!m_PlayerClerMove);
+            mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
+            mPlayerTutorial.SetIsArmCatchAble(!m_PlayerClerArmCath);
+            mPlayerTutorial.SetIsArmRelease(!m_PlayerClerArmNoCath);
+            mPlayerTutorial.SetIsResetAble(!m_PlayerClerArmReset);
+            mPlayerTutorial.SetAllIsArmSelectAble(!m_PlayerClerArmSelect);
+            mPlayerTutorial.SetIsArmStretch(!m_PlayerClerArmExtend);
             Destroy(gameObject);
         }
     }
