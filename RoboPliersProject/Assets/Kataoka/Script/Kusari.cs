@@ -18,6 +18,8 @@ public class Kusari : MonoBehaviour
         m_IsCollision = false;
         GetComponent<CatchObject>().SetNoRigidBody(CatchObject.CatchType.Static);
 
+
+
         m_StartLife = m_Life;
     }
 
@@ -62,5 +64,13 @@ public class Kusari : MonoBehaviour
         m_Life -= damage * Time.deltaTime;
         return m_Life;
     }
-
+    public void SetStartLife(float life)
+    {
+        m_StartLife = life;
+        m_Life = m_StartLife;
+    }
+    public void SetStartStrength(float strength)
+    {
+        m_Strength = strength;
+    }
 }
