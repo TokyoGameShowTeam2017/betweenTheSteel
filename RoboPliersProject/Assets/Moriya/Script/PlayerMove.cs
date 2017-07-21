@@ -367,6 +367,8 @@ public class PlayerMove : MonoBehaviour
             roty.localEulerAngles += new Vector3(0.0f, h, 0.0f);
             tr.localEulerAngles += new Vector3(0.0f, h, 0.0f);
 
+ 
+
             //キャッチしているアームを特定
             int catchid = m_ArmManager.GetIsCatchArmID();
 
@@ -391,6 +393,29 @@ public class PlayerMove : MonoBehaviour
             tr.position = pos;
 
 
+            //壁抜け防止
+            Vector3 dir;
+            if (h > 0)
+                dir = -armtr.right;
+            else
+                dir = armtr.right;
+
+            bool iswallhit = false;
+            for (int i = 0; i < 9; i++)
+            {
+                float x = ((float)i - 4.0f) / 4.0f;
+                Vector3 o = armtr.forward * x;
+                Ray ray = new Ray((tr.position + o) - dir, dir);
+                int mask = LayerMask.NameToLayer("ArmAndPliers");
+                RaycastHit hit;
+                iswallhit = Physics.Raycast(ray, out hit, 3.0f, mask);
+                if (iswallhit)
+                {
+                    roty.localEulerAngles -= new Vector3(0.0f, h, 0.0f);
+                    tr.localEulerAngles -= new Vector3(0.0f, h, 0.0f);
+                    break;
+                }
+            }
 
 
 
@@ -888,15 +913,24 @@ public class PlayerMove : MonoBehaviour
             else
                 dir = armtr.right;
 
-            Ray ray = new Ray(tr.position - dir, dir);
-            int mask = LayerMask.NameToLayer("ArmAndPliers");
-            RaycastHit hit;
-            bool iswallhit = Physics.Raycast(ray, out hit, 3.0f, mask);
-            if (iswallhit)
+
+            bool iswallhit = false;
+            for(int i = 0;i<9;i++)
             {
-                roty.localEulerAngles -= new Vector3(0.0f, h, 0.0f);
-                m_CameraMove.Rotation(-h, 0.0f);
+                float x = ((float)i - 4.0f) / 4.0f;
+                Vector3 offset = armtr.forward * x;
+                Ray ray = new Ray((tr.position + offset) - dir, dir);
+                int mask = LayerMask.NameToLayer("ArmAndPliers");
+                RaycastHit hit;
+                iswallhit = Physics.Raycast(ray, out hit, 3.0f, mask);
+                if (iswallhit)
+                {
+                    roty.localEulerAngles -= new Vector3(0.0f, h, 0.0f);
+                    m_CameraMove.Rotation(-h, 0.0f);
+                    break;
+                }
             }
+
         }
 
 

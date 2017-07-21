@@ -382,6 +382,7 @@ public class ArmMove : MonoBehaviour
                     //後方にレイを飛ばして、ヒットしている場合はアームを短くする
                     Transform pli = m_ArmManager.GetEnablPliers().transform;
                     Vector3 dir = -pli.forward;
+                    //m_ArmManager.GetEnablArm().transform.position;
                     Ray ray = new Ray(pli.position, dir);
                     int mask = LayerMask.NameToLayer("ArmAndPliers");
                     RaycastHit hit;
