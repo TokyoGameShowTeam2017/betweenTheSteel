@@ -24,4 +24,12 @@ public class ObjectParameter : MonoBehaviour
             }
         }
     }
+    public void SetChainParameter()
+    {
+        if (GetComponent<Kusari>() != null)
+        {
+            GetComponent<Kusari>().SetStartLife(m_Life);
+            GetComponent<Kusari>().SetStartStrength(m_Strength);
+        }
+    }
 }

@@ -65,11 +65,11 @@ public class PlayerTextIvent : MonoBehaviour
 
     private GameObject mPointObject;
     //プレイヤーテキスト
-    private TutorealText mTutorealText;
+    private TutorialText mTutorialText;
     //プレイヤーのチュートリアル
     private PlayerTutorialControl mPlayerTurorial;
     //ダウンロードバー
-    private TutorealArmSetGaugeUi mArmSetBar;
+    private TutorialArmSetGaugeUi mArmSetBar;
     [SerializeField, Tooltip("当たるかどうか"), Space(15)]
     public bool m_IsCollision;
     //声の名前
@@ -80,9 +80,9 @@ public class PlayerTextIvent : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        mTutorealText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorealText>();
+        mTutorialText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorialText>();
         mPlayerTurorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
-        mArmSetBar = GameObject.FindGameObjectWithTag("LoadingBar").GetComponent<TutorealArmSetGaugeUi>();
+        mArmSetBar = GameObject.FindGameObjectWithTag("LoadingBar").GetComponent<TutorialArmSetGaugeUi>();
         mVoiceName = new List<string>();
         foreach (var i in m_Voice)
         {
@@ -97,7 +97,7 @@ public class PlayerTextIvent : MonoBehaviour
             if (m_DrawPointObject != null) m_DrawPointObject.SetActive(true);
             if (m_NoDrawPointObject != null) m_NoDrawPointObject.SetActive(false);
             if (m_Text.Length > 0)
-                mTutorealText.SetText(m_Text, mVoiceName);
+                mTutorialText.SetText(m_Text, mVoiceName);
 
             if (m_PlayerArmEnable1 || m_PlayerArmEnable2 ||
                 m_PlayerArmEnable3 || m_PlayerArmEnable4)
@@ -112,14 +112,14 @@ public class PlayerTextIvent : MonoBehaviour
             mPlayerTurorial.SetIsArmRelease(!m_PlayerArmNoCath);
             mPlayerTurorial.SetAllIsArmSelectAble(!m_PlayerArmSelect);
             mPlayerTurorial.SetIsArmStretch(!m_PlayerArmExtend);
-            if (mTutorealText.GetDrawTextFlag())
+            if (mTutorialText.GetDrawTextFlag())
                 GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(false);
             GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetController(m_ControllerButton);
 
             if (m_IventPrefab != null)
-                m_IventPrefab.GetComponent<TutorealIventFlag>().PlayIvent();
+                m_IventPrefab.GetComponent<TutorialEventFlag>().PlayIvent();
 
-            if (mSwitch != null) mSwitch.GetComponent<TutorealIventSwitch>().IsCollision(true);
+            if (mSwitch != null) mSwitch.GetComponent<TutorialEventSwitch>().IsCollision(true);
             Destroy(gameObject);
         }
     }
