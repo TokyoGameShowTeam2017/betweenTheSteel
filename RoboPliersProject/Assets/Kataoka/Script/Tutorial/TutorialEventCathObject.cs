@@ -46,14 +46,14 @@ public class TutorialEventCathObject : MonoBehaviour
     //アームマネージャー
     private ArmManager mArm;
     //プレイヤーチュートリアル
-    private PlayerTutorialControl mPlayerTutoreal;
+    private PlayerTutorialControl mPlayerTutorial;
     //チュートリアルテキスト
     private TutorialText mTutorialText;
     // Use this for initialization
     void Start()
     {
         mArm = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
-        mPlayerTutoreal = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
+        mPlayerTutorial = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         mTutorialText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorialText>();
     }
 
@@ -64,14 +64,14 @@ public class TutorialEventCathObject : MonoBehaviour
             mTutorialText.GetDrawTextFlag()) return;
 
         //プレイヤー状態登録
-        mPlayerTutoreal.SetIsArmMove(!m_PlayerArmMove);
-        mPlayerTutoreal.SetIsPlayerMove(!m_PlayerMove);
-        mPlayerTutoreal.SetIsCamerMove(!m_PlayerCameraMove);
-        mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerArmCath);
-        mPlayerTutoreal.SetIsArmRelease(!m_PlayerArmNoCath);
-        mPlayerTutoreal.SetIsResetAble(!m_PlayerArmReset);
-        mPlayerTutoreal.SetAllIsArmSelectAble(!m_PlayerArmSelect);
-        mPlayerTutoreal.SetIsArmStretch(!m_PlayerArmExtend);
+        mPlayerTutorial.SetIsArmMove(!m_PlayerArmMove);
+        mPlayerTutorial.SetIsPlayerMove(!m_PlayerMove);
+        mPlayerTutorial.SetIsCamerMove(!m_PlayerCameraMove);
+        mPlayerTutorial.SetIsArmCatchAble(!m_PlayerArmCath);
+        mPlayerTutorial.SetIsArmRelease(!m_PlayerArmNoCath);
+        mPlayerTutorial.SetIsResetAble(!m_PlayerArmReset);
+        mPlayerTutorial.SetAllIsArmSelectAble(!m_PlayerArmSelect);
+        mPlayerTutorial.SetIsArmStretch(!m_PlayerArmExtend);
 
         GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(true);
 
@@ -81,8 +81,8 @@ public class TutorialEventCathObject : MonoBehaviour
         {
             GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(false);
 
-            mPlayerTutoreal.SetIsArmMove(true);
-            mPlayerTutoreal.SetIsPlayerAndCameraMove(true);
+            mPlayerTutorial.SetIsArmMove(true);
+            mPlayerTutorial.SetIsPlayerAndCameraMove(true);
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
                 for (int i = 0; m_IventCollisions.Length > i; i++)
@@ -90,14 +90,14 @@ public class TutorialEventCathObject : MonoBehaviour
                     m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                 }
             //プレイヤー状態登録
-            mPlayerTutoreal.SetIsArmMove(!m_PlayerClerArmMove);
-            mPlayerTutoreal.SetIsPlayerMove(!m_PlayerClerMove);
-            mPlayerTutoreal.SetIsCamerMove(!m_PlayerClerCameraMove);
-            mPlayerTutoreal.SetIsArmCatchAble(!m_PlayerClerArmCath);
-            mPlayerTutoreal.SetIsArmRelease(!m_PlayerClerArmNoCath);
-            mPlayerTutoreal.SetIsResetAble(!m_PlayerClerArmReset);
-            mPlayerTutoreal.SetAllIsArmSelectAble(!m_PlayerClerArmSelect);
-            mPlayerTutoreal.SetIsArmStretch(!m_PlayerClerArmExtend);
+            mPlayerTutorial.SetIsArmMove(!m_PlayerClerArmMove);
+            mPlayerTutorial.SetIsPlayerMove(!m_PlayerClerMove);
+            mPlayerTutorial.SetIsCamerMove(!m_PlayerClerCameraMove);
+            mPlayerTutorial.SetIsArmCatchAble(!m_PlayerClerArmCath);
+            mPlayerTutorial.SetIsArmRelease(!m_PlayerClerArmNoCath);
+            mPlayerTutorial.SetIsResetAble(!m_PlayerClerArmReset);
+            mPlayerTutorial.SetAllIsArmSelectAble(!m_PlayerClerArmSelect);
+            mPlayerTutorial.SetIsArmStretch(!m_PlayerClerArmExtend);
             SoundManager.Instance.PlaySe("Answer");
             Destroy(gameObject);
         }
