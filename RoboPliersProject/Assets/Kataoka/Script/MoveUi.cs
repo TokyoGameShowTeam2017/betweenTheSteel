@@ -22,6 +22,7 @@ public class MoveUi : MonoBehaviour {
             GetComponent<CanvasGroup>().alpha = 0.0f;
             return; 
         }
+        if(GameObject.FindGameObjectWithTag("RawCamera")!=null)
         m_Rect.position = RectTransformUtility.WorldToScreenPoint(GameObject.FindGameObjectWithTag("RawCamera").GetComponent<Camera>(), m_RayUi.GetColRayPos());
         GetComponent<CanvasGroup>().alpha = 1.0f;
         mIsDraw = false;

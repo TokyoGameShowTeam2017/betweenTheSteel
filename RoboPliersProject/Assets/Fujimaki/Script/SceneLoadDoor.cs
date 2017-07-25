@@ -179,7 +179,7 @@ public class SceneLoadDoor : MonoBehaviour
 
         scanPlane_.SetActive(false);
 
-        if (resultCanvas != null)
+        if ((resultCanvas != null)&&(!endFrag_))
         {
             GameObject g = Instantiate(resultCanvas, Vector3.zero, Quaternion.identity);
             yield return new WaitForSeconds(3);

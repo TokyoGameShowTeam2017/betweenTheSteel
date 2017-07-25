@@ -56,6 +56,13 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
 
         Destroy(GameObject.FindGameObjectWithTag("Player"));
         doortrriger.Execute(drone);
+
+        while (true)
+        {
+            drone.transform.position = goalPoint.transform.position;
+            drone.transform.rotation = goalPoint.transform.rotation;
+            yield return null;
+        }
     }
 
     private IEnumerator CanvasCount()
@@ -72,6 +79,7 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
         }
         SceneLoadInitializer.Instance.gameClear = true;
         drone = GameObject.FindGameObjectWithTag("RawCamera");
+        drone.transform.parent = null;
 
         goalPoint.transform.parent = sceneLoadDoor.transform;
         //GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);

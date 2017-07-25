@@ -238,6 +238,8 @@ public class PauseStageSelectMap : MonoBehaviour
             print("asdfasdfasdfasdfa");
         }
 
+        SceneLoadInitializer.Instance.continueScene = false;
+
         yield return SceneManager.LoadSceneAsync("load", LoadSceneMode.Additive);
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
         yield return SceneManager.LoadSceneAsync(loadedScene, LoadSceneMode.Additive);
