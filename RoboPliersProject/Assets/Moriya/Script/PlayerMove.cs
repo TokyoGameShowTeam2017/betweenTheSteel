@@ -797,13 +797,9 @@ public class PlayerMove : MonoBehaviour
         //右スティックを使ったか？
         bool isRightStick = (rightInput.magnitude > 0.0f);
 
-
         //操作がないならここで終了
         if (leftInput.magnitude == 0.0f && rightInput.magnitude == 0.0f)
             return;
-
-
-
 
         //入力確定
         float inputX = leftInput.x;
@@ -940,7 +936,6 @@ public class PlayerMove : MonoBehaviour
         pliersrotx.localEulerAngles += new Vector3(v, 0.0f, 0.0f);
 
 
-
         //地面との判定
         if (v > 0.0f)
         {
@@ -965,8 +960,6 @@ public class PlayerMove : MonoBehaviour
 
         if (angle > 180.0f)
             angle -= 360.0f;
-        //print(angle);
-
         //if (angle > m_AxisMoveAngleLimit || angle < -m_AxisMoveAngleLimit)
         //{
         //    rotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
@@ -979,8 +972,6 @@ public class PlayerMove : MonoBehaviour
             //rotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
             pliersrotx.localEulerAngles -= new Vector3(v, 0.0f, 0.0f);
         }
-
-
 
         //float angle = armtr.localEulerAngles.x;
         //if (angle > 180.0f)

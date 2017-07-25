@@ -190,6 +190,16 @@ public class ArmManager : MonoBehaviour
                 SwitchEnableArm(armid);
                 SoundManager.Instance.PlaySe("xg-2armmove");
 
+
+                //向きを調整
+                if (GetEnablArmCatchingObject() != null)
+                {
+                    m_RotateY = GetEnablArm().transform.eulerAngles.y;
+                    StartCoroutine(ArmChangeCameraMove());
+                }
+                    
+
+
                 ////何も掴んでなければ正面を向く
                 //if (GetCountCatchingDynamicObjects() <= 0 && GetCountCatchingObjects() <= 0)
                 //    m_RotateY = GameObject.Find("PlayerCamera").transform.eulerAngles.y;
@@ -271,6 +281,31 @@ public class ArmManager : MonoBehaviour
         //}
 
         //print(GetCountCatchingDynamicObjects());
+    }
+
+    private IEnumerator ArmChangeCameraMove()
+    {
+        float timer = 0.0f;
+        float maxtime = 1.0f;
+
+        Vector3 cur = m_CameraMove.transform.forward;
+        Vector3 tar = GetEnablArm().transform.forward;
+
+        float h = Vector3.Angle(new Vector3(cur.x, 0.0f, cur.z), new Vector3(tar.x, 0.0f, tar.z));
+
+
+        //左右判定
+        float cos = Vector3.Cross(cur, tar).y;
+        if (cos < 0.0f)
+            h = -h;
+
+        while(timer < maxtime)
+        {
+            timer += Time.deltaTime;
+            m_CameraMove.Rotation(h * Time.deltaTime / maxtime,0.0f);
+            yield return null;
+        }
+        yield break;
     }
 
     /// <summary>
