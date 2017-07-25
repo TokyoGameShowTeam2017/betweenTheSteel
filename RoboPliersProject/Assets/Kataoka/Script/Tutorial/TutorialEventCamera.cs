@@ -27,7 +27,7 @@ public class TutorialEventCamera : MonoBehaviour
     //ズームする時間
     private float mZoomTime;
     //プレイヤーチュートリアル
-    private PlayerTutorialControl mTutorealPlayer;
+    private PlayerTutorialControl mTutorialPlayer;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
     public GameObject[] m_IventCollisions;
     [SerializeField, Tooltip("ターゲットポイントたち")]
@@ -95,7 +95,7 @@ public class TutorialEventCamera : MonoBehaviour
 
         mTutorialText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorialText>();
 
-        mTutorealPlayer = GameObject.FindGameObjectWithTag("Player").
+        mTutorialPlayer = GameObject.FindGameObjectWithTag("Player").
             GetComponent<PlayerTutorialControl>();
 
         if (m_BeforeDrawBlock)
@@ -167,14 +167,14 @@ public class TutorialEventCamera : MonoBehaviour
                 {
                     m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                 }
-            mTutorealPlayer.SetIsArmMove(!m_PlayerArmMove);
-            mTutorealPlayer.SetIsPlayerMove(!m_PlayerMove);
-            mTutorealPlayer.SetIsCamerMove(!m_PlayerCameraMove);
-            mTutorealPlayer.SetIsArmCatchAble(!m_PlayerArmCath);
-            mTutorealPlayer.SetIsArmRelease(!m_PlayerArmNoCath);
-            mTutorealPlayer.SetIsResetAble(!m_PlayerArmReset);
-            mTutorealPlayer.SetAllIsArmSelectAble(!m_PlayerArmSelect);
-            mTutorealPlayer.SetIsArmStretch(!m_PlayerArmExtend);
+            mTutorialPlayer.SetIsArmMove(!m_PlayerArmMove);
+            mTutorialPlayer.SetIsPlayerMove(!m_PlayerMove);
+            mTutorialPlayer.SetIsCamerMove(!m_PlayerCameraMove);
+            mTutorialPlayer.SetIsArmCatchAble(!m_PlayerArmCath);
+            mTutorialPlayer.SetIsArmRelease(!m_PlayerArmNoCath);
+            mTutorialPlayer.SetIsResetAble(!m_PlayerArmReset);
+            mTutorialPlayer.SetAllIsArmSelectAble(!m_PlayerArmSelect);
+            mTutorialPlayer.SetIsArmStretch(!m_PlayerArmExtend);
             Destroy(gameObject);
         }
     }

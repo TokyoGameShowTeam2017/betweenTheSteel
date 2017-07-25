@@ -35,7 +35,7 @@ public class Rod : MonoBehaviour
     [SerializeField, Tooltip("マテリアル")]
     public Material m_Material;
     [SerializeField, Tooltip("支点は右か左か")]
-    public StartPoint m_point = StartPoint.RIGHT_POINT;
+    public StartPoint m_point;
 
     public void Awake()
     {
@@ -44,13 +44,13 @@ public class Rod : MonoBehaviour
 
     public void Start()
     {
-        mNowPoint = m_point;
+        mNowPoint = StartPoint.NULL_POINT;
         mDrawOutLine = false;
         mNowOutLineFlag = false;
         mIsHong = false;
         mNoCathFlag = false;
         mArm = GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>();
-
+        SetRotatePoint(m_point);
         mSevePliers = mArm.GetPliers(0);
 
     }

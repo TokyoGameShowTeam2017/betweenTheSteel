@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TutorialEventTextFlag : MonoBehaviour
 {
-    private PlayerTutorialControl mTutorealPlayer;
+    private PlayerTutorialControl mTutorialPlayer;
     private TutorialText mTutorialText;
     private GameObject mPoint;
     [SerializeField, Tooltip("生成するTextIventのプレハブ")]
@@ -29,7 +29,7 @@ public class TutorialEventTextFlag : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        mTutorealPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
+        mTutorialPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>();
         mTutorialText = GameObject.FindGameObjectWithTag("PlayerText").GetComponent<TutorialText>();
     }
 
@@ -43,8 +43,8 @@ public class TutorialEventTextFlag : MonoBehaviour
         {
             if (GameObject.FindGameObjectWithTag("TutorialEventText") != null)
                 GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(true);
-            mTutorealPlayer.SetIsPlayerAndCameraMove(true);
-            mTutorealPlayer.SetIsArmMove(true);
+            mTutorialPlayer.SetIsPlayerAndCameraMove(true);
+            mTutorialPlayer.SetIsArmMove(true);
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)
                 for (int i = 0; m_IventCollisions.Length > i; i++)
@@ -52,14 +52,14 @@ public class TutorialEventTextFlag : MonoBehaviour
                     m_IventCollisions[i].GetComponent<PlayerTextIvent>().IsCollisionFlag();
                 }
             //プレイヤー状態登録
-            mTutorealPlayer.SetIsArmMove(!m_PlayerArmMove);
-            mTutorealPlayer.SetIsPlayerMove(!m_PlayerMove);
-            mTutorealPlayer.SetIsCamerMove(!m_PlayerCameraMove);
-            mTutorealPlayer.SetIsArmCatchAble(!m_PlayerArmCath);
-            mTutorealPlayer.SetIsArmRelease(!m_PlayerArmNoCath);
-            mTutorealPlayer.SetIsResetAble(!m_PlayerArmReset);
-            mTutorealPlayer.SetAllIsArmSelectAble(!m_PlayerArmSelect);
-            mTutorealPlayer.SetIsArmStretch(!m_PlayerArmExtend);
+            mTutorialPlayer.SetIsArmMove(!m_PlayerArmMove);
+            mTutorialPlayer.SetIsPlayerMove(!m_PlayerMove);
+            mTutorialPlayer.SetIsCamerMove(!m_PlayerCameraMove);
+            mTutorialPlayer.SetIsArmCatchAble(!m_PlayerArmCath);
+            mTutorialPlayer.SetIsArmRelease(!m_PlayerArmNoCath);
+            mTutorialPlayer.SetIsResetAble(!m_PlayerArmReset);
+            mTutorialPlayer.SetAllIsArmSelectAble(!m_PlayerArmSelect);
+            mTutorialPlayer.SetIsArmStretch(!m_PlayerArmExtend);
             Destroy(gameObject);
         }
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorealReSetObject : MonoBehaviour {
+public class TutorialReSetObject : MonoBehaviour {
 
     private List<GameObject> m_Collision;
     private Vector3 mFirstPosition;
