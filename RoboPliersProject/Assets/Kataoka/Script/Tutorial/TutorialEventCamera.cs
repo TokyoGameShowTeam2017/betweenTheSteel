@@ -42,9 +42,10 @@ public class TutorialEventCamera : MonoBehaviour
 
     [SerializeField, Tooltip("ブロックをを先にDrawさせるか")]
     public bool m_BeforeDrawBlock;
-    [SerializeField, Tooltip("ズームするかどうか"),Space(15)]
+    [SerializeField, Tooltip("ズームするかどうか"), Space(15)]
     public bool m_IsNoZoom;
-
+    [SerializeField, Tooltip("コントローラーをカメラ移動中に表示させるか")]
+    public bool m_CameraMoveDrawController;
 
     //[SerializeField, Tooltip("2回目以降ズームするかどうか"), Space(15)]
     //public bool m_IsSecondCameraZoom;
@@ -109,6 +110,9 @@ public class TutorialEventCamera : MonoBehaviour
     void Update()
     {
         if (!GetComponent<TutorialEventFlag>().GetIventFlag()) return;
+
+        GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(m_CameraMoveDrawController);
+
         if (mFlag)
         {
             CameraStart();
@@ -142,7 +146,7 @@ public class TutorialEventCamera : MonoBehaviour
 
         //頭が働かない
         //ズーム機能
-        if (mLertTime >= 1.0f && !mIsEnd&&!m_IsNoZoom)
+        if (mLertTime >= 1.0f && !mIsEnd && !m_IsNoZoom)
         {
             mZoomTime += Time.deltaTime;
             if (mZoomTime <= 3.0f)
@@ -158,8 +162,7 @@ public class TutorialEventCamera : MonoBehaviour
         //役目が終わったら消す
         if (mLertTime >= 1.0f && mIsEnd)
         {
-            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(true);
-
+            GameObject.FindGameObjectWithTag("TutorialEventText").GetComponent<TutorialEventImageSet>().SetFlag(!m_CameraMoveDrawController);
             //次のイベントテキスト有効化
             //次のイベントテキスト有効化
             if (m_IventCollisions.Length != 0)

@@ -59,6 +59,10 @@ public class TutorialText : MonoBehaviour
         mVoiceNames = new List<string>();
     }
 
+    public void LateUpdate()
+    {
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -66,15 +70,15 @@ public class TutorialText : MonoBehaviour
         {
             mTextAlpha = 1.0f;
             //テキストの改行数を取得
-            int returnCount=m_Text[mTextCreenCount].Count(c=>c=='\n')+1;
+            int returnCount = m_Text[mTextCreenCount].Count(c => c == '\n') + 1;
             //行数によって変える
-            mResY = -300.0f + (34.0f*(returnCount-1));
+            mResY = -300.0f + (34.0f * (returnCount - 1));
             //mResY = 
             mDrawTextTime += Time.deltaTime;
             mPlayTextTime += Time.deltaTime;
             //ピピピピ機能
             if (mDrawTextTime >= 0.06f && mDrawTextCount < m_Text[mTextCreenCount].Length &&
-                mPlayTextTime>=1.0f)
+                mPlayTextTime >= 1.0f)
             {
                 mDrawTextCount++;
                 mDrawTextTime = 0.0f;
@@ -87,24 +91,24 @@ public class TutorialText : MonoBehaviour
 
             //全て終わったら表示終わる機能
             if (InputManager.GetSelectArm().isDown &&
-                mDrawTextCount>=m_Text[mTextCreenCount].Length)
+                mDrawTextCount >= m_Text[mTextCreenCount].Length)
             {
                 mDrawTextCount = 0;
                 mDrawTextTime = 0;
                 mPlayTextTime = 0.0f;
                 mPlayerStateText.text = "";
-                if (mTextCreenCount >= m_Text.Length-1)
+                if (mTextCreenCount >= m_Text.Length - 1)
                     mDrawTextFlag = false;
                 else
                 {
                     mTextCreenCount++;
-                    if(mVoiceNames.Count>mTextCreenCount)
-                    SoundManager.Instance.PlaySe(mVoiceNames[mTextCreenCount]);
+                    if (mVoiceNames.Count > mTextCreenCount)
+                        SoundManager.Instance.PlaySe(mVoiceNames[mTextCreenCount]);
                 }
             }
 
             //スキップ機能
-            if (InputManager.GetSelectArm().isDown&&mDrawTextCount>0)
+            if (InputManager.GetSelectArm().isDown && mDrawTextCount > 0)
             {
                 mDrawTextCount = m_Text[mTextCreenCount].Length;
             }
@@ -122,25 +126,25 @@ public class TutorialText : MonoBehaviour
             mResY = -370.0f;
         }
 
-        ////テスト
-        //if (Input.GetKeyDown(KeyCode.C))
-        //{
-        //    SetText(m_Text);
-        //}
+        //ポーズできない設定
+        SceneLoadInitializer.Instance.pauseNot = mDrawTextFlag;
+        ;
+
+
         //α値クランプ
         mTextAlpha = Mathf.Clamp(mTextAlpha, 0.0f, 1.0f);
         //補間
         SpringFloat(0.2f, 0.5f, 2.0f);
         mTrans.anchoredPosition = new Vector2(mTrans.anchoredPosition.x, mY);
     }
-    public void SetText(string[] text,List<string> voiceName)
+    public void SetText(string[] text, List<string> voiceName)
     {
         m_Text = text;
         mTextCreenCount = 0;
         mDrawTextFlag = true;
         mVoiceNames = voiceName;
-        if(mVoiceNames.Count!=0)
-        SoundManager.Instance.PlaySe(mVoiceNames[0]);
+        if (mVoiceNames.Count != 0)
+            SoundManager.Instance.PlaySe(mVoiceNames[0]);
     }
     private void SpringFloat(float stiffness, float friction, float mass)
     {
