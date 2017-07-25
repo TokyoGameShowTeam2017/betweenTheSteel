@@ -15,7 +15,7 @@ public class PausepPocessor : MonoBehaviour {
 	void Update ()
     {
         //今リザルト画面中か調べる処理
-        if (SceneManager.GetActiveScene().name != "cave" || !SceneLoadInitializer.Instance.pauseNot)
+        if (SceneManager.GetActiveScene().name != "cave" && !SceneLoadInitializer.Instance.pauseNot)
         {
             //スタートボタンを押したら
             if (Input.GetButtonDown("XBOXStart"))

@@ -253,6 +253,8 @@ public class PauseStageSelectMap : MonoBehaviour
     //カメラをプレイヤーに繊維アニメション
     private IEnumerator StartScene(int num, GameObject startObj)
     {
+        SceneLoadInitializer.Instance.pauseNot = true;
+
         float time = 0;
         SceneLoadInitializer.Instance.nonPauseScene = false;
 
@@ -298,6 +300,8 @@ public class PauseStageSelectMap : MonoBehaviour
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>().SetIsCamerMove(true);
 
         SwitchPlayerText(true);
+
+        SceneLoadInitializer.Instance.pauseNot = false;
 
         Destroy(gameObject);
         Destroy(GameObject.Find("SelectStageCanvas(Clone)"));

@@ -263,6 +263,8 @@ public class StageSelectMap : MonoBehaviour
     //カメラをプレイヤーに繊維アニメション
     private IEnumerator StartScene(int num, GameObject startObj)
     {
+        SceneLoadInitializer.Instance.pauseNot = true;
+
         float time = 0;
         SceneLoadInitializer.Instance.nonPauseScene = false;
 
@@ -310,6 +312,7 @@ public class StageSelectMap : MonoBehaviour
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>().SetIsCamerMove(true);
 
         SwitchPlayerText(true);
+        SceneLoadInitializer.Instance.pauseNot = false;
     }
 
     private void SwitchPlayerText(bool enable)
