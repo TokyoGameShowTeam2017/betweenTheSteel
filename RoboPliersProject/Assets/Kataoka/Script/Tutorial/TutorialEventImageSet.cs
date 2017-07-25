@@ -41,20 +41,31 @@ public class TutorialEventImageSet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        List<PlayerTextIvent.EventController> keys = new List<PlayerTextIvent.EventController>(mButtonTexture.Keys);
         if (mController == PlayerTextIvent.EventController.NO_BUTTON ||
             !mFlag)
         {
             mTime = 0.0f;
             if (mNowController != PlayerTextIvent.EventController.NO_BUTTON)
             {
-                mButtonTexture[mNowController].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                foreach (var i in keys)
+                {
+                    mButtonTexture[i].GetComponent<Image>().color = new Color(1, 1, 1, 0);
+                }
                 GetComponent<Image>().color = new Color(1, 1, 1, 0);
             }
             return;
         }
         mTime += 340.0f * Time.deltaTime;
-        GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, Mathf.Lerp(0.0f,1.0f,mTime/340.0f));
-        mButtonTexture[mController].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f-Mathf.Sin(mTime * Mathf.Deg2Rad));
+        GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, Mathf.Lerp(0.0f, 1.0f, mTime / 340.0f));
+        mButtonTexture[mController].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f - Mathf.Sin(mTime * Mathf.Deg2Rad));
+
+        foreach (var i in keys)
+        {
+            if (mController == i) continue;
+            mButtonTexture[i].GetComponent<Image>().color = new Color(1, 1, 1, 0);
+        }
+
         mNowController = mController;
     }
 
@@ -64,8 +75,8 @@ public class TutorialEventImageSet : MonoBehaviour
         mAlpha = 0.0f;
         mTime = 0.0f;
         if (controller == PlayerTextIvent.EventController.RT ||
-            controller == PlayerTextIvent.EventController.RB||
-            controller==PlayerTextIvent.EventController.ARM_BUTTON)
+            controller == PlayerTextIvent.EventController.RB ||
+            controller == PlayerTextIvent.EventController.ARM_BUTTON)
             GetComponent<Image>().sprite = m_ControllerTextureUp;
         else
             GetComponent<Image>().sprite = m_ControllerTextureFront;
@@ -75,3 +86,4 @@ public class TutorialEventImageSet : MonoBehaviour
         mFlag = flag;
     }
 }
+
