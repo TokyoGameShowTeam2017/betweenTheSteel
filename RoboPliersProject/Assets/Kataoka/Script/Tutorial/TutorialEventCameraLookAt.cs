@@ -79,6 +79,7 @@ public class TutorialEventCameraLookAt : MonoBehaviour
         mPlayerTutorial.SetAllIsArmSelectAble(!m_PlayerArmSelect);
         mPlayerTutorial.SetIsArmStretch(!m_PlayerArmExtend);
 
+        if (mPlayerCamera == null) return;
         Ray ray = new Ray(mPlayerCamera.transform.position, mPlayerCamera.transform.forward * 200.0f);
         RaycastHit hit;
         int layer = 1 << 16;
