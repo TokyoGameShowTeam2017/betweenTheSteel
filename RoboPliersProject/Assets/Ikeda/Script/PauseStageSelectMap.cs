@@ -244,9 +244,11 @@ public class PauseStageSelectMap : MonoBehaviour
         yield return SceneManager.UnloadSceneAsync("load");
         yield return null;
 
-
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>().SetIsCamerMove(false);
+        if (GameObject.FindGameObjectWithTag("Player") != null)
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTutorialControl>().SetIsCamerMove(false);
+        }
 
         StartCoroutine(StartScene(num, GameObject.FindGameObjectWithTag("ThumbnailCamera")));
     }
