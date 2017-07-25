@@ -36,6 +36,9 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
 
     private IEnumerator MoveDroneGoalPoint()
     {
+        //UIを画面外に移動させる
+        GameObject.FindGameObjectWithTag("ArmManager").GetComponent<ArmManager>().EndUIMove();
+
         Vector3 defaultPosition = drone.transform.position;
         Quaternion defaultRotation = drone.transform.rotation;
 
@@ -71,7 +74,7 @@ public class GameClearLoopController : SingletonMonoBehaviour<GameClearLoopContr
         drone = GameObject.FindGameObjectWithTag("RawCamera");
 
         goalPoint.transform.parent = sceneLoadDoor.transform;
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
+        //GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().SetIsMoveAndUI(false);
 
         if (safeMode)
         {
