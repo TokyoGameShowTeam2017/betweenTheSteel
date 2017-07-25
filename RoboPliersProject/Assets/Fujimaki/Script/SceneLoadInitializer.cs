@@ -14,9 +14,11 @@ public class SceneLoadInitializer
     public bool continueScene;
     public bool gameClear;
     public bool nonPauseScene;
+    public bool pauseNot = false;
 
     private SceneLoadInitializer()
     {
+        
     }
 
     public void StartLoadScene(string name)

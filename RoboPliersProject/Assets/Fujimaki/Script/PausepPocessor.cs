@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PausepPocessor : MonoBehaviour {
 
@@ -13,21 +14,28 @@ public class PausepPocessor : MonoBehaviour {
 
 	void Update ()
     {
-        if (Input.GetButtonDown("XBOXStart"))
+        //今リザルト画面中か調べる処理
+        if (SceneManager.GetActiveScene().name != "cave" || !SceneLoadInitializer.Instance.pauseNot)
         {
-            SoundManager.Instance.PlaySe("enter");
-
-            if (SceneLoadInitializer.Instance.nonPauseScene)
+            //スタートボタンを押したら
+            if (Input.GetButtonDown("XBOXStart"))
             {
-                return;
-            }
+                //SE
+                SoundManager.Instance.PlaySe("enter");
 
-            if (pauseController==null)
-            {
-                GameObject g = Instantiate(pausePrefab, Vector3.zero, Quaternion.identity);
-                pauseController = g.GetComponent<PauseController>();
-                Instantiate(pauseFramePrefab);
+                if (SceneLoadInitializer.Instance.nonPauseScene)
+                {
+                    return;
+                }
+                if (pauseController == null)
+                {
+                    GameObject g = Instantiate(pausePrefab, Vector3.zero, Quaternion.identity);
+                    pauseController = g.GetComponent<PauseController>();
+                    Instantiate(pauseFramePrefab);
+                }
             }
         }
 	}
+
+
 }
