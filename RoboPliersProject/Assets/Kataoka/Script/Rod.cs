@@ -53,6 +53,7 @@ public class Rod : MonoBehaviour
         SetRotatePoint(m_point);
         mSevePliers = mArm.GetPliers(0);
 
+        DrawOutLine(false);
     }
     void Update()
     {
