@@ -97,8 +97,13 @@ public class TutorialText : MonoBehaviour
                 mDrawTextTime = 0;
                 mPlayTextTime = 0.0f;
                 mPlayerStateText.text = "";
+
                 if (mTextCreenCount >= m_Text.Length - 1)
+                {
+                    SceneLoadInitializer.Instance.pauseNot = false;
                     mDrawTextFlag = false;
+                }
+
                 else
                 {
                     mTextCreenCount++;
@@ -126,11 +131,6 @@ public class TutorialText : MonoBehaviour
             mResY = -370.0f;
         }
 
-        //ポーズできない設定
-        SceneLoadInitializer.Instance.pauseNot = mDrawTextFlag;
-        ;
-
-
         //α値クランプ
         mTextAlpha = Mathf.Clamp(mTextAlpha, 0.0f, 1.0f);
         //補間
@@ -142,6 +142,7 @@ public class TutorialText : MonoBehaviour
         m_Text = text;
         mTextCreenCount = 0;
         mDrawTextFlag = true;
+        SceneLoadInitializer.Instance.pauseNot = true;
         mVoiceNames = voiceName;
         if (mVoiceNames.Count != 0)
             SoundManager.Instance.PlaySe(mVoiceNames[0]);
