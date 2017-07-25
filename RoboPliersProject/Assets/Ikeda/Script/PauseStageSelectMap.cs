@@ -227,7 +227,8 @@ public class PauseStageSelectMap : MonoBehaviour
         if (num < 10)
         {
             loadedScene = "Stage0" + num;
-        }else
+        }
+        else
         {
             loadedScene = "Stage" + num;
         }
@@ -310,8 +311,8 @@ public class PauseStageSelectMap : MonoBehaviour
 
     private void SwitchPlayerText(bool enable)
     {
-        if (GameObject.FindGameObjectWithTag("StartEventObject")!=null)
-        GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(enable);
+        if (GameObject.FindGameObjectWithTag("StartEventObject") != null)
+            GameObject.FindGameObjectWithTag("StartEventObject").GetComponent<PlayerTextIvent>().IsCollisionFlag(enable);
         GameObject.FindGameObjectWithTag("ArmManager").GetComponent<LineRenderer>().startColor = new Color(1, 0, 0, 1);
         GameObject.FindGameObjectWithTag("ArmManager").GetComponent<LineRenderer>().endColor = new Color(1, 0, 0, 0);
     }
