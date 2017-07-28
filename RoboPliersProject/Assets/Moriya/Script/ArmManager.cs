@@ -576,8 +576,10 @@ public class ArmManager : MonoBehaviour
     public GameObject GetPliersCatchRod(int id)
     {
         if (m_Pliers[id].GetCatchObject() == null) return null;
-        GameObject a = m_Pliers[id].GetCatchObject().gameObject.GetComponent<RodTurnBone>().GetRod();
-        return m_Pliers[id].GetCatchObject().gameObject.GetComponent<RodTurnBone>().GetRod();
+        RodTurnBone rtb =  m_Pliers[id].GetCatchObject().gameObject.GetComponent<RodTurnBone>();
+        if (rtb == null) return null;
+        //GameObject a = m_Pliers[id].GetCatchObject().gameObject.GetComponent<RodTurnBone>().GetRod();
+        return rtb.GetRod();
     }
     /// <summary>
     /// 指定したIDのペンチを返す
@@ -608,7 +610,10 @@ public class ArmManager : MonoBehaviour
     public GameObject GetEnablePliersReleasedRod()
     {
         if (GetEnablePliersReleasedObject() == null) return null;
-        return GetEnablePliersReleasedObject().gameObject.GetComponent<RodTurnBone>().GetRod();
+        RodTurnBone rtb = GetEnablePliersReleasedObject().gameObject.GetComponent<RodTurnBone>();
+        if (rtb == null) return null;
+
+        return rtb.GetRod();
     }
 
     /// <summary>
@@ -876,16 +881,19 @@ public class ArmManager : MonoBehaviour
 
     public void DustBoxAddChild(Transform addObject)
     {
+        m_DustBox = GameObject.FindGameObjectWithTag("DustBox").transform;
         addObject.parent = m_DustBox;
     }
 
     public void DustBoxAddChild(GameObject addObject)
     {
+        m_DustBox = GameObject.FindGameObjectWithTag("DustBox").transform;
         addObject.transform.parent = m_DustBox;
     }
 
     public void DustBoxClear()
     {
+        m_DustBox = GameObject.FindGameObjectWithTag("DustBox").transform;
         foreach (Transform t in m_DustBox)
         {
             GameObject.Destroy(t.gameObject);
@@ -899,7 +907,7 @@ public class ArmManager : MonoBehaviour
     public void SceneChangeCalc()
     {
         ResetAll();
-        //DustBoxClear();
+        DustBoxClear();
     }
 
     /// <summary>

@@ -54,7 +54,7 @@ public class RodReSet : MonoBehaviour
                         pos = mPlayer.transform.position + new Vector3(0, 5, 0);
 
                     transform.position = pos;
-                    transform.rotation = Quaternion.Euler(0,0,0);
+                    transform.rotation = Quaternion.Euler(0, 0, 0);
                     GetComponent<Rigidbody>().velocity = Vector3.zero;
                     GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                     break;
