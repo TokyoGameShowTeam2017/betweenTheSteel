@@ -268,24 +268,16 @@ public class PliersMove : MonoBehaviour
         m_Power = Mathf.Clamp(m_Power, -1, 1);//* m_CatchPower;
     }
 
-
-    private float a = 0.0f;
-
     private void EasyInput()
     {
         //入力取得
         if (m_ArmManager.GetEnablArmMove().GetIsCatching() && m_ArmManager.IsCatchAble)
         {
-            a = 0;
             m_Input = m_ArmManager.GetEnablArmMove().GetIsStreched();
             //print(m_Input);
         }
         else
         {
-            //a += Time.deltaTime;
-            //print(a);
-            //print(m_ArmManager.GetEnablArmMove().GetIsStreched());
-
             if (!m_ArmManager.GetEnablArmMove().GetIsStreched() && m_ArmManager.IsRelease)
             {
                 m_LateEasyMoveInput = m_EasyMoveInput;
@@ -323,15 +315,22 @@ public class PliersMove : MonoBehaviour
                 GameObject.Destroy(par, 2.0f);
 
 
+                m_IsCatch = false;
+                m_ReleasedObject = m_CatchObject.gameObject;
+                //m_CatchObject = null;
 
+                m_ArmManager.GetArmMoveByID(m_ID).CatchingCancel();
+                
                 CatchObjectRelease();
+                print( m_ArmManager.GetArmMoveByID(m_ID).GetIsCatching());
+
 
                 ////壊れた場合はnullを入れる
                 //m_ReleasedObject = m_CatchObject.gameObject;
                 //m_CatchObject = null;
                 //m_IsCatch = false;
                 //エイムアシストによるキャッチをやめる
-                m_ArmManager.GetArmMoveByID(m_ID).CatchingCancel();
+                //m_ArmManager.GetArmMoveByID(m_ID).CatchingCancel();
 
                 //GameObject.Destroy(m_PlayerAxisMoveY);
                 //m_PlayerAxisMoveY = null;
@@ -604,10 +603,6 @@ public class PliersMove : MonoBehaviour
         m_CatchObject = null;
 
         m_ArmManager.GetArmMoveByID(m_ID).CatchingCancel();
-
-
-
-        
     }
 
     //簡単モード時の処理
