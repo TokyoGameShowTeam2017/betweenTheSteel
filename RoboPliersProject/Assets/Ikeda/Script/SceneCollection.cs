@@ -32,6 +32,10 @@ public class SceneCollection : MonoBehaviour
 
     private bool m_One;
 
+    private float m_PvTimer;
+    [SerializeField, Tooltip("何秒後にPVシーンに遷移するか")]
+    private float m_PvSceneTime;
+
     //現在のシーン
     private SceneState m_CurrentScene = SceneState.None;
     //次のシーン
@@ -84,6 +88,8 @@ public class SceneCollection : MonoBehaviour
 
             m_IsSceneEnd = false;
         }
+
+        MigrationPvScene();
     }
 
     /********************************************************************************************************************************/
@@ -126,5 +132,20 @@ public class SceneCollection : MonoBehaviour
     public int GetSceneState()
     {
         return (int)m_CurrentScene;
+    }
+
+    //何秒かタイトルで放置したらPVシーンへ
+    public void MigrationPvScene()
+    {
+        if (GetSceneState() == 0)
+        {
+            m_PvTimer += Time.deltaTime;
+            if (m_PvTimer >= m_PvSceneTime)
+                SceneManager.LoadScene("movie");
+        }
+        else
+        {
+            m_PvTimer = 0;
+        }
     }
 }
