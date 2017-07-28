@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class ForceCloser : MonoBehaviour
 {
     // 操作が無い場合に自動で終了するまでの秒数
-    static readonly float AutoCloseDuration = 120;
+    static readonly float AutoCloseDuration = 20;
     // 最後に入力があった時間
     float lastInputTime;
 
@@ -26,6 +26,8 @@ public class ForceCloser : MonoBehaviour
     [SerializeField, Tooltip("強制終了orPV再生ループor何もしない")]
     private State m_State;
 
+    private bool m_Onec = false;
+
     void Awake()
     {
         if (FindObjectsOfType<ForceCloser>().Length > 1)
@@ -37,6 +39,8 @@ public class ForceCloser : MonoBehaviour
         // 全シーンにまたがって生存する（シーン切り替えで破棄されない）ようにする
         DontDestroyOnLoad(gameObject);
         lastInputTime = Time.time;
+
+        m_PvTimer = 0;
     }
     void Update()
     {
@@ -65,6 +69,10 @@ public class ForceCloser : MonoBehaviour
         }
         else if (m_State == State.PvStartState)
         {
+
+            if (SceneManager.GetActiveScene().name == "movie") return;
+            MigrationPvScene();
+
             // 何かしらの入力があれば、最後に入力があった時間として現在の時間を記録する
             if (InputAnyKey())
             {
@@ -73,10 +81,13 @@ public class ForceCloser : MonoBehaviour
             // 最後に入力があった瞬間からの経過時間が、指定秒数を超えたら、タイトル画面へ
             if ((Time.time - lastInputTime) >= AutoCloseDuration)
             {
-                SceneManager.LoadScene("title");
+                if (!m_Onec)
+                {
+                    m_Onec = true;
+                    
+                    SceneManager.LoadScene("title");
+                }
             }
-
-            MigrationPvScene();
         }
     }
 
@@ -89,7 +100,14 @@ public class ForceCloser : MonoBehaviour
         {
             m_PvTimer += Time.deltaTime;
             if (m_PvTimer >= m_PvSceneTime)
+            {
+                Destroy(GameObject.Find("SoundManager(Clone)"));
+                Destroy(GameObject.Find("PlayerTutorial"));
+                Destroy(GameObject.Find("SceneLoadArea"));
+
+                m_PvTimer = 0.0f;
                 SceneManager.LoadScene("movie");
+            }
         }
         else
         {
