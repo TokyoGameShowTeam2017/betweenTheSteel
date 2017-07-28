@@ -346,6 +346,7 @@ public class MenuCollection : MonoBehaviour
                 if (m_State == MenuState.Exit)
                 {
                     Application.Quit();
+                    return;
                 }
                 break;
 
