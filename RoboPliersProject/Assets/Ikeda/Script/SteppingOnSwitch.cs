@@ -8,6 +8,10 @@ public class SteppingOnSwitch : MonoBehaviour
     private bool m_IsEnter = false;
 
     private bool m_IsExit = false;
+
+    private bool m_Once = false;
+
+    Collider m_Other;
     // Use this for initialization
     void Start()
     {
@@ -23,22 +27,28 @@ public class SteppingOnSwitch : MonoBehaviour
     //プレイヤーが触れたら
     public void OnTriggerEnter(Collider other)
     {
-        //if (other.gameObject.name == "Tekkyuu" || other.tag == "Player")
-        //{
+        if (!m_Once)
+        {
+            m_Other = other;
+            m_Once = true;
             m_IsExit = false;
             if (!m_IsEnter)
             {
                 m_IsEnter = true;
             }
-        //}
+        }
     }
 
     public void OnTriggerExit(Collider other)
     {
-        m_IsEnter = false;
-        if (!m_IsExit)
+        if (m_Once && m_Other == other)
         {
-            m_IsExit = true;
+            m_Once = false;
+            m_IsEnter = false;
+            if (!m_IsExit)
+            {
+                m_IsExit = true;
+            }
         }
     }
 
