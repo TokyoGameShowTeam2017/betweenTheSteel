@@ -18,6 +18,7 @@ public class ForceCloser : MonoBehaviour
     {
         PvStartState,
         ExitState,
+        ResetState,
         DoNothing,
 
         None
@@ -67,6 +68,14 @@ public class ForceCloser : MonoBehaviour
                 return;
             }
         }
+        else if (m_State == State.ResetState)
+        {
+            if ((Input.GetKey(KeyCode.JoystickButton6) && Input.GetKey(KeyCode.JoystickButton7)))
+            {
+                SceneManager.LoadScene("title");
+                return;
+            }
+        }
         else if (m_State == State.PvStartState)
         {
 
@@ -84,7 +93,7 @@ public class ForceCloser : MonoBehaviour
                 if (!m_Onec)
                 {
                     m_Onec = true;
-                    
+
                     SceneManager.LoadScene("title");
                 }
             }
